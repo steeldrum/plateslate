@@ -1,0 +1,78 @@
+/*** CSS VQS - Chapter 5 - fontproperties.css ***/
+
+@font-face {
+	font-family: 'Title Font';
+	src: url('../_fonts/Little-Trouble-Girl/littletroublegirl-webfont.eot');
+	src: local('☺'), url('../_fonts/Little-Trouble-Girl/littletroublegirl-webfont.woff') format('woff'), url('../_fonts/Little-Trouble-Girl/littletroublegirl-webfont.ttf') format('truetype'), url('../_fonts/Little-Trouble-Girl/littletroublegirl-webfont.svg#webfont') format('svg');
+	font-weight: bold;
+	font-style: italic;
+	font-variant: small-caps;
+}
+
+body, pre {
+	font: normal 100%/1.5 Corbel, Helvetica, Arial, Sans-serif;
+	font-size-adjust: .5;
+}
+
+h1, h2, h3, h4, h5, h6, .byline, nav li {
+	font-family: Constantia, Georgia, Times, "Times New Roman", Serif;
+	font-size-adjust: .46;
+}
+
+h1 {
+	font: italic bold small-caps 3em/.9 "Title Font", Constantia, Georgia, Times, "Times New Roman", Serif;
+	font-variant: small-caps;
+}
+
+h2 {
+	font-size: 2em;
+	font-style: normal;
+	font-weight: lighter;
+	font-variant: small-caps;
+}
+
+h2 strong {	
+	font-size: .5em;
+	font-style: italic;
+	font-variant: normal;
+}
+
+h3, nav li {
+	font-size: larger;
+	font-variant: small-caps;
+}
+
+p {
+	font-size: .875em;
+}
+
+table caption, table thead {
+	font: italic 1.25em Constantia, Georgia, Times, "Times New Roman", Serif;
+}
+tr {
+	font-size: 1.25em;
+}
+
+header + p:first-letter {
+	font: italic bold small-caps 8em/.9 "Title Font", Constantia, Georgia, Times, "Times New Roman", Serif;
+}
+
+strong {
+	font-size: 1.25em;
+	font-weight: normal;
+}
+
+figcaption {
+	font: italic small/1.2 Georgia, Times, "Times New Roman", Serif;	
+}
+
+.byline {
+	font-size: 1em;
+	font-style: italic;
+}
+
+.byline .author {
+	font-size: 1.25em;
+	font-style: normal;
+	font-weight: bold;
+}

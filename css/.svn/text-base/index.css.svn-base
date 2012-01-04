@@ -1,0 +1,8 @@
+/***************************************
+$Revision::                            $: Revision of last commit
+$LastChangedBy::                       $: Author of last commit
+$LastChangedDate::                     $: Date of last commit
+***************************************/
+
+/*#plateSlateRegisterDialog { background-color: white; }*/
+.error {color: red;}

@@ -1,0 +1,75 @@
+/*** CSS3 VQS | Chapter 14 | layout.css ***/
+
+/* CSS Simple Reset
+-------------------------------------------------------------- */	
+/* tjs 110607
+*{margin:0;padding:0;border:0;outline:0;line-height:1.4em;vertical-align:baseline;text-decoration:none;}
+*/
+
+/* Layout
+-------------------------------------------------------------- */
+
+header, nav, section, article, aside, footer {
+	display: block; /* Sets HTML5 elements to block */
+	overflow: hidden; /* Fixes Child Float Problem */ }
+	
+body {
+	background-color: rgb(153,153,153);
+	font: normal 1em/1.4em Perpetua, Constantia, times, "times new roman", serif; }
+
+header.site, section, footer.site {
+	width: 980px;
+	clear: both;
+	margin: 0 auto; }
+
+section {
+	background: rgb(204,204,204);	}
+
+column {
+	float: left; }
+
+column { 
+	width: 120px;  
+	_width: 120px;    }
+
+/* tjs 110607 */
+.clearfix {
+	 clear: both; }
+
+/* tjs 110607
+nav, article, aside {
+	float: left; }
+
+nav { 
+	width: 235px;  
+	_width: 205px;    }
+
+article { 
+	padding: 0 20px; 
+	background: rgb(255,255,255);
+	width: 470px; 
+	_width: 430px;  }
+
+aside { 
+	padding: 0 20px; 
+	width: 135px; 
+	_width: 95px;   }
+	
+ul {
+	list-style: none;
+	margin: 1em; }
+*/
+
+article { 
+	padding: 0 20px; 
+	background: rgb(255,255,255);
+	width: 470px; 
+	_width: 430px;  }
+
+aside { 
+	padding: 0 20px; 
+	width: 135px; 
+	_width: 95px;   }
+
+
+

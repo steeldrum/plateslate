@@ -1,0 +1,63 @@
+/*** CSS3 VQS | Chapter 13 | ie-fix.css ***/
+
+/*** font properties ***/
+
+body { font-size: 110%; }
+
+/*** color & background properties ***/
+
+header.page {
+	background: rgb(102,0,0) url(../_images/bg-book-spine-title.png)  no-repeat center top;
+	height: 130px; }
+
+article {
+	background: rgb(242, 237, 217) url(../_images/paper-01.jpg) repeat 0 0; }
+
+article h2 strong {
+	color: rgb(135,127,107); }
+
+td {
+	background-color: rgb(235,235,235); }
+
+.byline {
+	color: rgb(248, 240, 227); }
+
+.byline .author { 
+	color: rgb(248, 240, 227); }
+
+/*** list & table properties ***/
+
+td {
+	background-color: rgb(235,235,235); }
+
+/*** box properties ***/
+
+article,aside,canvas,details,dialog,eventsource,figure,footer,header,hgroup,mark,menu,meter,nav,output,progress,section,time,video { display: block; }
+
+header li {
+	visibility: visible;
+	float: left; }
+
+figure {
+	border: 6px double rgb(142, 137, 129); }
+	
+figcaption {
+	border-top: 2px solid rgb(142, 137, 129);
+	width: 100%; }
+	
+aside {
+	width: 300px;
+	height: 450px;	}
+
+aside h3 {
+	padding: 5px;
+	border: 6px double rgb(142, 137, 129); }
+
+/*** visual formatting properties ***/
+
+aside {
+	position: relative;
+	top: 10px;	}
+
+/*** transforamtion & transition properties ***/
+

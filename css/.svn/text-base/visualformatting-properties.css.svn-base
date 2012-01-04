@@ -1,0 +1,83 @@
+/*** CSS3 VQS | Chapter 11 | visualformatting-properties.css ***/
+
+header nav {
+	visibility: hidden;
+}
+
+article {
+	-webkit-box-shadow: rgba(0,0,0,.7) 5px 5px 15px;
+	-moz-box-shadow: 5px 5px 10px rgba(0,0,0,.7);
+	box-shadow: 5px 5px 10px rgba(0,0,0,.7);
+
+}
+
+aside {
+	position: absolute;
+	/* right: 1%; */
+	right: 10%;
+	/* top: 120px; */
+	/* tjs 110823 */
+	top: 220px;
+	-webkit-box-shadow: 1px 1px 5px 1px rgba(0,0,0,.25) inset, 3px 3px 15px rgba(0,0,0,.5);
+	-moz-box-shadow: 1px 1px 5px 1px rgba(0,0,0,.25) inset, 3px 3px 15px rgba(0,0,0,.5);
+	box-shadow: 1px 1px 5px 1px rgba(0,0,0,.25) inset, 3px 3px 15px rgba(0,0,0,.5);
+}
+
+/* tjs 110823 */
+.badge {
+	padding: 10px;
+	margin: 10px;
+}
+
+strong {
+	position: relative;
+	top: -.15em;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 99;
+}
+
+footer ul {
+	position: relative;
+	top: 10px;
+}
+
+figure {
+	-webkit-box-shadow: 5px 5px 10px rgba(0,0,0,.7);
+	-moz-box-shadow: 5px 5px 10px rgba(0,0,0,.7);
+	box-shadow: 5px 5px 10px rgba(0,0,0,.7);
+}
+
+div.gallery {
+	position: relative;
+}
+
+
+div.gallery figure {
+	position: absolute;
+	clip: rect(50px 250px 250px 50px);
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+
+
+#f1 {
+	left: 0;
+	top: 0;
+	z-index: 3;
+}
+#f2 {
+	left: 150px;
+	top:50px;
+	z-index: 2;
+}
+
+#f3 {
+	left: 300px;
+	top: 100px;
+	z-index: 1;
+}

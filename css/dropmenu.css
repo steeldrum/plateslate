@@ -1,0 +1,18 @@
+/*** CSS3 VQS | Chapter 14 | dropmenu.css ***/
+
+
+/* Drop Menu
+-------------------------------------------------------------- */
+
+div.xfer .menu .drop {
+	overflow: hidden;
+	height: 0;
+	opacity: 0; }
+
+div.xfer .menu:hover>.drop {
+	height: auto;
+	opacity: 1;
+	-webkit-transition: opacity .25s linear;
+	-moz-transition: opacity .25s linear;
+	-o-transition: opacity .25s linear;
+	transition: opacity .25s linear;  }

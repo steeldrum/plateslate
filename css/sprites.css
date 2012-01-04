@@ -1,0 +1,21 @@
+/*** CSS3 VQS | Chapter 14 | sprites.css ***/
+
+	
+	
+/* CSS Sprites
+-------------------------------------------------------------- */
+	
+nav.toc .menu .drop li {
+	font-weight: normal;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid rgb(204,204,204);
+	background: transparent url('../_images/sprite-pointer.png') no-repeat right 0;  }
+	
+nav.toc .menu .drop li:hover {
+	background-color: rgb(102,0,0);
+	background-position: right -100px;	}
+	
+nav.toc .menu .drop li:active {
+	background-color: rgb(255,255,255);
+	background-position: right -200px; }

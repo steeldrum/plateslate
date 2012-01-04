@@ -1,0 +1,33 @@
+/*** CSS3 VQS | Chapter 8 | list-table-properties.css ***/
+
+ul {
+	list-style: circle url(../_images/bullet-01.png) inside;
+}
+
+nav ul {
+	list-style: none outside;
+}
+
+table {
+	table-layout: auto;
+	border-spacing: 8px;
+	border-collapse: separate;
+	empty-cells: hide;
+	caption-side: bottom;
+	width: 75%;
+	margin: 40px auto;
+}
+
+table caption, table thead {
+	font: italic 1.25em Constantia, Georgia, Times, "Times New Roman", Serif;
+}
+tr {
+	font-size: 1.25em;
+}
+td {
+	vertical-align: top;
+	padding: .5em;
+	background-color: rgba(200, 200, 180,.25);
+	border: 1px solid rgb(200, 200, 180);
+}
+

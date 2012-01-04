@@ -1,0 +1,7 @@
+/*** CSS3 VQS | Chapter 14 | reset.css ***/
+
+/* CSS Simple Reset
+-------------------------------------------------------------- */	
+
+*{margin:0;padding:0;border:0;outline:0;line-height:1.4em;vertical-align:baseline;text-decoration:none;}
+

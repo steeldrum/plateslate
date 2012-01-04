@@ -1,0 +1,34 @@
+10
+
+dir
+115
+http://new-host-5/svn/charityHound/trunk/site/plateslateapp/themes
+http://new-host-5/svn/charityHound
+
+
+
+2011-08-19T21:08:45.050213Z
+115
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+1a7b0b5b-e655-4bc1-b4e9-15d1bf7c497d
+
+base
+dir
+
+ui-lightness
+dir
+

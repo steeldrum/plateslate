@@ -1,0 +1,80 @@
+/*** CSS3 VQS | Chapter 14 | links.css ***/
+
+/* Default Link Styles
+-------------------------------------------------------------- */
+
+a {
+	text-decoration: none; }
+a:link {
+	color: rgb(204,0,0); }
+a:visited {
+	color: rgb(153,0,0); }
+a:hover {
+	color: rgb(255,0,0); }
+a:active {
+	color: rgb(0,255,255); }
+
+/* Contextual Link Styles
+-------------------------------------------------------------- */
+
+p a {
+	font-style: italic; 
+	font-size: 1.2em;}
+
+p a:link, p a:visited {
+	border-bottom: 1px dotted rgb(255,153,153); }
+	
+p a:hover, p a:active {
+	background-color: rgb(255,235,235);
+	border-bottom: 1px solid rgb(255,102,102); }
+
+/* Navigation Link Styles
+-------------------------------------------------------------- */
+div.xfer .menu a { 
+	/*display: block;*/
+	text-decoration: none;
+	padding: 10px;
+	width: 100%; 
+	height:100%; }
+
+div.xfer .menu a:link, nav.toc .menu a:visted {
+	color: rgb(153,0,0); }
+
+div.xfer .menu a:hover {
+	color: rgb(255,255,255);
+	-webkit-transition: color .25s ease; 
+	-moz-transition: color .25s ease;
+	-o-transition: color .25s ease;  
+	transition: color .25s ease; }
+
+div.xfer .menu a:active {
+	color: rgb(153,0,0); }
+
+div.xfer ul {
+	list-style: none;
+	margin: 0;
+	padding: 0; }
+
+div.xfer .menu {
+	/*display: block;*/
+	position: relative;
+	height: auto;
+	width: 120px;
+	background-color: rgb(235,235,235);
+	cursor: pointer; }
+	
+div.xfer .menu:hover {
+	background: rgb(0,0,0);
+	color: rgb(255,255,255);
+}
+
+div.xfer .menu li {
+	font-weight: bold;
+	padding: 5px;
+	margin: 5px 0; }
+		
+div.xfer .menu .drop {
+	/*display: block;*/
+	background-color: rgb(235,235,235);
+	position: relative;
+	width: auto; }
