@@ -14,10 +14,14 @@ file version 1.00
 
 date_default_timezone_set ( "America/New_York" );
 
-//require_once( "common.inc.php" );
-require_once( "config.php" );
+//echo "plateslateRegister.php starting...";
+
+require_once( "common.inc.php" );
+//require_once( "config.php" );
 require_once( "Member.class.php" );
 require_once( "LogEntry.class.php" );
+// tjs 120202
+require_once( "Token.class.php" );
 /*
 $missingFieldsError = 'ok';
 $passwordError = 'ok';
@@ -35,6 +39,8 @@ $tokenMisMatchError = 'ok';
   $missingFields = array();
   $errorMessages = array();
 
+  //echo "plateslateRegister processForm started";
+  
   $member = new Member( array( 
     "username" => isset( $_POST["username"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["username"] ) : "",
     "password" => ( isset( $_POST["password1"] ) and isset( $_POST["password2"] ) and $_POST["password1"] == $_POST["password2"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["password1"] ) : "",
@@ -84,12 +90,20 @@ $tokenMisMatchError = 'ok';
   }
 
 $token = isset( $_POST["token"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["token"] ) : "";
-//if (!$token = "plateslatebetauser") {
-if (!($token == "plateslatebetauser")) {
-	$tokenMisMatchError = 'nok';
+// tjs 120202
+//if (!($token == "plateslatebetauser")) {
+//	$tokenMisMatchError = 'nok';
 	//$success = 'nok';
+//}
+$tokenRow = Token::getByEmailAddress( $member->getValue( "emailAddress" ) );
+if ($tokenRow) {
+	if ($token != $tokenRow->getValue( "token" )) {
+		$tokenMisMatchError = 'nok';
+	}
+} else {
+	$tokenMisMatchError = 'nok';
 }
-  
+
 //if ( !$missingFieldsError && !$passwordError && !$duplicateUserNameError && !$duplicateEMailError) {
   if ( $missingFieldsError == 'nok' || $passwordError == 'nok' || $duplicateUserNameError == 'nok' || $duplicateEMailError == 'nok' || $tokenMisMatchError == 'nok') {
   	$info = '["registerInfo", {"success":"nok","missingFieldsError":"'.$missingFieldsError.'","passwordError":"'.$passwordError.'","duplicateUserNameError":"'.$duplicateUserNameError.'","duplicateEMailError":"'.$duplicateEMailError.'","registrationTokenMisMatchError":"'.$tokenMisMatchError.'"}]';
@@ -112,7 +126,8 @@ if (!($token == "plateslatebetauser")) {
 //$success = processForm();
 
 //  $registerInfo = '["registerInfo", {"success":"'.$success.'","missingFieldsError":"'.$missingFieldsError.'","passwordError":"'.$passwordError.'","duplicateUserNameError":"'.$duplicateUserNameError.'","duplicateEMailError":"'.$duplicateEMailError.'","$registrationTokenMisMatchError":"'.$tokenMisMatchError.'"}]';
-  $registerInfo = processForm();
+//echo "plateslateRegister processForm() starting...";
+$registerInfo = processForm();
   echo $registerInfo;
 
 ?>
