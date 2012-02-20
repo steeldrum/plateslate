@@ -109,6 +109,8 @@ if ($tokenRow) {
   	$info = '["registerInfo", {"success":"nok","missingFieldsError":"'.$missingFieldsError.'","passwordError":"'.$passwordError.'","duplicateUserNameError":"'.$duplicateUserNameError.'","duplicateEMailError":"'.$duplicateEMailError.'","registrationTokenMisMatchError":"'.$tokenMisMatchError.'"}]';
   	return($info);
   } else {
+  	// tjs 120220 for debug:
+  	//echo "member skill ".$member->getPrimarySkillAreaString();
   	$member->insert();
   	$info = '["registerInfo", {"success":"ok","missingFieldsError":"'.$missingFieldsError.'","passwordError":"'.$passwordError.'","duplicateUserNameError":"'.$duplicateUserNameError.'","duplicateEMailError":"'.$duplicateEMailError.'","registrationTokenMisMatchError":"'.$tokenMisMatchError.'"}]';
   	return($info);

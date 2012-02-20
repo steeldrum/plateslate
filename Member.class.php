@@ -48,7 +48,8 @@ class Member extends DataObject {
 // 'clergy', 'contracting', 'culinary', 'education', 'engineering', 'health',
 // 'labor', 'legal', 'management', 'music', 'politics', 'professional', 'retailing',
 // 'software', 'trades', 'other' ) NOT NULL,
-	
+/*
+ * tjs 120220	
   private $_skills = array(
     "accounting" => "Accounting",
     "administration" => "Administration",
@@ -71,7 +72,38 @@ class Member extends DataObject {
     "trades" => "Trades",
     "other" => "Other"
   );
-
+*/
+   private $_skills = array(
+    "aahfInfo" => "AAH Food!",
+    "africanAmerican" => "African American",
+    "american" => "American",
+    "brazilian" => "Brazilian",
+    "cajun" => "Cajun",
+    "caribbean" => "Caribbean",
+    "chinese" => "Chinese",
+    "elderly" => "Elderly",
+    "french" => "French",
+    "german" => "German", 
+    "greek" => "Greek",
+    "indian" => "Indian",
+    "irish" => "Irish",
+    "italian" => "Italian",
+    "japanese" => "Japanese",
+    "jewish" => "Jewish",
+    "mexican" => "Mexican",
+    "middleEast" => "Middle East",
+    "multinational" => "Multinational",
+    "nativeAmerican" => "Native American",
+    "polish" => "Polish",
+    "portuguese" => "Portuguese",
+    "russian" => "Russian",
+    "southern" => "Southern",
+    "thai" => "Thai",
+    "texmex" => "Texmex",
+    "vegetarian" => "Vegetarian",
+    "other" => "Other"
+  );
+  
   public static function getMembers( $startRow, $numRows, $order ) {
     $conn = parent::connect();
     $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM " . TBL_MEMBERS . " ORDER BY $order LIMIT :startRow, :numRows";
