@@ -44,34 +44,11 @@ class Member extends DataObject {
 // tjs 101012
 // "favoriteGenre" => "",
 
-//	primarySkillArea	ENUM( 'accounting', 'administration', 'architecture', 'art',
-// 'clergy', 'contracting', 'culinary', 'education', 'engineering', 'health',
-// 'labor', 'legal', 'management', 'music', 'politics', 'professional', 'retailing',
-// 'software', 'trades', 'other' ) NOT NULL,
+//	primarySkillArea	ENUM( 'aahfInfo','africanAmerican','american','brazilian','cajun','caribbean','chinese','elderly',
+//'french','german','greek','indian','irish','italian','japanese','jewish','mexican','middleEast','multinational',
+//'nativeAmerican','polish','portuguese','russian','southern','thai','texmex','vegetarian','other' ) NOT NULL,
 /*
  * tjs 120220	
-  private $_skills = array(
-    "accounting" => "Accounting",
-    "administration" => "Administration",
-    "architecture" => "Architecture",
-    "art" => "Art",
-    "clergy" => "Clergy",
-    "contracting" => "Contracting",
-    "culinary" => "Culinary",
-    "education" => "Education",
-    "engineering" => "Engineering",
-    "health" => "Health",
-    "labor" => "Labor",
-    "legal" => "Legal",
-    "management" => "Management",
-    "music" => "Music",
-    "politics" => "Politics",
-    "professional" => "Professional",
-    "retailing" => "Retailing",
-    "software" => "Software",
-    "trades" => "Trades",
-    "other" => "Other"
-  );
 */
    private $_skills = array(
     "aahfInfo" => "AAH Food!",
@@ -191,6 +168,29 @@ class Member extends DataObject {
     return $this->_skills;
   }
 
+  // tjs 120221
+  public static function getByPrimarySkillArea( $primarySkillArea ) {
+    $conn = parent::connect();
+    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE primarySkillArea = :primarySkillArea";
+
+    try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":primarySkillArea", $primarySkillArea, PDO::PARAM_STR );
+      $st->execute();
+      $members = array();
+      foreach ( $st->fetchAll() as $row ) {
+        $members[] = new Member( $row );
+      }
+      $st = $conn->query( "SELECT found_rows() as totalRows" );
+      $row = $st->fetch();
+      parent::disconnect( $conn );
+      return array( $members, $row["totalRows"] );
+      } catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    }
+  }
+  
   public function insert() {
     $conn = parent::connect();
     $sql = "INSERT INTO " . TBL_MEMBERS . " (
@@ -328,6 +328,28 @@ class Member extends DataObject {
       $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
       //if ( $this->data["password"] ) $st->bindValue( ":password", $this->data["password"], PDO::PARAM_STR );
       if ( $newPassword ) $st->bindValue( ":password", $newPassword, PDO::PARAM_STR );
+      $st->execute();
+      parent::disconnect( $conn );
+    } catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    }
+  }
+
+  //tjs120223 
+   public function updatePrimarySkillArea( $newPrimarySkillArea ) {
+    $conn = parent::connect();
+    //$passwordSql = $this->data["password"] ? "password = password(:password)," : "";
+    $primarySkillAreaSql = $newPrimarySkillArea ? "primarySkillArea = :primarySkillArea" : "";
+    $sql = "UPDATE " . TBL_MEMBERS . " SET
+              $primarySkillAreaSql
+            WHERE id = :id";
+
+    try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
+      //if ( $this->data["password"] ) $st->bindValue( ":password", $this->data["password"], PDO::PARAM_STR );
+      if ( $newPrimarySkillArea ) $st->bindValue( ":primarySkillArea", $newPrimarySkillArea, PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
