@@ -13,8 +13,10 @@ file version 1.00
 
 */
 
-//require_once "DataObject.class.php";
-require_once "../plateslate/DataObject.class.php";
+require_once "DataObject.class.php";
+// tjs 130128
+//require_once "../plateslate/DataObject.class.php";
+//require_once "./DataObject.class.php";
 
 class LogEntry extends DataObject {
 

@@ -16,7 +16,8 @@ file version 1.00
 //require_once "config.php";
 // tjs 130128
 //require_once "../plateslate/config.php";
-require_once "./config.php";
+//require_once "./config.php";
+require_once "./../config.php";
 
 abstract class DataObject {
 
