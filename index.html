@@ -157,11 +157,16 @@ click on the plateslate mobile icon (while using the tablet, or phone).  This wi
 automatically startup the plateslate meal planner application!  (Note:
 if you plan to use it often the tablet computer supports saving
 the web application directly on your tablet or phone.  That means the next time
-you would simply touch the plateslate icon and you're good to go!  The easy way
-to do this is by means of the <a href="http://www.openappmkt.com">Open App Market</a>.  The PlateSlate
-Web App can be searched for in the Healthcare & Fitness Category.)</p>
-<p>If using your mobil device to read this simply click here to download and install PlateSlate:
-<a target="_blank" href="http://www.openappmkt.com/app/4f19afce7886dc0001001abf/PlateSlate"><img src="images/plateSlateMenus64x64.png" border="0"></a>
+you would simply touch the plateslate icon and you're good to go!)</p>
+<p>
+The easy way to do this is to follow these steps:
+<ul>
+<li>On mobile device use a browser such as Safari and visit this same web page.</li>
+<li>Then click here: <button id="iPhonePlateSlateApp">Download Mobile App</button>
+</li>
+<li>Finally use the browser action control <img src="images/appleActionIcon23x15.png" /> to add the web app to the device's home screen. 
+</li>
+</ul>
 </p>
 <p>If the meal planner in the family tends to forget what meals were
 recently served and meals seem repetitive it should be noted that
@@ -328,6 +333,11 @@ way the web application works for you!
 			// tjs 120103
             //window.location.href = "../plateslateapp/index.html";
             window.location.href = "app/index.html";
+		});
+        
+        $("#iPhonePlateSlateApp").click(function() {
+           // tjs 130130;
+            window.open("http://www.plateslate.com/app/index.html",'','',true);		 
 		});
 
 	      $('.error').hide();
