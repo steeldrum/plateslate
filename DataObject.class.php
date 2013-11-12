@@ -42,7 +42,8 @@ abstract class DataObject {
 
   protected function connect() {
     try {
-      $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
+    	// tjs 131113 - conversion to postgreSQL
+    	$conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
       $conn->setAttribute( PDO::ATTR_PERSISTENT, true );
       $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
     } catch ( PDOException $e ) {
