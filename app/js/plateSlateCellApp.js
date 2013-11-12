@@ -4115,6 +4115,8 @@ function hijaxReportPage() {
 	//newPageHtml += '<p><a href="javascript:hijaxSlateOfPlatesPages();">Slate of Plates and Portions</a></p>';	
 	newPageHtml += '<p>For logged in users, the PlateSlate Server provides a detailed and printable report of slated plates....</p>';
 	newPageHtml += '<p><a href="javascript:doReport();">Get PDF PlateSlate Report</a></p>';	
+	newPageHtml += '<p>For logged in users, the PlateSlate Server provides a real-time posting of meals planned for the current day.</p>';
+	newPageHtml += '<p><a href="javascript:doRealTimeReport();">Post Current PlateSlate Menu Report (All Obervers Immediately See The Menu)</a></p>';	
 	newPageHtml += '</div><script type="text/javascript"></script></div>';
 	var newPage = $(newPageHtml);
 	//add new dialog to page container
@@ -5477,6 +5479,66 @@ function doReport() {
 		//alert("plateslate click url " + url + " windowName " + windowName);
 		window.open(url, windowName, 'resizable,scrollbars');
 	});
+	}
+}
+
+function doRealTimeReport() {
+	// tjs 131107
+	var chalkColors = getScreenReportHues(3);
+	var divHeaderStyle = 'color:' + makeColor(chalkColors[0]);
+	var divLabelStyle = 'color:' + makeColor(chalkColors[1]);
+	var divDataStyle = 'color:' + makeColor(chalkColors[2]);
+//alert("doRealTimeReport divHeaderStyle " + divHeaderStyle + " divLabelStyle " + divLabelStyle + " divDataStyle " + divDataStyle);
+	// tjs 131106 temp hack:
+	//authenticated == true;
+	//alert("plateSlateCellApp doRealTimeReport authenticated " + authenticated);
+	if (!authenticated)	{
+	//if (1 == 0)	{
+		//alert("You must login before using this feature!");
+		var paragraphs = new Array();
+		paragraphs.push(requiresLoginLine1);
+		paragraphs.push(requiresLoginLine2);
+		hijaxAlertDial(requiresLoginTitle, paragraphs);
+		//return;
+	} else {
+	//alert("plateSlateCellApp doRealTimeReport authenticated " + authenticated);
+	var thresholdOffset = slateOffsetThreshold;
+	var xml = getReportXml('Meal Plan Report', thresholdOffset);
+	//alert("plateSlateCellApp doRealTimeReport xml " + xml);
+	//$.post("../plateslate/storeSlates.php", { xml: xml }, function(msg) {		
+	/*$.post("../refreshSlateMenu.php", { xml: xml }, function(msg) {	
+		var len = msg.length;
+		alert("plateSlateCellApp doRealTimeReport msg len " + len + " msg " + msg);
+	});*/
+	//var jqxhr = $.post( "../refreshSlateMenu.php", { xml: xml }, function(xhr, status, message) {
+	var jqxhr = $.post( "../refreshSlateMenu.php", { xml: xml, divHeaderStyle: divHeaderStyle, divLabelStyle: divLabelStyle, divDataStyle: divDataStyle }, function(xhr, status, message) {
+	//var jqxhr = $.post( "./refreshSlateMenu.php", { xml: xml }, function() {
+	//var jqxhr = $.post( "refreshSlateMenu.php", { xml: xml }, function() {
+	//var jqxhr = $.post( "http://airserver:8982/app/refreshSlateMenu.php", { xml: xml }, function() {
+		  //alert( "success" );
+		    //alert( "success msg " + xhr.responseText);
+		})
+		  .done(function(xhr, status, message) {
+		    //alert( "second success" );
+		    //alert( "second success msg " + xhr.responseText);
+		  })
+		  //  jqXHR jqXHR, String textStatus, String errorThrown
+		  //.fail(function() {
+		  .fail(function(xhr, status, message) {
+		    //alert( "error" );
+		    //alert( "error status " + status + " message "  + message);
+		    // e.g. error status error message Internal Server Error
+			    //alert( "error status " + xhr.status + " response text " + xhr.responseText);
+// e.g. error status 500 response text refreshSlateMenu...
+			    //alert( "msg " + xhr.responseText);
+			  // e.g. refreshSlateMenu...
+			    //alert( "err " + xhr.thrownError);
+			    // e.g. undefined
+		  })
+		  .always(function() {
+		    //alert( "finished" );
+		});
+	//alert ("error " + jqxhr.error());
 	}
 }
 

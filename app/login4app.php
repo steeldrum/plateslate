@@ -41,12 +41,16 @@ require_once( "Member.class.php" );
     "password" => isset( $_GET["pword"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_GET["pword"] ) : "",
   ) );
 
+  //echo "login4app authenticating...";
+  
   if ( $loggedInMember = $member->authenticate() ) {
     $_SESSION["member"] = $loggedInMember;
 	$accountId = $loggedInMember->getValue( "id" );
 	$userName = $loggedInMember->getValueEncoded( "username" );
-	$firstName = $loggedInMember->getValueEncoded( "firstName" );
-	$lastName = $loggedInMember->getValueEncoded( "lastName" );
+	//$firstName = $loggedInMember->getValueEncoded( "firstName" );
+	//$lastName = $loggedInMember->getValueEncoded( "lastName" );
+	$firstName = $loggedInMember->getValueEncoded( "firstname" );
+	$lastName = $loggedInMember->getValueEncoded( "lastname" );
   }
   $loginInfo = '["loginInfo", {"id":"'.$accountId.'","userName":"'.$userName.'","firstName":"'.$firstName.'","lastName":"'.$lastName.'"}]';
   echo $loginInfo;
