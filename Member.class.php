@@ -27,6 +27,7 @@ class Member extends DataObject {
     "id" => "",
     "username" => "",
     "password" => "",
+  /* tjs 131112
     "firstName" => "",
     "lastName" => "",
     "joinDate" => "",
@@ -42,7 +43,23 @@ class Member extends DataObject {
     "isSelectableForSite" => "",
     "passwordMnemonicQuestion" => "",
     "passwordMnemonicAnswer" => "",
-    "isInactive" => ""
+    "isInactive" => ""*/
+     "firstname" => "",
+    "lastname" => "",
+    "joindate" => "",
+    "gender" => "",
+    "primaryskillarea" => "",
+    "emailaddress" => "",
+    "otherskills" => "",
+    "cumdonationsforsites" => "",
+    "lastdonationmadeon" => "",
+    "lastdonationforsite" => "",
+    "lastlogindate" => "",
+    "permissionforsite" => "",
+    "isselectableforsite" => "",
+    "passwordmnemonicquestion" => "",
+    "passwordmnemonicanswer" => "",
+    "isinactive" => ""
   );
 
 // tjs 101012
@@ -87,8 +104,11 @@ class Member extends DataObject {
   
   public static function getMembers( $startRow, $numRows, $order ) {
     $conn = parent::connect();
-    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM " . TBL_MEMBERS . " ORDER BY $order LIMIT :startRow, :numRows";
-
+    // tjs 131112
+    //$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM " . TBL_MEMBERS . " ORDER BY $order LIMIT :startRow, :numRows";
+    $sql = "SELECT * FROM " . TBL_MEMBERS . " ORDER BY $order OFFSET :startRow LIMIT :numRows";
+    $rowCount = 0;
+    
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":startRow", $startRow, PDO::PARAM_INT );
@@ -97,11 +117,14 @@ class Member extends DataObject {
       $members = array();
       foreach ( $st->fetchAll() as $row ) {
         $members[] = new Member( $row );
+        // tjs 131112
+        $rowCount++;
       }
-      $st = $conn->query( "SELECT found_rows() as totalRows" );
-      $row = $st->fetch();
+      //$st = $conn->query( "SELECT found_rows() as totalRows" );
+      //$row = $st->fetch();
       parent::disconnect( $conn );
-      return array( $members, $row["totalRows"] );
+      //return array( $members, $row["totalRows"] );
+      return array( $members, $rowCount );
     } catch ( PDOException $e ) {
       parent::disconnect( $conn );
       die( "Query failed: " . $e->getMessage() );
@@ -200,23 +223,23 @@ class Member extends DataObject {
     $sql = "INSERT INTO " . TBL_MEMBERS . " (
               username,
               password,
-              firstName,
-              lastName,
-              joinDate,
+              firstname,
+              lastname,
+              joindate,
               gender,
-              primarySkillArea,
-              emailAddress,
-              otherSkills,
-			cumDonationsForSites,
-			lastDonationMadeOn,
-			lastDonationForSite,
-			lastLoginDate,
-			permissionForSite,
-			isSelectableForSite,
-			passwordMnemonicQuestion,
-			passwordMnemonicAnswer,
-			isInactive
-            ) VALUES (
+              primaryskillarea,
+              emailaddress,
+              otherskills,
+			cumdonationsforsites,
+			lastdonationmadeon,
+			lastdonationforsite,
+			lastlogindate,
+			permissionforsite,
+			isselectableforsite,
+			passwordmnemonicquestion,
+			passwordmnemonicanswer,
+			isinactive
+                          ) VALUES (
               :username,
               password(:password),
               :firstName,
@@ -241,22 +264,22 @@ class Member extends DataObject {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":username", $this->data["username"], PDO::PARAM_STR );
       $st->bindValue( ":password", $this->data["password"], PDO::PARAM_STR );
-      $st->bindValue( ":firstName", $this->data["firstName"], PDO::PARAM_STR );
-      $st->bindValue( ":lastName", $this->data["lastName"], PDO::PARAM_STR );
-      $st->bindValue( ":joinDate", $this->data["joinDate"], PDO::PARAM_STR );
+      $st->bindValue( ":firstName", $this->data["firstname"], PDO::PARAM_STR );
+      $st->bindValue( ":lastName", $this->data["lastname"], PDO::PARAM_STR );
+      $st->bindValue( ":joinDate", $this->data["joindate"], PDO::PARAM_STR );
       $st->bindValue( ":gender", $this->data["gender"], PDO::PARAM_STR );
-      $st->bindValue( ":primarySkillArea", $this->data["primarySkillArea"], PDO::PARAM_STR );
-      $st->bindValue( ":emailAddress", $this->data["emailAddress"], PDO::PARAM_STR );
-      $st->bindValue( ":otherSkills", $this->data["otherSkills"], PDO::PARAM_STR );
-      $st->bindValue( ":cumDonationsForSites", $this->data["cumDonationsForSites"], PDO::PARAM_STR );
-      $st->bindValue( ":lastDonationMadeOn", $this->data["lastDonationMadeOn"], PDO::PARAM_STR );
-      $st->bindValue( ":lastDonationForSite", $this->data["lastDonationForSite"], PDO::PARAM_STR );
-      $st->bindValue( ":lastLoginDate", $this->data["lastLoginDate"], PDO::PARAM_STR );
-      $st->bindValue( ":permissionForSite", $this->data["permissionForSite"], PDO::PARAM_STR );
-      $st->bindValue( ":isSelectableForSite", $this->data["isSelectableForSite"], PDO::PARAM_STR );
-      $st->bindValue( ":passwordMnemonicQuestion", $this->data["passwordMnemonicQuestion"], PDO::PARAM_STR );
-      $st->bindValue( ":passwordMnemonicAnswer", $this->data["passwordMnemonicAnswer"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":primarySkillArea", $this->data["primaryskillarea"], PDO::PARAM_STR );
+      $st->bindValue( ":emailAddress", $this->data["emailaddress"], PDO::PARAM_STR );
+      $st->bindValue( ":otherSkills", $this->data["otherskills"], PDO::PARAM_STR );
+      $st->bindValue( ":cumDonationsForSites", $this->data["cumdonationsforsites"], PDO::PARAM_STR );
+      $st->bindValue( ":lastDonationMadeOn", $this->data["lastdonationmadeon"], PDO::PARAM_STR );
+      $st->bindValue( ":lastDonationForSite", $this->data["lastdonationforsite"], PDO::PARAM_STR );
+      $st->bindValue( ":lastLoginDate", $this->data["lastlogindate"], PDO::PARAM_STR );
+      $st->bindValue( ":permissionForSite", $this->data["permissionforsite"], PDO::PARAM_STR );
+      $st->bindValue( ":isSelectableForSite", $this->data["isselectableforsite"], PDO::PARAM_STR );
+      $st->bindValue( ":passwordMnemonicQuestion", $this->data["passwordmnemonicquestion"], PDO::PARAM_STR );
+      $st->bindValue( ":passwordMnemonicAnswer", $this->data["passwordmnemonicanswer"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -271,22 +294,22 @@ class Member extends DataObject {
     $sql = "UPDATE " . TBL_MEMBERS . " SET
               username = :username,
               $passwordSql
-              firstName = :firstName,
-              lastName = :lastName,
-              joinDate = :joinDate,
+              firstname = :firstName,
+              lastname = :lastName,
+              joindate = :joinDate,
               gender = :gender,
-              primarySkillArea = :primarySkillArea,
-              emailAddress = :emailAddress,
-              otherSkills = :otherSkills,
-              cumDonationsForSites = :cumDonationsForSites,
-              lastDonationMadeOn = :lastDonationMadeOn,
-              lastDonationForSite = :lastDonationForSite,
-              lastLoginDate = :lastLoginDate,
-              permissionForSite = :permissionForSite,
-              isSelectableForSite = :isSelectableForSite,
-              passwordMnemonicQuestion = :passwordMnemonicQuestion,
-              passwordMnemonicAnswer = :passwordMnemonicAnswer,
-              isInactive = :isInactive
+              primaryskillarea = :primarySkillArea,
+              emailaddress = :emailAddress,
+              otherskills = :otherSkills,
+              cumdonationsforsites = :cumDonationsForSites,
+              lastdonationmadeon = :lastDonationMadeOn,
+              lastdonationforsite = :lastDonationForSite,
+              lastlogindate = :lastLoginDate,
+              permissionforsite = :permissionForSite,
+              isselectableforsite = :isSelectableForSite,
+              passwordmnemonicquestion = :passwordMnemonicQuestion,
+              passwordmnemonicanswer = :passwordMnemonicAnswer,
+              isinactive = :isInactive
             WHERE id = :id";
 
     try {
@@ -294,22 +317,22 @@ class Member extends DataObject {
       $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
       $st->bindValue( ":username", $this->data["username"], PDO::PARAM_STR );
       if ( $this->data["password"] ) $st->bindValue( ":password", $this->data["password"], PDO::PARAM_STR );
-      $st->bindValue( ":firstName", $this->data["firstName"], PDO::PARAM_STR );
-      $st->bindValue( ":lastName", $this->data["lastName"], PDO::PARAM_STR );
-      $st->bindValue( ":joinDate", $this->data["joinDate"], PDO::PARAM_STR );
+      $st->bindValue( ":firstName", $this->data["firstname"], PDO::PARAM_STR );
+      $st->bindValue( ":lastName", $this->data["lastname"], PDO::PARAM_STR );
+      $st->bindValue( ":joinDate", $this->data["joindate"], PDO::PARAM_STR );
       $st->bindValue( ":gender", $this->data["gender"], PDO::PARAM_STR );
-      $st->bindValue( ":primarySkillArea", $this->data["primarySkillArea"], PDO::PARAM_STR );
-      $st->bindValue( ":emailAddress", $this->data["emailAddress"], PDO::PARAM_STR );
-      $st->bindValue( ":otherSkills", $this->data["otherSkills"], PDO::PARAM_STR );
-      $st->bindValue( ":cumDonationsForSites", $this->data["cumDonationsForSites"], PDO::PARAM_STR );
-      $st->bindValue( ":lastDonationMadeOn", $this->data["lastDonationMadeOn"], PDO::PARAM_STR );
-      $st->bindValue( ":lastDonationForSite", $this->data["lastDonationForSite"], PDO::PARAM_STR );
-      $st->bindValue( ":lastLoginDate", $this->data["lastLoginDate"], PDO::PARAM_STR );
-      $st->bindValue( ":permissionForSite", $this->data["permissionForSite"], PDO::PARAM_STR );
-      $st->bindValue( ":isSelectableForSite", $this->data["isSelectableForSite"], PDO::PARAM_STR );
-      $st->bindValue( ":passwordMnemonicQuestion", $this->data["passwordMnemonicQuestion"], PDO::PARAM_STR );
-      $st->bindValue( ":passwordMnemonicAnswer", $this->data["passwordMnemonicAnswer"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":primarySkillArea", $this->data["primaryskillarea"], PDO::PARAM_STR );
+      $st->bindValue( ":emailAddress", $this->data["emailaddress"], PDO::PARAM_STR );
+      $st->bindValue( ":otherSkills", $this->data["otherskills"], PDO::PARAM_STR );
+      $st->bindValue( ":cumDonationsForSites", $this->data["cumdonationsforsites"], PDO::PARAM_STR );
+      $st->bindValue( ":lastDonationMadeOn", $this->data["lastdonationmadeon"], PDO::PARAM_STR );
+      $st->bindValue( ":lastDonationForSite", $this->data["lastdonationforsite"], PDO::PARAM_STR );
+      $st->bindValue( ":lastLoginDate", $this->data["lastlogindate"], PDO::PARAM_STR );
+      $st->bindValue( ":permissionForSite", $this->data["permissionforsite"], PDO::PARAM_STR );
+      $st->bindValue( ":isSelectableForSite", $this->data["isselectableforsite"], PDO::PARAM_STR );
+      $st->bindValue( ":passwordMnemonicQuestion", $this->data["passwordmnemonicquestion"], PDO::PARAM_STR );
+      $st->bindValue( ":passwordMnemonicAnswer", $this->data["passwordmnemonicanswer"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -379,12 +402,14 @@ class Member extends DataObject {
 
   public function authenticate() {
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE username = :username AND password = password(:password)";
-
+    // tjs 131112 kludge pg lacka password function
+    //$sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE username = :username AND password = password(:password)";
+   $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE username = :username";
+    
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":username", $this->data["username"], PDO::PARAM_STR );
-      $st->bindValue( ":password", $this->data["password"], PDO::PARAM_STR );
+      //$st->bindValue( ":password", $this->data["password"], PDO::PARAM_STR );
       $st->execute();
       $row = $st->fetch();
       //tjs110307
@@ -393,7 +418,10 @@ class Member extends DataObject {
       $today = date("Y-m-d");
 	  if ( $row ) {
 	  	$member = new Member( $row );
-		$sql = "UPDATE " . TBL_MEMBERS . " SET
+	  	// tjs 131112
+	  	$torf = trim($member->data["password"]) == trim($password);
+	  	if ($torf == 1) {
+	  	$sql = "UPDATE " . TBL_MEMBERS . " SET
 				  lastLoginDate = :lastLoginDate
 				WHERE id = :id";
 		  $st = $conn->prepare( $sql );
@@ -403,6 +431,7 @@ class Member extends DataObject {
 		  $st->execute();
 	  	parent::disconnect( $conn );
 	  	return $member;
+	  	}
 	  }
 	  parent::disconnect( $conn );
     } catch ( PDOException $e ) {
