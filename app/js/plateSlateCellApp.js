@@ -3870,7 +3870,9 @@ function hyjaxLogoutDial() {
     $.mobile.changePage(newDial);
 }
 
-function doLogout() {
+// tjs 131113
+//function doLogout() {
+function doLogout(loadObserver) {
 	//alert("plateslate   doLogout");
 	var isBackupStarted = false;
 	if (backupDataToServer == true) {
@@ -3891,10 +3893,8 @@ function doLogout() {
 	}
 	if (!isBackupStarted) {
 		// tjs 120402
-		//if (backupDataToServer == true)
-		//if (backupDataToServer != true)
-    	//alert("plateSlateCellApp doLogout isBackupStarted " + isBackupStarted + " backupDataToServer " + backupDataToServer);
-    	// e.g. plateSlateCellApp doLogout isBackupStarted false backupDataToServer true
+    	//alert("plateSlateCellApp doLogout isBackupStarted " + isBackupStarted + " backupDataToServer " + backupDataToServer + " loadObserver " + loadObserver);
+    	// e.g. plateSlateCellApp doLogout isBackupStarted false backupDataToServer false loadObserver true
 			//$("#logout-dial").dialog("close");
 			//alert("plateSlateCellApp doLogout isBackupStarted " + isBackupStarted + " backupDataToServer " + backupDataToServer + " closed!");
 			// e.g. plateSlateCellApp doLogout isBackupStarted false backupDataToServer true closed!
@@ -3904,11 +3904,15 @@ function doLogout() {
 			// tjs 120403
 			//$('.ui-dialog').dialog('close');
 
-		finishLogout();
+			//finishLogout();
+		finishLogout(loadObserver);
 	}
 }
 
-function finishLogout() {
+// tjs 131113
+//function finishLogout() {
+function finishLogout(loadObserver) {
+    //alert("plateslate finishLogout loadObserver " + loadObserver);
     var dataString = '';  
     $.ajax({  
         //type: "POST",  
@@ -3916,12 +3920,16 @@ function finishLogout() {
   url: "logout4app.php",  
   data: dataString,  
   success: function(msg) {
-      //alert("plateslate processLoginForm success  msg " + msg);
-	  if (msg == "false") {
+      //alert("plateslate finishLogout success  msg " + msg);
+	  // e.g. plateslate finishLogout success  msg observer_url http://localhost:8993/slate.htmlhttp://localhost:8993/slate.html
+	  //if (msg == "false") {
 		  authenticated = false;
 		  loginAccountNumber = 0;
 		  //alert("plateslate handleLogout success  authenticated " + authenticated);
- 	  }
+ 	  //}
+		  if (loadObserver) {
+			  window.location.href = msg;
+		  }
   }  
 }); 	
 }
@@ -4116,7 +4124,8 @@ function hijaxReportPage() {
 	newPageHtml += '<p>For logged in users, the PlateSlate Server provides a detailed and printable report of slated plates....</p>';
 	newPageHtml += '<p><a href="javascript:doReport();">Get PDF PlateSlate Report</a></p>';	
 	newPageHtml += '<p>For logged in users, the PlateSlate Server provides a real-time posting of meals planned for the current day.</p>';
-	newPageHtml += '<p><a href="javascript:doRealTimeReport();">Post Current PlateSlate Menu Report (All Obervers Immediately See The Menu)</a></p>';	
+	newPageHtml += '<p><a href="javascript:doRealTimeReport(false);">Post Today\'s Menu.</a>&nbsp;<a href="javascript:doRealTimeReport(true);">Post Tomorrow\'s Menu.</a></p>';	
+	newPageHtml += '<p><a href="javascript:tweakRealTimeReport();">Tweak Posted Menu.</a>&nbsp;<a href="javascript:observeRealTimeReport();">Observe Posted Menu.</a></p>';	
 	newPageHtml += '</div><script type="text/javascript"></script></div>';
 	var newPage = $(newPageHtml);
 	//add new dialog to page container
@@ -5482,16 +5491,15 @@ function doReport() {
 	}
 }
 
-function doRealTimeReport() {
+// tjs 131112
+//function doRealTimeReport() {
+function doRealTimeReport(mode) {
 	// tjs 131107
 	var chalkColors = getScreenReportHues(3);
 	var divHeaderStyle = 'color:' + makeColor(chalkColors[0]);
 	var divLabelStyle = 'color:' + makeColor(chalkColors[1]);
 	var divDataStyle = 'color:' + makeColor(chalkColors[2]);
 //alert("doRealTimeReport divHeaderStyle " + divHeaderStyle + " divLabelStyle " + divLabelStyle + " divDataStyle " + divDataStyle);
-	// tjs 131106 temp hack:
-	//authenticated == true;
-	//alert("plateSlateCellApp doRealTimeReport authenticated " + authenticated);
 	if (!authenticated)	{
 	//if (1 == 0)	{
 		//alert("You must login before using this feature!");
@@ -5499,23 +5507,14 @@ function doRealTimeReport() {
 		paragraphs.push(requiresLoginLine1);
 		paragraphs.push(requiresLoginLine2);
 		hijaxAlertDial(requiresLoginTitle, paragraphs);
-		//return;
 	} else {
 	//alert("plateSlateCellApp doRealTimeReport authenticated " + authenticated);
 	var thresholdOffset = slateOffsetThreshold;
 	var xml = getReportXml('Meal Plan Report', thresholdOffset);
 	//alert("plateSlateCellApp doRealTimeReport xml " + xml);
-	//$.post("../plateslate/storeSlates.php", { xml: xml }, function(msg) {		
-	/*$.post("../refreshSlateMenu.php", { xml: xml }, function(msg) {	
-		var len = msg.length;
-		alert("plateSlateCellApp doRealTimeReport msg len " + len + " msg " + msg);
-	});*/
-	//var jqxhr = $.post( "../refreshSlateMenu.php", { xml: xml }, function(xhr, status, message) {
-	var jqxhr = $.post( "../refreshSlateMenu.php", { xml: xml, divHeaderStyle: divHeaderStyle, divLabelStyle: divLabelStyle, divDataStyle: divDataStyle }, function(xhr, status, message) {
-	//var jqxhr = $.post( "./refreshSlateMenu.php", { xml: xml }, function() {
-	//var jqxhr = $.post( "refreshSlateMenu.php", { xml: xml }, function() {
-	//var jqxhr = $.post( "http://airserver:8982/app/refreshSlateMenu.php", { xml: xml }, function() {
-		  //alert( "success" );
+	// tjs 131112
+	//var jqxhr = $.post( "../refreshSlateMenu.php", { xml: xml, divHeaderStyle: divHeaderStyle, divLabelStyle: divLabelStyle, divDataStyle: divDataStyle }, function(xhr, status, message) {
+	var jqxhr = $.post( "../refreshSlateMenu.php", { xml: xml, mode: mode, divHeaderStyle: divHeaderStyle, divLabelStyle: divLabelStyle, divDataStyle: divDataStyle }, function(xhr, status, message) {
 		    //alert( "success msg " + xhr.responseText);
 		})
 		  .done(function(xhr, status, message) {
@@ -5540,6 +5539,15 @@ function doRealTimeReport() {
 		});
 	//alert ("error " + jqxhr.error());
 	}
+}
+
+function tweakRealTimeReport() {
+	// TODO ...
+}
+
+function observeRealTimeReport() {
+	// tjs 131113 TODO if logged in force a logout!
+	doLogout(true);
 }
 
 function getReportXml(name, offset) {
