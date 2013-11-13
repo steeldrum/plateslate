@@ -76,7 +76,8 @@ $divHeaderStyle = "color: red";
 $divLabelStyle = "color:hsl(100, 100%, 50%)";
 $divDataStyle = "color:hsl(140, 100%, 50%)";
 //echo "divHeaderStyle $divHeaderStyle";
-
+$mode = $_POST["mode"];
+$flushToday = $mode == 'true';
 
 //echo "refreshSlateMenu xml string length ".strlen($xmlString)." string ".$xmlString;
 // tjs 131106
@@ -93,7 +94,11 @@ if (isset($_SESSION['member'])) {
 	$account = $member->getValue( "id" );
 }
 $fh = fopen($xmlFileNamePath, 'w');
-$skipRest = false;
+if ($flushToday) {
+	$skipRest = true;	
+} else {
+	$skipRest = false;
+}
 $htmlString = "";
 $htmlString .= "<!DOCTYPE html><html><head><title>Socket.IO dynamically reloading CSS stylesheets</title><link rel=\"stylesheet\" type=\"text/css\" href=\"/header.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\" /><script type=\"text/javascript\" src=\"/socket.io/socket.io.js\"></script><script type=\"text/javascript\">";
 $htmlString .= "window.onload = function () {var socket = io.connect();socket.on('reload', function () {window.location.reload();});socket.on('stylesheet', function (sheet) {var link = document.createElement('link');var head = document.getElementsByTagName('head')[0];link.setAttribute('rel', 'stylesheet');link.setAttribute('type', 'text/css');link.setAttribute('href', sheet);head.appendChild(link);});}</script></head><body><h1>Your PlateSlate menu slated for ";
@@ -108,10 +113,9 @@ function startElement($parser, $name, $attrs)
 	global $htmlString;
 	global $skipRest;
 	global $divHeaderStyle;
-		global $divLabelStyle;
-		global $divDataStyle;
-		if (!$skipRest) {
-
+	global $divLabelStyle;
+	global $divDataStyle;
+	if (!$skipRest) {
 		if ($name == 'SLATE') {
 			//<slate name="August 27, 2011">
 			//echo "started slate element!";
@@ -154,13 +158,13 @@ function startElement($parser, $name, $attrs)
 			//$htmlString .= '<tr style="' + $divDataStyle + ';"><td>$type</td>';
 			//$htmlString .= '<tr style="color:hsl(140, 100%, 50%);"><td>$type</td>';
 			$htmlString .= '<tr style="color:hsl(30, 100%, 50%);"><td>$type</td>';
-				
+
 			// e.g. startElement SLATENAME="11/6/2013" DOW="Wednesday" ID="2"
 
 			//$htmlString .= $attrs['name'];
 			//$htmlString .= ' is:</h1>';
 		}
-	}
+	} 
 }
 
 function endElement($parser, $name)
@@ -168,6 +172,7 @@ function endElement($parser, $name)
 	global $htmlString;
 	global $fh;
 	global $skipRest;
+	global $flushToday;
 	//echo "refreshSlateMenu endElement $name";
 	// global $map_array;
 	//if (isset($map_array[$name])) {
@@ -185,7 +190,12 @@ function endElement($parser, $name)
 		//echo "endElement PORTION htmlString $htmlString";
 	} else if ($name == 'SLATE') {
 		//echo "refreshSlateMenu DONE!";
-		$skipRest = true;
+	   if ($flushToday) {
+			$skipRest = false;
+			$flushToday = false;
+		} else {
+			$skipRest = true;
+		}
 	} else if ($name == 'SLATES') {
 		//echo "refreshSlateMenu DONE!";
 		$htmlString .= "  </body></html>";
