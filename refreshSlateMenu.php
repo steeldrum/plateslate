@@ -122,10 +122,19 @@ function startElement($parser, $name, $attrs)
 			foreach($attrs as $a => $b) {
 				//echo $a,'="',$b,"\"\n";
 				if ($a == 'NAME') {
-					$htmlString .= $b;
-					$htmlString .= " is:</h1>";
+					// tjs 131114
+					$date .= $b;
+					//$htmlString .= $b;
+					//$htmlString .= " is:</h1>";
+				} else if ($a == 'DOW') {
+					$dow = $b;
 				}
 			}
+					$htmlString .= $dow;
+					$htmlString .= ", ";
+					$htmlString .= $date;
+					$htmlString .= " is:</h1>";
+			
 		} else if ($name == 'PLATE') {
 			//<plate name="Flakes-n-Bakes" type="Breakfast" description="Cereal, Fruit, etc.">
 			foreach($attrs as $a => $b) {
@@ -157,7 +166,11 @@ function startElement($parser, $name, $attrs)
 			//color:hsl(140, 100%, 50%)
 			//$htmlString .= '<tr style="' + $divDataStyle + ';"><td>$type</td>';
 			//$htmlString .= '<tr style="color:hsl(140, 100%, 50%);"><td>$type</td>';
-			$htmlString .= '<tr style="color:hsl(30, 100%, 50%);"><td>$type</td>';
+			//$htmlString .= '<tr style="color:hsl(30, 100%, 50%);"><td>$type</td>';
+			$htmlString .= '<tr style="color:hsl(30, 100%, 50%);"><td>';
+			//$htmlString .= "$type</td"';
+			$htmlString .= $type;
+			$htmlString .= '</td>';
 
 			// e.g. startElement SLATENAME="11/6/2013" DOW="Wednesday" ID="2"
 
@@ -180,7 +193,7 @@ function endElement($parser, $name)
 	//}
 	if ($name == 'PLATE') {
 		if (!$skipRest) {
-			$htmlString .= "<tbody></table><br/>";
+			$htmlString .= "</tbody></table><br/>";
 		}
 		//echo "endElement PLATE htmlString $htmlString";
 	} else if ($name == 'PORTION') {
