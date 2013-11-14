@@ -5,3 +5,21 @@ background-color:grey;
 p {
   color: brown;
 }
+
+@font-face
+{
+font-family: slateChalk;
+src: url('./app/fonts/chalkdust.ttf');
+}
+
+/* tjs 131114 */
+@font-face {
+	font-family: Chalkduster;
+	src: local('Chalkduster'), url('./app/fonts/chalkdust.ttf') format('truetype');
+}
+
+table {
+	font-family:Chalkduster,"Times New Roman",Georgia,Serif;
+	font-size: x-large;
+	width:100%;
+	}
