@@ -4123,9 +4123,9 @@ function hijaxReportPage() {
 	//newPageHtml += '<p><a href="javascript:hijaxSlateOfPlatesPages();">Slate of Plates and Portions</a></p>';	
 	newPageHtml += '<p>For logged in users, the PlateSlate Server provides a detailed and printable report of slated plates....</p>';
 	newPageHtml += '<p><a href="javascript:doReport();">Get PDF PlateSlate Report</a></p>';	
-	newPageHtml += '<p>For logged in users, the PlateSlate Server provides a real-time posting of meals planned for the current day.</p>';
-	newPageHtml += '<p><a href="javascript:doRealTimeReport(false);">Post Today\'s Menu.</a>&nbsp;<a href="javascript:doRealTimeReport(true);">Post Tomorrow\'s Menu.</a></p>';	
-	newPageHtml += '<p><a href="javascript:tweakRealTimeReport();">Tweak Posted Menu.</a>&nbsp;<a href="javascript:observeRealTimeReport();">Observe Posted Menu.</a></p>';	
+	newPageHtml += '<p>For logged in users, the PlateSlate Server provides a real-time posting of meals planned for the current or next day.</p>';
+	newPageHtml += '<p><a href="javascript:doRealTimeReport(false);">Post Today\'s Menu</a>&nbsp;<a href="javascript:doRealTimeReport(true);">Post Tomorrow\'s Menu</a></p>';	
+	newPageHtml += '<p><a href="javascript:tweakRealTimeReport();">Tweak Posted Menu</a>&nbsp;<a href="javascript:observeRealTimeReport();">Observe Posted Menu</a></p>';	
 	newPageHtml += '</div><script type="text/javascript"></script></div>';
 	var newPage = $(newPageHtml);
 	//add new dialog to page container
@@ -5591,7 +5591,22 @@ function getReportXml(name, offset) {
 
 function getXml(slate) {
 	//alert("plateslate getXml slate name " + slate.name + " id " + slate.id + " breakfast id " + slate.breakfastId);
-	var xml = '<slate name="' + slate.name + '" dow="' + slate.description + '" id="' + slate.id + '"><plates>';
+	// tjs 131114
+	//var xml = '<slate name="' + slate.name + '" dow="' + slate.description + '" id="' + slate.id + '"><plates>';
+	var description = slate.description;
+	if ((description == null || description.length < 6) && slate.name != null) {
+		var date = new Date(slate.name);
+		var weekday=new Array(7);
+		weekday[0]="Sunday";
+		weekday[1]="Monday";
+		weekday[2]="Tuesday";
+		weekday[3]="Wednesday";
+		weekday[4]="Thursday";
+		weekday[5]="Friday";
+		weekday[6]="Saturday";
+		description = weekday[date.getDay()];
+	}
+	var xml = '<slate name="' + slate.name + '" dow="' + description + '" id="' + slate.id + '"><plates>';
 	var plateId = slate.breakfastId;
 	var plate = plates[plateId];
 	var portionId;
