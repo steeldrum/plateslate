@@ -66,7 +66,7 @@ session_start();
 $account = 0;
 $xmlFileName = "test.xml";
 $xmlString = $_POST["xml"];
-//$xmlString = '<slates accountId="0" userName="unknown" firstName="firstName" lastName="lastName" share="false"><slate name="11/6/2013" dow="Wednesday" id="2"><plates><plate name="Schred-n-Bread" type="Breakfast" description="Cereal, Fruit, etc."><portions><portion type="Grain">Schredded Wheat</portion><portion type="Fruits">Bananas</portion><portion type="Dairy">Milk</portion><portion type="Grain">Muffins</portion></portions></plate><plate name="Grilled Cheese" type="Lunch" description="(with fruit)"><portions><portion type="Protein">Pork Products</portion><portion type="Dairy">Cheese</portion><portion type="Fruits">Apples</portion></portions></plate><plate name="American Chop Suey" type="Dinner" description=""><portions><portion type="Grain">Pasta</portion><portion type="Protein">Beef Products</portion><portion type="Vegetables">Onions</portion><portion type="Vegetables">Tomatoes</portion></portions></plate></plates></slate></slates>';
+//$xmlString = '<slates accountId="0" userName="unknown" firstName="firstName" lastName="lastName" share="false"><slate name="11/18/2013" dow="Wednesday" id="2"><plates><plate name="Schred-n-Bread" type="Breakfast" description="Cereal, Fruit, etc."><portions><portion type="Grain">Schredded Wheat</portion><portion type="Fruits">Bananas</portion><portion type="Dairy">Milk</portion><portion type="Grain">Muffins</portion></portions></plate><plate name="Grilled Cheese" type="Lunch" description="(with fruit)"><portions><portion type="Protein">Pork Products</portion><portion type="Dairy">Cheese</portion><portion type="Fruits">Apples</portion></portions></plate><plate name="American Chop Suey" type="Dinner" description=""><portions><portion type="Grain">Pasta</portion><portion type="Protein">Beef Products</portion><portion type="Vegetables">Onions</portion><portion type="Vegetables">Tomatoes</portion></portions></plate></plates></slate></slates>';
 // e.g. doRealTimeReport divHeaderStyle color:hsl(60, 100%, 50%) divLabelStyle color:hsl(100, 100%, 50%) divDataStyle color:hsl(140, 100%, 50%)
 //$divHeaderStyle = $_POST["divHeaderStyle"];
 //$divLabelStyle = $_POST["divLabelStyle"];
@@ -76,8 +76,19 @@ $divHeaderStyle = "color: red";
 $divLabelStyle = "color:hsl(100, 100%, 50%)";
 $divDataStyle = "color:hsl(140, 100%, 50%)";
 //echo "divHeaderStyle $divHeaderStyle";
+//$mode = false;
 $mode = $_POST["mode"];
 $flushToday = $mode == 'true';
+//$today = getdate();
+//$today = date("D M j G:i:s T Y");               // Sat Mar 10 17:16:18 MST 2001
+//$today = date("D M j Y");               // e.g. Sat Mar 10 2001
+//$todayOffset = time();
+$todayOffset  = mktime(0, 0, 0, date("m")  , date("d"), date("Y"));
+//$tomorrowOffset = $todayOffset + (1 * 24 * 60 * 60);
+$tomorrowOffset  = mktime(0, 0, 0, date("m")  , date("d")+1, date("Y"));
+
+//$tomorrow = date("D M j Y", $tommorowOffset);     // e.g. Sun Mar 11 2001
+//echo "todayOffset $todayOffset tomorrowOffset $tomorrowOffset";
 
 //echo "refreshSlateMenu xml string length ".strlen($xmlString)." string ".$xmlString;
 // tjs 131106
@@ -93,12 +104,22 @@ if (isset($_SESSION['member'])) {
 	$member = $_SESSION['member'];
 	$account = $member->getValue( "id" );
 }
+
+//echo "open output...";
 $fh = fopen($xmlFileNamePath, 'w');
+$matchTime = $todayOffset;
+//echo "default matchTime $matchTime";
 if ($flushToday) {
-	$skipRest = true;	
-} else {
-	$skipRest = false;
-}
+	// tjs 131118
+	//$skipRest = true;	
+	$matchTime = $tomorrowOffset;
+} //else {
+	//$skipRest = false;
+//}
+//$skipRest = false;
+//echo "matchTime $matchTime";
+
+$time = null;
 $htmlString = "";
 $htmlString .= "<!DOCTYPE html><html><head><title>Socket.IO dynamically reloading CSS stylesheets</title><link rel=\"stylesheet\" type=\"text/css\" href=\"/header.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\" /><script type=\"text/javascript\" src=\"/socket.io/socket.io.js\"></script><script type=\"text/javascript\">";
 $htmlString .= "window.onload = function () {var socket = io.connect();socket.on('reload', function () {window.location.reload();});socket.on('stylesheet', function (sheet) {var link = document.createElement('link');var head = document.getElementsByTagName('head')[0];link.setAttribute('rel', 'stylesheet');link.setAttribute('type', 'text/css');link.setAttribute('href', sheet);head.appendChild(link);});}</script></head><body><h1>Your PlateSlate menu slated for ";
@@ -111,11 +132,13 @@ function startElement($parser, $name, $attrs)
 	//    echo "<$map_array[$name]>";
 	// }
 	global $htmlString;
-	global $skipRest;
+	//global $skipRest;
+	global $time;
+	global $matchTime;
 	global $divHeaderStyle;
 	global $divLabelStyle;
 	global $divDataStyle;
-	if (!$skipRest) {
+	//if (!$skipRest) {
 		if ($name == 'SLATE') {
 			//<slate name="August 27, 2011">
 			//echo "started slate element!";
@@ -130,12 +153,26 @@ function startElement($parser, $name, $attrs)
 					$dow = $b;
 				}
 			}
+			// tjs 131118
+			// format name that is string e.g.  11/15/2013
+			//$parse_date = date_parse($name);
+			//echo "name $date";
+			$time = strtotime($date);
+			//echo "<time $time matchTime $matchTime>";
+			if ($time == $matchTime) {
 					$htmlString .= $dow;
 					$htmlString .= ", ";
 					$htmlString .= $date;
 					$htmlString .= " is:</h1>";
-			
-		} else if ($name == 'PLATE') {
+			}
+			/*
+					$htmlString .= $dow;
+					$htmlString .= ", ";
+					$htmlString .= $date;
+					$htmlString .= " is:</h1>";
+			*/
+		//} else if ($name == 'PLATE') {
+		} else if ($name == 'PLATE' && $time == $matchTime) {
 			//<plate name="Flakes-n-Bakes" type="Breakfast" description="Cereal, Fruit, etc.">
 			foreach($attrs as $a => $b) {
 				if ($a == 'NAME') {
@@ -154,7 +191,8 @@ function startElement($parser, $name, $attrs)
 			//$htmlString .= "<table><thead><th>Type</th><th>Portion</th><th>Notes</th></thead><tbody>";
 			//$htmlString .= '<table><thead style="' + $divLabelStyle + ';"><th>Type</th><th>Portion</th><th>Notes</th></thead><tbody>';
 			$htmlString .= '<table><thead style="color: hsl(100, 100%, 50%);"><th>Type</th><th>Portion</th><th>Notes</th></thead><tbody>';
-		} else if ($name == 'PORTION') {
+		//} else if ($name == 'PORTION') {
+		} else if ($name == 'PORTION' &&  $time == $matchTime) {
 			//<portion type="Grain">Bran Flakes</portion>
 			foreach($attrs as $a => $b) {
 				if ($a == 'TYPE') {
@@ -177,38 +215,43 @@ function startElement($parser, $name, $attrs)
 			//$htmlString .= $attrs['name'];
 			//$htmlString .= ' is:</h1>';
 		}
-	} 
+	//} 
 }
 
 function endElement($parser, $name)
 {
 	global $htmlString;
 	global $fh;
-	global $skipRest;
-	global $flushToday;
+	//global $skipRest;
+	global $time;
+	global $matchTime;
+	//global $flushToday;
 	//echo "refreshSlateMenu endElement $name";
 	// global $map_array;
 	//if (isset($map_array[$name])) {
 	//    echo "</$map_array[$name]>";
 	//}
-	if ($name == 'PLATE') {
-		if (!$skipRest) {
+	//if ($name == 'PLATE') {
+	if ($name == 'PLATE' &&  $time == $matchTime) {
+		//if (!$skipRest) {
 			$htmlString .= "</tbody></table><br/>";
-		}
+		//}
 		//echo "endElement PLATE htmlString $htmlString";
-	} else if ($name == 'PORTION') {
-		if (!$skipRest) {
+	//} else if ($name == 'PORTION') {
+	} else if ($name == 'PORTION' &&  $time == $matchTime) {
+		//if (!$skipRest) {
 			$htmlString .= "<td></td></tr>";
-		}
+		//}
 		//echo "endElement PORTION htmlString $htmlString";
+	//} else if ($name == 'SLATE') {
 	} else if ($name == 'SLATE') {
 		//echo "refreshSlateMenu DONE!";
-	   if ($flushToday) {
+	  /* if ($flushToday) {
 			$skipRest = false;
 			$flushToday = false;
 		} else {
 			$skipRest = true;
-		}
+		}*/
 	} else if ($name == 'SLATES') {
 		//echo "refreshSlateMenu DONE!";
 		$htmlString .= "  </body></html>";
@@ -223,8 +266,11 @@ function endElement($parser, $name)
 function characterData($parser, $data)
 {
 	global $htmlString;
-	global $skipRest;
-	if (!$skipRest) {
+	global $time;
+	global $matchTime;
+	//global $skipRest;
+	//if (!$skipRest) {
+	if ($time == $matchTime) {
 		//echo $data;
 		$htmlString .= "<td>$data</td>";
 	}
