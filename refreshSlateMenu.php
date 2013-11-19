@@ -40,15 +40,11 @@
  */
 require_once( "Member.class.php" );
 //tjs 110511 above ensures that config.php has been loaded as well
-$username=DB_USERNAME;
-$password=DB_PASSWORD;
-$database=DB_NAME;
+//$username=DB_USERNAME;
+//$password=DB_PASSWORD;
+//$database=DB_NAME;
 
 session_start();
-
-//function trimNewLine($str) {
-//	return substr($str, 0, strlen($str) - 1);
-//}
 
 /*
  $account = $_GET['account'];
@@ -79,24 +75,13 @@ $divDataStyle = "color:hsl(140, 100%, 50%)";
 //$mode = false;
 $mode = $_POST["mode"];
 $flushToday = $mode == 'true';
-//$today = getdate();
-//$today = date("D M j G:i:s T Y");               // Sat Mar 10 17:16:18 MST 2001
-//$today = date("D M j Y");               // e.g. Sat Mar 10 2001
-//$todayOffset = time();
 $todayOffset  = mktime(0, 0, 0, date("m")  , date("d"), date("Y"));
-//$tomorrowOffset = $todayOffset + (1 * 24 * 60 * 60);
 $tomorrowOffset  = mktime(0, 0, 0, date("m")  , date("d")+1, date("Y"));
-
-//$tomorrow = date("D M j Y", $tommorowOffset);     // e.g. Sun Mar 11 2001
 //echo "todayOffset $todayOffset tomorrowOffset $tomorrowOffset";
 
 //echo "refreshSlateMenu xml string length ".strlen($xmlString)." string ".$xmlString;
 // tjs 131106
-//$xmlFileNamePath = tempnam("./slates/", "slate").".xml";
-//$xmlFileNamePath = tempnam("./slateView/", "slate").".html";
-//$xmlFileNamePath = "./slates/slate.html";
-$xmlFileNamePath = "./slateView/slate.html";
-//echo "refreshSlateMenu xmlFileNamePath is $xmlFileNamePath";
+//$xmlFileNamePath = "./slateView/slate.html";
 
 //$xmlFileNamePath=$xmlFileName;
 
@@ -104,41 +89,40 @@ if (isset($_SESSION['member'])) {
 	$member = $_SESSION['member'];
 	$account = $member->getValue( "id" );
 }
+// tjs 131119
+$xmlFileNamePath = "./slateView/$account/slate.html";
+//echo "refreshSlateMenu xmlFileNamePath is $xmlFileNamePath";
 
 //echo "open output...";
-$fh = fopen($xmlFileNamePath, 'w');
-$matchTime = $todayOffset;
-//echo "default matchTime $matchTime";
-if ($flushToday) {
-	// tjs 131118
-	//$skipRest = true;	
-	$matchTime = $tomorrowOffset;
-} //else {
-	//$skipRest = false;
-//}
-//$skipRest = false;
-//echo "matchTime $matchTime";
+// tjs 131119
+//$fh = fopen($xmlFileNamePath, 'w');
+$result = '0';
+if (!($fh = fopen($xmlFileNamePath, 'w'))) {
+	//    die("could not open XML input");
+} else {
+	$matchTime = $todayOffset;
+	//echo "default matchTime $matchTime";
+	if ($flushToday) {
+		// tjs 131118
+		//$skipRest = true;
+		$matchTime = $tomorrowOffset;
+	}
+	//echo "matchTime $matchTime";
 
-$time = null;
-$htmlString = "";
-$htmlString .= "<!DOCTYPE html><html><head><title>Socket.IO dynamically reloading CSS stylesheets</title><link rel=\"stylesheet\" type=\"text/css\" href=\"/header.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\" /><script type=\"text/javascript\" src=\"/socket.io/socket.io.js\"></script><script type=\"text/javascript\">";
-$htmlString .= "window.onload = function () {var socket = io.connect();socket.on('reload', function () {window.location.reload();});socket.on('stylesheet', function (sheet) {var link = document.createElement('link');var head = document.getElementsByTagName('head')[0];link.setAttribute('rel', 'stylesheet');link.setAttribute('type', 'text/css');link.setAttribute('href', sheet);head.appendChild(link);});}</script></head><body><h1>Your PlateSlate menu slated for ";
-//echo "refreshSlateMenu prior parser htmlString $htmlString";
-function startElement($parser, $name, $attrs)
-{
-	//echo "refreshSlateMenu startElement $name";
-	// global $map_array;
-	// if (isset($map_array[$name])) {
-	//    echo "<$map_array[$name]>";
-	// }
-	global $htmlString;
-	//global $skipRest;
-	global $time;
-	global $matchTime;
-	global $divHeaderStyle;
-	global $divLabelStyle;
-	global $divDataStyle;
-	//if (!$skipRest) {
+	$time = null;
+	$htmlString = "";
+	$htmlString .= "<!DOCTYPE html><html><head><title>Socket.IO dynamically reloading CSS stylesheets</title><link rel=\"stylesheet\" type=\"text/css\" href=\"/header.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\" /><script type=\"text/javascript\" src=\"/socket.io/socket.io.js\"></script><script type=\"text/javascript\">";
+	$htmlString .= "window.onload = function () {var socket = io.connect();socket.on('reload', function () {window.location.reload();});socket.on('stylesheet', function (sheet) {var link = document.createElement('link');var head = document.getElementsByTagName('head')[0];link.setAttribute('rel', 'stylesheet');link.setAttribute('type', 'text/css');link.setAttribute('href', sheet);head.appendChild(link);});}</script></head><body><h1>Your PlateSlate menu slated for ";
+	//echo "refreshSlateMenu prior parser htmlString $htmlString";
+	function startElement($parser, $name, $attrs)
+	{
+		//echo "refreshSlateMenu startElement $name";
+		global $htmlString;
+		global $time;
+		global $matchTime;
+		global $divHeaderStyle;
+		global $divLabelStyle;
+		global $divDataStyle;
 		if ($name == 'SLATE') {
 			//<slate name="August 27, 2011">
 			//echo "started slate element!";
@@ -160,18 +144,11 @@ function startElement($parser, $name, $attrs)
 			$time = strtotime($date);
 			//echo "<time $time matchTime $matchTime>";
 			if ($time == $matchTime) {
-					$htmlString .= $dow;
-					$htmlString .= ", ";
-					$htmlString .= $date;
-					$htmlString .= " is:</h1>";
+				$htmlString .= $dow;
+				$htmlString .= ", ";
+				$htmlString .= $date;
+				$htmlString .= " is:</h1>";
 			}
-			/*
-					$htmlString .= $dow;
-					$htmlString .= ", ";
-					$htmlString .= $date;
-					$htmlString .= " is:</h1>";
-			*/
-		//} else if ($name == 'PLATE') {
 		} else if ($name == 'PLATE' && $time == $matchTime) {
 			//<plate name="Flakes-n-Bakes" type="Breakfast" description="Cereal, Fruit, etc.">
 			foreach($attrs as $a => $b) {
@@ -191,7 +168,6 @@ function startElement($parser, $name, $attrs)
 			//$htmlString .= "<table><thead><th>Type</th><th>Portion</th><th>Notes</th></thead><tbody>";
 			//$htmlString .= '<table><thead style="' + $divLabelStyle + ';"><th>Type</th><th>Portion</th><th>Notes</th></thead><tbody>';
 			$htmlString .= '<table><thead style="color: hsl(100, 100%, 50%);"><th>Type</th><th>Portion</th><th>Notes</th></thead><tbody>';
-		//} else if ($name == 'PORTION') {
 		} else if ($name == 'PORTION' &&  $time == $matchTime) {
 			//<portion type="Grain">Bran Flakes</portion>
 			foreach($attrs as $a => $b) {
@@ -200,105 +176,73 @@ function startElement($parser, $name, $attrs)
 				}
 				//echo "startElement PORTION htmlString $htmlString";
 			}
-			//$htmlString .= "<tr><td>$type</td>";
-			//color:hsl(140, 100%, 50%)
-			//$htmlString .= '<tr style="' + $divDataStyle + ';"><td>$type</td>';
-			//$htmlString .= '<tr style="color:hsl(140, 100%, 50%);"><td>$type</td>';
-			//$htmlString .= '<tr style="color:hsl(30, 100%, 50%);"><td>$type</td>';
 			$htmlString .= '<tr style="color:hsl(30, 100%, 50%);"><td>';
-			//$htmlString .= "$type</td"';
 			$htmlString .= $type;
 			$htmlString .= '</td>';
-
 			// e.g. startElement SLATENAME="11/6/2013" DOW="Wednesday" ID="2"
-
-			//$htmlString .= $attrs['name'];
-			//$htmlString .= ' is:</h1>';
 		}
-	//} 
-}
+	}
 
-function endElement($parser, $name)
-{
-	global $htmlString;
-	global $fh;
-	//global $skipRest;
-	global $time;
-	global $matchTime;
-	//global $flushToday;
-	//echo "refreshSlateMenu endElement $name";
-	// global $map_array;
-	//if (isset($map_array[$name])) {
-	//    echo "</$map_array[$name]>";
-	//}
-	//if ($name == 'PLATE') {
-	if ($name == 'PLATE' &&  $time == $matchTime) {
-		//if (!$skipRest) {
+	function endElement($parser, $name)
+	{
+		global $htmlString;
+		global $fh;
+		//global $skipRest;
+		global $time;
+		global $matchTime;
+		//echo "refreshSlateMenu endElement $name";
+		if ($name == 'PLATE' &&  $time == $matchTime) {
 			$htmlString .= "</tbody></table><br/>";
-		//}
-		//echo "endElement PLATE htmlString $htmlString";
-	//} else if ($name == 'PORTION') {
-	} else if ($name == 'PORTION' &&  $time == $matchTime) {
-		//if (!$skipRest) {
+			//echo "endElement PLATE htmlString $htmlString";
+		} else if ($name == 'PORTION' &&  $time == $matchTime) {
 			$htmlString .= "<td></td></tr>";
-		//}
-		//echo "endElement PORTION htmlString $htmlString";
-	//} else if ($name == 'SLATE') {
-	} else if ($name == 'SLATE') {
-		//echo "refreshSlateMenu DONE!";
-	  /* if ($flushToday) {
-			$skipRest = false;
-			$flushToday = false;
-		} else {
-			$skipRest = true;
-		}*/
-	} else if ($name == 'SLATES') {
-		//echo "refreshSlateMenu DONE!";
-		$htmlString .= "  </body></html>";
-		//echo "refreshSlateMenu htmlString is $htmlString";
-		fwrite($fh, $htmlString  );
-		fclose($fh);
-		global $xmlFileNamePath;
-		chmod($xmlFileNamePath, 0777);
+			//echo "endElement PORTION htmlString $htmlString";
+		} else if ($name == 'SLATE') {
+			//echo "refreshSlateMenu DONE!";
+		} else if ($name == 'SLATES') {
+			//echo "refreshSlateMenu DONE!";
+			$htmlString .= "  </body></html>";
+			//echo "refreshSlateMenu htmlString is $htmlString";
+			fwrite($fh, $htmlString  );
+			fclose($fh);
+			global $xmlFileNamePath;
+			chmod($xmlFileNamePath, 0777);
+		}
 	}
-}
 
-function characterData($parser, $data)
-{
-	global $htmlString;
-	global $time;
-	global $matchTime;
-	//global $skipRest;
-	//if (!$skipRest) {
-	if ($time == $matchTime) {
-		//echo $data;
-		$htmlString .= "<td>$data</td>";
+	function characterData($parser, $data)
+	{
+		global $htmlString;
+		global $time;
+		global $matchTime;
+		//global $skipRest;
+		if ($time == $matchTime) {
+			//echo $data;
+			$htmlString .= "<td>$data</td>";
+		}
 	}
+
+	$xml_parser = xml_parser_create();
+	// use case-folding so we are sure to find the tag in $map_array
+	//xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, true);
+	xml_set_element_handler($xml_parser, "startElement", "endElement");
+	xml_set_character_data_handler($xml_parser, "characterData");
+	$result = xml_parse($xml_parser, $xmlString);
+
+	//while ($data = fread($fp, 4096)) {
+	/*
+	if (!xml_parse($xml_parser, $data, feof($fp))) {
+	die(sprintf("XML error: %s at line %d",
+	xml_error_string(xml_get_error_code($xml_parser)),
+	xml_get_current_line_number($xml_parser)));
+	}*/
+	//}
+	xml_parser_free($xml_parser);
+	//$htmlString .= '  </body></html>';
+	//echo "refreshSlateMenu htmlString is $htmlString";
+	//fwrite($fh, $htmlString  );
+	//fclose($fh);
 }
-
-$xml_parser = xml_parser_create();
-// use case-folding so we are sure to find the tag in $map_array
-//xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, true);
-xml_set_element_handler($xml_parser, "startElement", "endElement");
-xml_set_character_data_handler($xml_parser, "characterData");
-$result = xml_parse($xml_parser, $xmlString);
-//if (!($fp = fopen($file, "r"))) {
-//    die("could not open XML input");
-//}
-
-//while ($data = fread($fp, 4096)) {
-/*
- if (!xml_parse($xml_parser, $data, feof($fp))) {
- die(sprintf("XML error: %s at line %d",
- xml_error_string(xml_get_error_code($xml_parser)),
- xml_get_current_line_number($xml_parser)));
- }*/
-//}
-xml_parser_free($xml_parser);
-//$htmlString .= '  </body></html>';
-//echo "refreshSlateMenu htmlString is $htmlString";
-//fwrite($fh, $htmlString  );
-//fclose($fh);
 echo($result);
 
 ?>

@@ -3913,15 +3913,21 @@ function doLogout(loadObserver) {
 //function finishLogout() {
 function finishLogout(loadObserver) {
     //alert("plateslate finishLogout loadObserver " + loadObserver);
-    var dataString = '';  
+    // e.g. plateslate finishLogout loadObserver true
+    var dataString = '';
+    // tjs 131119
+    var url = 'logout4app.php?account=' + loginAccountNumber;
     $.ajax({  
         //type: "POST",  
   type: "GET",  
-  url: "logout4app.php",  
+  //url: "logout4app.php",  
+ url: url,  
   data: dataString,  
   success: function(msg) {
       //alert("plateslate finishLogout success  msg " + msg);
 	  // e.g. plateslate finishLogout success  msg observer_url http://localhost:8993/slate.htmlhttp://localhost:8993/slate.html
+// tjs 131119
+	  //alert("plateslate finishLogout loadObserver " + loadObserver + " success msg " + msg);
 	  //if (msg == "false") {
 		  authenticated = false;
 		  loginAccountNumber = 0;
