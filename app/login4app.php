@@ -54,4 +54,5 @@ require_once( "Member.class.php" );
   }
   $loginInfo = '["loginInfo", {"id":"'.$accountId.'","userName":"'.$userName.'","firstName":"'.$firstName.'","lastName":"'.$lastName.'"}]';
   echo $loginInfo;
+  $xferProvider = XFER_URL;
 ?>

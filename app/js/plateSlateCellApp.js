@@ -4131,7 +4131,7 @@ function hijaxReportPage() {
 	newPageHtml += '<p><a href="javascript:doReport();">Get PDF PlateSlate Report</a></p>';	
 	newPageHtml += '<p>For logged in users, the PlateSlate Server provides a real-time posting of meals planned for the current or next day.</p>';
 	newPageHtml += '<p><a href="javascript:doRealTimeReport(false);">Post Today\'s Menu</a>&nbsp;<a href="javascript:doRealTimeReport(true);">Post Tomorrow\'s Menu</a></p>';	
-	newPageHtml += '<p><a href="javascript:tweakRealTimeReport();">Tweak Posted Menu</a>&nbsp;<a href="javascript:observeRealTimeReport();">Observe Posted Menu</a></p>';	
+	newPageHtml += '<p><a href="javascript:hyjaxTweakDial();">Tweak Posted Menu</a>&nbsp;<a href="javascript:observeRealTimeReport();">Observe Posted Menu</a></p>';	
 	newPageHtml += '</div><script type="text/javascript"></script></div>';
 	var newPage = $(newPageHtml);
 	//add new dialog to page container
@@ -5547,12 +5547,53 @@ function doRealTimeReport(mode) {
 	}
 }
 
-function tweakRealTimeReport() {
+//tjs 131119
+function hyjaxTweakDial() {
+    // Remove all old dialog
+	$('.ui-dialog').remove();
+	//alert("plateSlateCellApp  hyjaxTweakDial...");
+    
+	var newDialHtml = '<div data-role="dialog" id="tweak-dial"><div data-role="header">';
+	newDialHtml += '<h1>Tweak Menu</h1></div>';	
+	newDialHtml += '<div data-role="content" data-theme="c"><div class="content-primary"><div id="tweakContents">';	
+	//newDialHtml += '<form name="tweakForm"><p>Plate Slate Tweak Menu...</p><p/>';
+	//newDialHtml += '<p><label for="name">Username:</label><input type="text" name="name" id="username" value="" placeholder="username" data-theme="d"/></p>';
+	//newDialHtml += '<p><label for="password">Password:</label><input type="password" name="pword" id="pword" value="" placeholder="" data-theme="d"/></p>';
+	//newDialHtml += '<p><fieldset data-role="fieldcontain"><label for="refresh">Restore client data from server backup</label>';  
+	//newDialHtml += '<input type="checkbox" name="refresh" id="refresh" size="30" value="refresh" '; 
+	//if (refreshDataFromServerDefault) {
+	//	newDialHtml += ' checked="checked" ';
+	//} 
+	//newDialHtml += ' data-theme="d"/></fieldset></p>';
+	//newDialHtml += '</form>';		
+	newDialHtml += '<br/><br/><a href="#home-page" data-role="button" data-inline="true" data-theme="a">Cancel</a>';		
+	newDialHtml += '<a href="javascript:downloadMenu();" data-role="button" data-inline="true">Download Menu</a>';
+	newDialHtml += '<a href="javascript:uploadMenu();" data-role="button" data-inline="true">Upload Menu</a>';
+	newDialHtml += '<div id ="resultLog"></div>';
+	newDialHtml += '</div></div></div><script></script></div>';
+	var newDial = $(newDialHtml);
+	//add new dialog to page container
+	newDial.appendTo($.mobile.pageContainer);
+	
+	// tweak the new dialog just added into the dom
+   
+	// enhance and open the new dialog
+    $.mobile.changePage(newDial);
+}
+function downloadMenu() {
+	alert("plateslate downloadMenu xferProvider " + xferProvider);
 	// TODO ...
 }
+function uploadMenu() {
+	// TODO ...
+}
+/*
+function tweakRealTimeReport() {
+	// TODO ...
+}*/
 
 function observeRealTimeReport() {
-	// tjs 131113 TODO if logged in force a logout!
+	// tjs 131113 if logged in force a logout!
 	doLogout(true);
 }
 

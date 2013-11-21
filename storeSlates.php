@@ -4,7 +4,7 @@ $Revision:: 128                        $: Revision of last commit
 $LastChangedBy::                       $: Author of last commit
 $LastChangedDate:: 2011-08-30 15:05:27#$: Date of last commit
 ***************************************/
-//echo "here";
+echo "storeSlates";
 
 /*
 storeSlates.php
