@@ -51,7 +51,7 @@ $xmlFileName = "test.xml";
 // TODO test inverter
 $xmlString = $_POST["xml"];
 // NOTE for tests use this BUT delta the date!!!
-//$xmlString = '<slates accountId="0" userName="unknown" firstName="firstName" lastName="lastName" share="false"><slate name="11/20/2013" dow="Wednesday" id="2"><plates><plate name="Schred-n-Bread" type="Breakfast" description="Cereal, Fruit, etc."><portions><portion type="Grain">Schredded Wheat</portion><portion type="Fruits">Bananas</portion><portion type="Dairy">Milk</portion><portion type="Grain">Muffins</portion></portions></plate><plate name="Grilled Cheese" type="Lunch" description="(with fruit)"><portions><portion type="Protein">Pork Products</portion><portion type="Dairy">Cheese</portion><portion type="Fruits">Apples</portion></portions></plate><plate name="American Chop Suey" type="Dinner" description=""><portions><portion type="Grain">Pasta</portion><portion type="Protein">Beef Products</portion><portion type="Vegetables">Onions</portion><portion type="Vegetables">Tomatoes</portion></portions></plate></plates></slate></slates>';
+//$xmlString = '<slates accountId="0" userName="unknown" firstName="firstName" lastName="lastName" share="false"><slate name="11/21/2013" dow="Wednesday" id="2"><plates><plate name="Schred-n-Bread" type="Breakfast" description="Cereal, Fruit, etc."><portions><portion type="Grain">Schredded Wheat</portion><portion type="Fruits">Bananas</portion><portion type="Dairy">Milk</portion><portion type="Grain">Muffins</portion></portions></plate><plate name="Grilled Cheese" type="Lunch" description="(with fruit)"><portions><portion type="Protein">Pork Products</portion><portion type="Dairy">Cheese</portion><portion type="Fruits">Apples</portion></portions></plate><plate name="American Chop Suey" type="Dinner" description=""><portions><portion type="Grain">Pasta</portion><portion type="Protein">Beef Products</portion><portion type="Vegetables">Onions</portion><portion type="Vegetables">Tomatoes</portion></portions></plate></plates></slate></slates>';
 // e.g. doRealTimeReport divHeaderStyle color:hsl(60, 100%, 50%) divLabelStyle color:hsl(100, 100%, 50%) divDataStyle color:hsl(140, 100%, 50%)
 //$divHeaderStyle = $_POST["divHeaderStyle"];
 //$divLabelStyle = $_POST["divLabelStyle"];
@@ -77,11 +77,11 @@ $tomorrowOffset  = mktime(0, 0, 0, date("m")  , date("d")+1, date("Y"));
 // TODO test inverter
 // tjs 131120 bock this out for test
 
- if (isset($_SESSION['member'])) {
- $member = $_SESSION['member'];
- $account = $member->getValue( "id" );
- }
- 
+if (isset($_SESSION['member'])) {
+	$member = $_SESSION['member'];
+	$account = $member->getValue( "id" );
+}
+
 // tjs 131120 hack in for test
 //$account = 1;
 
@@ -91,9 +91,14 @@ $xmlFileNamePath = "./slateView/$account/slate.html";
 // tjs 131120
 //$descriptions = array();
 //$notes = array();
-$descriptions;
-$notes;
+//$descriptions;
+//$notes;
+// tjs 131121
+$platePortionDescriptions;
+$platePortioNotes;
+$plateName;
 $portionName;
+//$currentPlateName;
 
 $result = '0';
 $htmlString;
@@ -101,10 +106,22 @@ $time;
 $matchTime;
 $fh;
 
-function startPortionsElement($parser, $name, $attrs) {
+//function startPortionsElement($parser, $name, $attrs) {
+function startPlatePortionsElement($parser, $name, $attrs) {
+	global $plateName;
 	global $portionName;
-	global $descriptions;
-	if ($name == 'PORTION') {
+	//global $descriptions;
+	global $platePortionDescriptions;
+	if ($name == 'PLATE') {
+		foreach($attrs as $a => $b) {
+			//echo $a,'="',$b,"\"\n";
+			if ($a == 'NAME') {
+				$plateName = $b;
+				//echo "startPortionsElement plateName $plateName";
+			}
+		}
+		$plateName = str_ireplace(" ","_",$plateName);
+	} else if ($name == 'PORTION') {
 		//echo "startPortionsElement portionName $portionName";
 		$description = null;
 		foreach($attrs as $a => $b) {
@@ -116,50 +133,60 @@ function startPortionsElement($parser, $name, $attrs) {
 				// tjs 131114
 				$description = $b;
 			}
+			$portionName = str_ireplace(" ","_",$portionName);
 		}
 		if ($description != null) {
 			//echo "startPortionsElement description $description";
-			$descriptions[$portionName] = $description;
+			//$descriptions[$portionName] = $description;
+			$platePortionDescriptions[$plateName][$portionName] = $description;
 			//echo "startPortionsElement description $description for portionName $portionName here: $descriptions[$portionName]";
 		}
 	}
 }
-function endPortionsElement($parser, $name) {
+function endPlatePortionsElement($parser, $name) {
+	if ($name == 'PLATES') {
+		processXmlFile();
+	}
 }
-function portionsCharacterData($parser, $data) {
+//function portionsCharacterData($parser, $data) {
+function platePortionsCharacterData($parser, $data) {
+	global $plateName;
 	global $portionName;
-	global $notes;
-	//echo "portionsCharacterData portionName $portionName data $data";
+	//global $notes;
+	global $platePortionNotes;
+	//echo "portionsCharacterData plateName $plateName portionName $portionName data $data";
 	// e.g. portionsCharacterData portionName Bagels data Toast in toaster oven
-	if ($data != null && $portionName != null && $notes[$portionName] == null) {
-		$notes[$portionName] = $data;
+	//if ($data != null && $portionName != null && $notes[$portionName] == null) {
+	if ($data != null && $portionName != null && $platePortionNotes[$plateName][$portionName] == null) {
+		$platePortionNotes[$plateName][$portionName] = $data;
 		//echo "portionsCharacterData data $data for portionName $portionName here: $notes[$portionName]";
 		// e.g. portionsCharacterData data Toast in toaster oven for portionName Bagels here: Toast in toaster oven
-		
+
 		//echo "portionsCharacterData data here: $notes[$portionName]";
 	}
 }
 
-$xmlPortionsFileNamePath = "./slateView/$account/portions.xml";
+//$xmlPortionsFileNamePath = "./slateView/$account/portions.xml";
+$xmlPlatePortionsFileNamePath = "./slateView/$account/plates.xml";
 //echo "using xmlPortionsFileNamePath $xmlPortionsFileNamePath";
-if (file_exists($xmlPortionsFileNamePath)) {
+if (file_exists($xmlPlatePortionsFileNamePath)) {
 	//echo "opening xmlPortionsFileNamePath $xmlPortionsFileNamePath";
 
-	$file=fopen($xmlPortionsFileNamePath,"r");
-	$xmlPortionsString = '';
+	$file=fopen($xmlPlatePortionsFileNamePath,"r");
+	$xmlPlatePortionsString = '';
 	//Output a line of the file until the end is reached
 	while(!feof($file)) {
-		$xmlPortionsString .= fgets($file);
+		$xmlPlatePortionsString .= fgets($file);
 	}
 	fclose($file);
-	$xml_portions_parser = xml_parser_create();
-	xml_set_element_handler($xml_portions_parser, "startPortionsElement", "endPortionsElement");
-	xml_set_character_data_handler($xml_portions_parser, "portionsCharacterData");
-	$portionsResult = xml_parse($xml_portions_parser, $xmlPortionsString);
+	$xml_plate_portions_parser = xml_parser_create();
+	xml_set_element_handler($xml_plate_portions_parser, "startPlatePortionsElement", "endPlatePortionsElement");
+	xml_set_character_data_handler($xml_plate_portions_parser, "platePortionsCharacterData");
+	$platePortionsResult = xml_parse($xml_plate_portions_parser, $xmlPlatePortionsString);
 	//echo "portionsResult $portionsResult";
-	xml_parser_free($xml_portions_parser);
+	xml_parser_free($xml_plate_portions_parser);
 	//echo "portionsResult $portionsResult";
-	// e.g. 1	
+	// e.g. 1
 	//echo "parsed portions file!";
 	/*
 	foreach($descriptions as $x=>$x_value) {
@@ -167,13 +194,37 @@ if (file_exists($xmlPortionsFileNamePath)) {
 	echo "<br>";
 	}*/
 	/*
-	foreach($notes as $x=>$x_value) {
+	 foreach($platePortionNotes['Puffs-n-Stuf'] as $x=>$x_value) {
 	 echo "Key=" . $x . ", Value=" . $x_value;
 	 echo "<br>";
 	 }
-	*/
-	processXmlFile();	
-	 
+	 */
+	/*
+	 * Key=Milk, Value=
+	 Key=Bagels, Value=Toast in toaster oven.
+	 Key=English_Muffins, Value=Toast in toaster oven.
+	 Key=Irish_Bread, Value=Toast in toaster oven.
+	 Key=Bread, Value=Microwave 33 sec.
+	 Key=Muffins, Value=Microwave 33 sec.
+	 Key=Pancakes, Value=
+	 Key=Pecan_Buns, Value=Microwave 33 sec.
+	 Key=Buns, Value=Microwave 33 sec.
+	 Key=Puffs, Value=Use skim milk for cereal.
+	 Key=Toast, Value=Toast in toaster oven.
+	 Key=Beef_Products, Value=
+	 Key=Eggs, Value=Stove top, scrambled.
+	 Key=Poultry, Value=Fried.
+	 Key=Pork_Products, Value=Fry sausages. Fry bacon.
+	 Key=Potatos, Value=Home fried.
+	 Key=Bananas, Value=Slice one for cereal.
+	 Key=Berries, Value=For cereal. Halve if large.
+	 Key=Citrous, Value=Grapefruit: half and loosen. Oranges: slice.
+	 Key=Grapes, Value=Raisons for cereal.
+	 Key=Peaches, Value=Sliced for cereal.
+
+	 */
+	//	processXmlFile();
+
 } else {
 	processXmlFile();
 }
@@ -187,6 +238,11 @@ function startElement($parser, $name, $attrs)
 	global $divHeaderStyle;
 	global $divLabelStyle;
 	global $divDataStyle;
+	// tjs 131121
+	global $plateName;
+	//global $currentPlateName;
+	//echo "startElement name $name";
+
 	if ($name == 'SLATE') {
 		//<slate name="August 27, 2011">
 		//echo "started slate element!";
@@ -207,7 +263,7 @@ function startElement($parser, $name, $attrs)
 		//$parse_date = date_parse($name);
 		//echo "name $date";
 		$time = strtotime($date);
-		echo "<time $time matchTime $matchTime>";
+		//echo "<time $time matchTime $matchTime>";
 		if ($time == $matchTime) {
 			$htmlString .= $dow;
 			$htmlString .= ", ";
@@ -233,7 +289,10 @@ function startElement($parser, $name, $attrs)
 		// tjs 131120
 		//$htmlString .= '<table><thead style="color: hsl(100, 100%, 50%);"><th>Type</th><th>Portion</th><th>Notes</th></thead><tbody>';
 		$htmlString .= '<table><thead style="color: hsl(100, 100%, 50%);"><th>Portion</th><th>Description</th><th>Notes</th></thead><tbody>';
+		$plateName = str_ireplace(" ","_",$plateName);
+		$currentPlateName = $plateName;
 	} else if ($name == 'PORTION' &&  $time == $matchTime) {
+	//} else if ($name == 'PORTION' && $currentPlateName == $plateName &&  $time == $matchTime) {
 		//<portion type="Grain">Bran Flakes</portion>
 		foreach($attrs as $a => $b) {
 			if ($a == 'TYPE') {
@@ -261,14 +320,22 @@ function endElement($parser, $name)
 	//global $skipRest;
 	global $time;
 	global $matchTime;
-	global $descriptions;
-	global $notes;
+	//global $descriptions;
+	//global $notes;
+	global $platePortionDescriptions;
+	global $platePortionNotes;
 	global $portionName;
+	// tjs 131121
+	global $plateName;
+	//global $currentPlateName;
 	//echo "refreshSlateMenu endElement $name";
 	if ($name == 'PLATE' &&  $time == $matchTime) {
 		$htmlString .= "</tbody></table><br/>";
+		//$currentPlateName = '';
 		//echo "endElement PLATE htmlString $htmlString";
 	} else if ($name == 'PORTION' &&  $time == $matchTime) {
+	//} else if ($name == 'PORTION' && $currentPlateName == $plateName &&  $time == $matchTime) {
+		//echo "endElement plateName $plateName portionName $portionName";
 		// tjs 131120
 		//$htmlString .= "<td></td></tr>";
 		/*
@@ -279,7 +346,8 @@ function endElement($parser, $name)
 		}
 		}*/
 		$description = '';
-		foreach($descriptions as $x=>$x_value) {
+		//foreach($descriptions as $x=>$x_value) {
+		foreach($platePortionDescriptions[$plateName] as $x=>$x_value) {
 			//echo "Key=" . $x . ", Value=" . $x_value;
 			//echo "<br>";
 			//echo "x $x portionName $portionName";
@@ -298,13 +366,14 @@ function endElement($parser, $name)
 		//}
 		$htmlString .= "<td>$description</td>";
 		/*
-		if ($notes[$portionName] != null) {
+		 if ($notes[$portionName] != null) {
 			$htmlString .= "<td>$notes[$portionName]</td></tr>";
-		} else {
+			} else {
 			$htmlString .= "<td></td></tr>";
-		}*/
+			}*/
 		$note = '';
-		foreach($notes as $x=>$x_value) {
+		//foreach($notes as $x=>$x_value) {
+		foreach($platePortionNotes[$plateName] as $x=>$x_value) {
 			//echo "Key=" . $x . ", Value=" . $x_value;
 			//echo "<br>";
 			//echo "x $x portionName $portionName";
@@ -345,10 +414,10 @@ function characterData($parser, $data)
 		//echo $data;
 		$portionName = $data;
 		//str_ireplace(find,replace,string,count)
-		$portionName = str_ireplace(" ","_",$portionName);
 		//$htmlString .= "<td>$data</td>";
 		//echo "characterData portionName $portionName";
 		$htmlString .= "<td>$portionName</td>";
+		$portionName = str_ireplace(" ","_",$portionName);
 	}
 }
 
@@ -366,10 +435,14 @@ function processXmlFile() {
 	global $htmlString;
 	global $time;
 	global $matchTime;
-	global $descriptions;
-	global $notes;
+	//global $descriptions;
+	//global $notes;
+	global $platePortionDescriptions;
+	global $platePortionNotes;
 	global $fh;
-	/*
+	global $plateName;
+	//global $currentPlateName;
+/*
 	 foreach($descriptions as $x=>$x_value) {
 	 echo "Key=" . $x . ", Value=" . $x_value;
 	 echo "<br>";

@@ -23,7 +23,11 @@ table {
 	font-size: x-large;
 	width:100%;
 	}
-
+th, td {
+	margin:10px;
+	width:33%;
+	}
+	
 .Fruits {color: rgb(229,54,48);}
 .Grain {color: rgb(221,125,34);}
 .Protein {color: rgb(119,99,162);}
