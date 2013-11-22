@@ -48,10 +48,22 @@ session_start();
 
 $account = 0;
 $xmlFileName = "test.xml";
-// TODO test inverter
-$xmlString = $_POST["xml"];
-// NOTE for tests use this BUT delta the date!!!
-//$xmlString = '<slates accountId="0" userName="unknown" firstName="firstName" lastName="lastName" share="false"><slate name="11/21/2013" dow="Wednesday" id="2"><plates><plate name="Schred-n-Bread" type="Breakfast" description="Cereal, Fruit, etc."><portions><portion type="Grain">Schredded Wheat</portion><portion type="Fruits">Bananas</portion><portion type="Dairy">Milk</portion><portion type="Grain">Muffins</portion></portions></plate><plate name="Grilled Cheese" type="Lunch" description="(with fruit)"><portions><portion type="Protein">Pork Products</portion><portion type="Dairy">Cheese</portion><portion type="Fruits">Apples</portion></portions></plate><plate name="American Chop Suey" type="Dinner" description=""><portions><portion type="Grain">Pasta</portion><portion type="Protein">Beef Products</portion><portion type="Vegetables">Onions</portion><portion type="Vegetables">Tomatoes</portion></portions></plate></plates></slate></slates>';
+// test inverter (make 1 == 0 for testing)
+if (1 == 1) { // production
+//if (1 == 0) {	// test
+	$xmlString = $_POST["xml"];
+	$mode = $_POST["mode"];
+	if (isset($_SESSION['member'])) {
+		$member = $_SESSION['member'];
+		$account = $member->getValue( "id" );
+	}
+} else {
+	// NOTE for tests use this BUT delta the date!!!
+	$xmlString = '<slates accountId="0" userName="unknown" firstName="firstName" lastName="lastName" share="false"><slate name="11/22/2013" dow="Wednesday" id="2"><plates><plate name="Schred-n-Bread" type="Breakfast" description="Cereal, Fruit, etc."><portions><portion type="Grain">Schredded Wheat</portion><portion type="Fruits">Bananas</portion><portion type="Dairy">Milk</portion><portion type="Grain">Muffins</portion></portions></plate><plate name="Grilled Cheese" type="Lunch" description="(with fruit)"><portions><portion type="Protein">Pork Products</portion><portion type="Dairy">Cheese</portion><portion type="Fruits">Apples</portion></portions></plate><plate name="American Chop Suey" type="Dinner" description=""><portions><portion type="Grain">Pasta</portion><portion type="Protein">Beef Products</portion><portion type="Vegetables">Onions</portion><portion type="Vegetables">Tomatoes</portion></portions></plate></plates></slate></slates>';
+	$mode = false;
+	// tjs 131120 hack in for test
+	$account = 1;
+}
 // e.g. doRealTimeReport divHeaderStyle color:hsl(60, 100%, 50%) divLabelStyle color:hsl(100, 100%, 50%) divDataStyle color:hsl(140, 100%, 50%)
 //$divHeaderStyle = $_POST["divHeaderStyle"];
 //$divLabelStyle = $_POST["divLabelStyle"];
@@ -61,30 +73,12 @@ $divHeaderStyle = "color: red";
 $divLabelStyle = "color:hsl(100, 100%, 50%)";
 $divDataStyle = "color:hsl(140, 100%, 50%)";
 //echo "divHeaderStyle $divHeaderStyle";
-// TODO test inverter
-//$mode = false;
-$mode = $_POST["mode"];
 $flushToday = $mode == 'true';
 $todayOffset  = mktime(0, 0, 0, date("m")  , date("d"), date("Y"));
 $tomorrowOffset  = mktime(0, 0, 0, date("m")  , date("d")+1, date("Y"));
 //echo "todayOffset $todayOffset tomorrowOffset $tomorrowOffset";
 
 //echo "refreshSlateMenu xml string length ".strlen($xmlString)." string ".$xmlString;
-// tjs 131106
-//$xmlFileNamePath = "./slateView/slate.html";
-
-//$xmlFileNamePath=$xmlFileName;
-// TODO test inverter
-// tjs 131120 bock this out for test
-
-if (isset($_SESSION['member'])) {
-	$member = $_SESSION['member'];
-	$account = $member->getValue( "id" );
-}
-
-// tjs 131120 hack in for test
-//$account = 1;
-
 // tjs 131119
 $xmlFileNamePath = "./slateView/$account/slate.html";
 //echo "refreshSlateMenu xmlFileNamePath is $xmlFileNamePath";
@@ -283,7 +277,8 @@ function startElement($parser, $name, $attrs)
 			//echo "startElement PLATE htmlString $htmlString";
 		}
 		//$htmlString .= '<div style="' + $divHeaderStyle + ';">';
-		$htmlString .= '<div style="color: hsl(60, 100%, 50%);">';
+		// tjs 131122
+		$htmlString .= '<div class="'.$type.'">';
 		$htmlString .= "<h2> $type ($description) <i>$plateName</i></h2>";
 		$htmlString .= '</div>';
 		// tjs 131120
