@@ -8,12 +8,14 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
     <title>PlateSlate</title>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
-	<link rel="stylesheet" href="css/jquery.mobile-1.0.min.css" /> 
+	<!-- tjs 131122 link rel="stylesheet" href="css/jquery.mobile-1.0.min.css" / --> 
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.0-rc.1.min.css" /> 
 	<link rel="stylesheet" href="css/jquery.mobile.pagination.css">
     <link rel="stylesheet" href="css/plateSlateCellApp.css">
     <script src="js/plateSlateCellApp.js"></script>
     <!--  script src="js/plateSlateCellAppMin.js"></script -->
-	<script src="js/jquery-1.6.4.min.js"></script>
+	<!--  tjs 131122 script src="js/jquery-1.6.4.min.js"></script -->
+	<script src="js/jquery-1.9.1.js"></script>
 	<script>
 			//globals used for account management
 		var loginAccountNumber = 0;
@@ -106,17 +108,24 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 			);
 		});*/
 
-		$('#home-page').live("pageinit", function(){
+		// tjs 131123
+		//$('#home-page').live("pageinit", function(){
+		$( document ).on( "pageinit", "#home-page", function(event){
+			//alert("on page init");
+
 			//function to execute when doc ready
-			$(function() {
+			//$(function() {
 				readPortions();
+				//alert("done readPrtions");
+
 				// tjs 120119
 				//setLoginButton();
 				// tjs 111228
 				//derivePortionSelectionLists();
 				
 				// tjs 111224
-				$('.Breakfast').live('change', function() {
+				//$('.Breakfast').live('change', function() {
+					$( document ).on( 'change', '.Breakfast', function() {
 			  		// Live handler called.
 						var offset = color/20;
 						var thresholdOffset = offset + slateOffsetThreshold;
@@ -138,8 +147,10 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 				    	// tjs 110819
 				    	return false;
 					});
+				//alert("done breakfast...");
 
-				$('.Lunch').live('change', function() {
+				//$('.Lunch').live('change', function() {
+					$( document ).on( 'change', '.Lunch', function() {
 			  		// Live handler called.
 						var offset = color/20;
 						var thresholdOffset = offset + slateOffsetThreshold;
@@ -160,7 +171,9 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 				    	// tjs 110819
 				    	return false;
 					});
-				$('.Dinner').live('change', function() {
+					
+				//$('.Dinner').live('change', function() {
+					$( document ).on( 'change', '.Dinner', function() {
 			  		// Live handler called.
 						var offset = color/20;
 						var thresholdOffset = offset + slateOffsetThreshold;
@@ -192,8 +205,66 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 					}); */
 
 				// tjs 120119
-			    $('.loginLogout').bind('click', function () {
+				// tjs 131123
+				//alert("before anchor button bind");
+			    $('#loginLogout').click(function () {
+			    //$('.loginLogout a').bind('click', function () {
+			    //$( document ).on( 'click', '.loginLogout', function () {			    
+			    //$( document ).on( 'click', '#loginLogout', function () {			    
 			    	//alert("index Login/Logout button clicked...");
+			    	var label;
+			    	var button = $("#loginLogout");
+					var innerTextSpan = button.find(".ui-btn-text");
+
+					// not initialized - just change label
+					if (innerTextSpan.size() == 0) {
+    					//button.text(label);
+       					label = button.text();
+
+					// already initialized - find innerTextSpan and change its label    
+					} else {
+   						 //innerTextSpan.text(label);
+   						 label = innerTextSpan.text();
+					}
+			        //var label =  $(this).siblings('.ui-btn-inner').children('.ui-btn-text').text();
+			        //var label =  $(this).children('.ui-btn-inner').children('.ui-btn-text').text();
+			        //var label =  $('#loginLogout ui-btn-text').text();
+			        //alert("index Login/Logout button text " + label);
+			        if (label == "Login") {
+			        	//alert("index Login/Logout button text " + label);
+			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
+			            //alert("index Login/Logout login being called...");
+			            //$('#loginLogout ui-btn-text').text("Logout");
+						if (innerTextSpan.size() == 0) {
+	    					//button.text(label);
+	       					label = button.text("Logout");
+	
+						// already initialized - find innerTextSpan and change its label    
+						} else {
+	   						 //innerTextSpan.text(label);
+	   						 label = innerTextSpan.text("Logout");
+						}
+			            login();
+			        } else {
+			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
+			            //$('#loginLogout ui-btn-text').text("Login");
+						if (innerTextSpan.size() == 0) {
+	    					//button.text(label);
+	       					label = button.text("Login");
+	
+						// already initialized - find innerTextSpan and change its label    
+						} else {
+	   						 //innerTextSpan.text(label);
+	   						 label = innerTextSpan.text("Login");
+						}
+			            logout();
+			        }
+			    });
+			    
+				// tjs 131123
+				//function handleLoginLogoutClick() {
+			    //	alert("index Login/Logout button clicked...");
+			    	/*
 			        //var label =  $(this).siblings('.ui-btn-inner').children('.ui-btn-text').text();
 			        var label =  $(this).children('.ui-btn-inner').children('.ui-btn-text').text();
 			        //alert("index Login/Logout button text " + label);
@@ -206,11 +277,49 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 			            $(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
 			            logout();
 			        }
-			    });
+					*/
+					/*
+			        var label =  $(#loginLogout).button("option", "label");
+			        alert("index Login/Logout button label " + label);
+			        // e.g. index Login/Logout button text
+			        if (label == "Login") {
+			        	//alert("index Login/Logout button text " + label);
+			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
+			            $('#loginLogout').button("option", "label", "Logout");
+			            //alert("index Login/Logout login being called...");
+			            login();
+			        } else {
+			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
+			            $('#loginLogout').button("option", "label", "Login");
+			            logout();
+			        }
+*/
+				//}
 				
-			});
+			//});
 			});
 
+					/*
+			// tjs 131123
+			function handleLoginLogoutClick() {
+		    	alert("index Login/Logout button clicked...");
+		        var label =  $(#loginLogout).button("option", "label");
+		        alert("index Login/Logout button label " + label);
+		        // e.g. index Login/Logout button text
+		        if (label == "Login") {
+		        	//alert("index Login/Logout button text " + label);
+		            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
+		            $('#loginLogout').button("option", "label", "Logout");
+		            //alert("index Login/Logout login being called...");
+		            login();
+		        } else {
+		            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
+		            $('#loginLogout').button("option", "label", "Login");
+		            logout();
+		        }
+
+			}*/
+					
 		function login() {
 			// tjs 120209
 			//$.mobile.changePage("#login-dial");
@@ -229,7 +338,8 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 		}
 
 	</script>
-	<script src="js/jquery.mobile-1.0.min.js"></script>
+	<!--  tjs 131122 >script src="js/jquery.mobile-1.0.min.js"></script -->
+	<script src="js/jquery.mobile-1.4.0-rc.1.min.js"></script>
 	<script src="js/jquery.mobile.pagination.js"></script>
  </head>
 
@@ -239,10 +349,12 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 <div data-role="page" id="home-page" data-title="Home" data-dom-cache="false">
 	<div data-role="header">
 		<h1>Plate Slate</h1>
-		<!--  div id="loginLogoutButton" -->
-		<!-- a href="#login-dial" data-icon="arrow-r" class="ui-btn-right">Login</a -->
-		<a href="#" data-role="button" data-inline="true" class="loginLogout ui-btn-right">Login</a>
-		<!--  /div -->
+			<!-- tjs 131122 -->
+		<!--  button id="loginLogout" data-inline="true" class="ui-btn-right">Login</button -->
+		<!-- a href="#" data-role="button" data-inline="true" class="loginLogout ui-btn-right">Login</a -->
+		<!-- a data-role="button" data-inline="true" class="loginLogout ui-btn-right" onclick="handleLoginLogoutClick(); return false">Login</a -->
+		<!--  button id="loginLogout" data-inline="true" class="ui-btn-right" onclick="handleLoginLogoutClick(); return false">Login</button -->
+		<a href="#" data-role="button" data-inline="true" data-rel="external" id="loginLogout" class="loginLogout ui-btn-right">Login</a>
 		
 	</div>
 
@@ -456,13 +568,14 @@ served over time.</p>
 </div>
 
     <script type="text/javascript">
-/*
+    // ??? tjs 131122
+
 	//function to execute when doc ready
 	$(function() {
 		readPortions();
 		setLoginButton();		
 	  });
-	*/
+	
 		</script>	
 </body>
 </html>

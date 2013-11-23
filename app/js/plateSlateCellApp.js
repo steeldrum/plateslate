@@ -1776,13 +1776,14 @@ function getSlateView(offset, mealName) {
 	var dinnerPortions;    		
    
     //alert("plateslate getSlateView offset " + offset + " thresholdOffset " + thresholdOffset + " slates len " + slates.length + " dow " + dow);
+    // e.g. plateslate getSlateView offset 0 thresholdOffset 100 slates len 0 dow Today
     if (slates.length == 0) {
         var nextDate = new Date();
         var nextDateWeekdayName = weekday[nextDate.getDay()];
        	breakfastPlate = getRandomPlate("Breakfast", thresholdOffset);
 		lunchPlate = getRandomPlate("Lunch", thresholdOffset);
 		dinnerPlate = getRandomPlate("Dinner", thresholdOffset);
-		//alert("plateslate getSlateView breakfastPlate.id " + breakfastPlate.id + " lunchPlate.id " + lunchPlate.id + " dinnerPlate.id " + dinnerPlate.id);
+		alert("plateslate getSlateView breakfastPlate.id " + breakfastPlate.id + " lunchPlate.id " + lunchPlate.id + " dinnerPlate.id " + dinnerPlate.id);
 		// tjs 120119
 		breakfastPortions = getPlatePortions(breakfastPlate);
 		lunchPortions = getPlatePortions(lunchPlate);
@@ -1971,6 +1972,7 @@ function getDairyMealHtml(offset, mealName) {
 function getRandomPlate(plateType, offset) {
 	var len = plates.length;
 	//alert("plateslate getRandomPlate len " + len + " plateType " + plateType);
+	// e.g. plateslate getRandomPlate len 0 plateType Breakfast
 	var breakfastLen = 0;
 	var lunchLen = 0;
 	var dinnerLen = 0;
@@ -1994,6 +1996,8 @@ function getRandomPlate(plateType, offset) {
 	}
 
 	//TODO consider offset for uniqueness
+	// tjs 131122
+	//alert("plateslate getRandomPlate plate.type " + plate.type + " plate.name " + plate.name);
 	var html = '<select id="' + plateType + '_' + offset + '"><optgroup label="' + plateType + '">';
 	if (typeLen > 0) {
 		//return a random integer between 0 and typeLen
@@ -3688,6 +3692,9 @@ function viewSlate(location, slate) {
 
 // tjs 120209
 function hyjaxLoginDial() {
+	// tjs 131122
+	//alert("plateSlateCellApp  hyjaxLoginDial...");
+
 	// tjs 120330
     // Remove all old dialog
     //$('#login-dial').remove();
@@ -5929,6 +5936,10 @@ function loadPreferences() {
 }
 
 function openSlatePlansPage() {
+    // tjs 131122
+    //alert ("openSlatePlansPage slateMealPlansForDinnerOnly " + slateMealPlansForDinnerOnly);
+    // e.g. false
+
 	if (slateMealPlansForDinnerOnly) {
 		hijaxDinnerPage();
 	} else {
@@ -5950,8 +5961,13 @@ function hijaxBreakfastPage(direction) {
     var offset = color/20;
     //TODO fix
     var mealName = "Breakfast";
-    //alert("breakfast ready color " + color + " offset " + offset);
+    // tjs 131122
+    //alert("hijaxBreakfastPage breakfast ready color " + color + " offset " + offset);
+    // e.g. hijaxBreakfastPage breakfast ready color 0 offset 0
+    
     var newPageHtml = getSlatePlateView(mealName, offset, false);
+    // tjs 131122
+    //alert ("hijaxBreakfastPage newPageHtml " + newPageHtml);
 	var newPage = $(newPageHtml);
 	//add new page to page container
 	newPage.appendTo($.mobile.pageContainer);
@@ -6017,6 +6033,7 @@ function hijaxDinnerPage(direction) {
 function getSlatePlateView(mealName, offset, torf) {
     //var offset = color/20;
     //alert("plateSlateCellApp getSlatePlateView mealName " + mealName + " color " + color + " offset " + offset + " torf " + torf);
+    // e.g. plateSlateCellApp getSlatePlateView mealName Breakfast color 0 offset 0 torf false
     var pageId = "dinner-page";
     if (mealName == "Breakfast") {
     	pageId = "breakfast-page";
@@ -6025,6 +6042,8 @@ function getSlatePlateView(mealName, offset, torf) {
     }
     //alert("breakfast ready color " + color + " offset " + offset);
     var mealHtml = getSlateView(offset, mealName);
+    // tjs 131122
+    //alert("getSlatePlateView mealHtml " + mealHtml);
     // create page markup
 	//var newPageHtml = '<div data-role="page" id="' + pageId + '" data-title="' + mealName + '" class="type-interior" data-theme="b" data-dom-cache="true">';
 	var newPageHtml = '<div data-role="page" id="' + pageId + '" data-title="' + mealName + '" class="type-interior';

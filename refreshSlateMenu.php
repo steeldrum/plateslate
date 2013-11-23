@@ -456,7 +456,9 @@ function processXmlFile() {
 
 		$time = null;
 		$htmlString = "";
-		$htmlString .= "<!DOCTYPE html><html><head><title>Socket.IO dynamically reloading CSS stylesheets</title><link rel=\"stylesheet\" type=\"text/css\" href=\"/header.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\" /><script type=\"text/javascript\" src=\"/socket.io/socket.io.js\"></script><script type=\"text/javascript\">";
+		// tjs 131122
+		//$htmlString .= "<!DOCTYPE html><html><head><title>Socket.IO dynamically reloading CSS stylesheets</title><link rel=\"stylesheet\" type=\"text/css\" href=\"/header.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\" /><script type=\"text/javascript\" src=\"/socket.io/socket.io.js\"></script><script type=\"text/javascript\">";
+		$htmlString .= "<!DOCTYPE html><html><head><title>PlateSlate Menu</title><link rel=\"stylesheet\" type=\"text/css\" href=\"/header.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"/styles.css\" /><script type=\"text/javascript\" src=\"/socket.io/socket.io.js\"></script><script type=\"text/javascript\">";
 		$htmlString .= "window.onload = function () {var socket = io.connect();socket.on('reload', function () {window.location.reload();});socket.on('stylesheet', function (sheet) {var link = document.createElement('link');var head = document.getElementsByTagName('head')[0];link.setAttribute('rel', 'stylesheet');link.setAttribute('type', 'text/css');link.setAttribute('href', sheet);head.appendChild(link);});}</script></head><body><h1>Your PlateSlate menu slated for ";
 		//echo "refreshSlateMenu prior parser htmlString $htmlString";
 
