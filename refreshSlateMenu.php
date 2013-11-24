@@ -39,10 +39,6 @@
 
  */
 require_once( "Member.class.php" );
-//tjs 110511 above ensures that config.php has been loaded as well
-//$username=DB_USERNAME;
-//$password=DB_PASSWORD;
-//$database=DB_NAME;
 
 session_start();
 
@@ -61,7 +57,6 @@ if (1 == 1) { // production
 	// NOTE for tests use this BUT delta the date!!!
 	$xmlString = '<slates accountId="0" userName="unknown" firstName="firstName" lastName="lastName" share="false"><slate name="11/22/2013" dow="Wednesday" id="2"><plates><plate name="Schred-n-Bread" type="Breakfast" description="Cereal, Fruit, etc."><portions><portion type="Grain">Schredded Wheat</portion><portion type="Fruits">Bananas</portion><portion type="Dairy">Milk</portion><portion type="Grain">Muffins</portion></portions></plate><plate name="Grilled Cheese" type="Lunch" description="(with fruit)"><portions><portion type="Protein">Pork Products</portion><portion type="Dairy">Cheese</portion><portion type="Fruits">Apples</portion></portions></plate><plate name="American Chop Suey" type="Dinner" description=""><portions><portion type="Grain">Pasta</portion><portion type="Protein">Beef Products</portion><portion type="Vegetables">Onions</portion><portion type="Vegetables">Tomatoes</portion></portions></plate></plates></slate></slates>';
 	$mode = false;
-	// tjs 131120 hack in for test
 	$account = 1;
 }
 // e.g. doRealTimeReport divHeaderStyle color:hsl(60, 100%, 50%) divLabelStyle color:hsl(100, 100%, 50%) divDataStyle color:hsl(140, 100%, 50%)
@@ -82,25 +77,17 @@ $tomorrowOffset  = mktime(0, 0, 0, date("m")  , date("d")+1, date("Y"));
 // tjs 131119
 $xmlFileNamePath = "./slateView/$account/slate.html";
 //echo "refreshSlateMenu xmlFileNamePath is $xmlFileNamePath";
-// tjs 131120
-//$descriptions = array();
-//$notes = array();
-//$descriptions;
-//$notes;
 // tjs 131121
 $platePortionDescriptions;
 $platePortioNotes;
 $plateName;
 $portionName;
-//$currentPlateName;
-
 $result = '0';
 $htmlString;
 $time;
 $matchTime;
 $fh;
 
-//function startPortionsElement($parser, $name, $attrs) {
 function startPlatePortionsElement($parser, $name, $attrs) {
 	global $plateName;
 	global $portionName;
@@ -142,11 +129,9 @@ function endPlatePortionsElement($parser, $name) {
 		processXmlFile();
 	}
 }
-//function portionsCharacterData($parser, $data) {
 function platePortionsCharacterData($parser, $data) {
 	global $plateName;
 	global $portionName;
-	//global $notes;
 	global $platePortionNotes;
 	//echo "portionsCharacterData plateName $plateName portionName $portionName data $data";
 	// e.g. portionsCharacterData portionName Bagels data Toast in toaster oven
@@ -155,12 +140,10 @@ function platePortionsCharacterData($parser, $data) {
 		$platePortionNotes[$plateName][$portionName] = $data;
 		//echo "portionsCharacterData data $data for portionName $portionName here: $notes[$portionName]";
 		// e.g. portionsCharacterData data Toast in toaster oven for portionName Bagels here: Toast in toaster oven
-
 		//echo "portionsCharacterData data here: $notes[$portionName]";
 	}
 }
 
-//$xmlPortionsFileNamePath = "./slateView/$account/portions.xml";
 $xmlPlatePortionsFileNamePath = "./slateView/$account/plates.xml";
 //echo "using xmlPortionsFileNamePath $xmlPortionsFileNamePath";
 if (file_exists($xmlPlatePortionsFileNamePath)) {
@@ -217,8 +200,6 @@ if (file_exists($xmlPlatePortionsFileNamePath)) {
 	 Key=Peaches, Value=Sliced for cereal.
 
 	 */
-	//	processXmlFile();
-
 } else {
 	processXmlFile();
 }
@@ -234,7 +215,6 @@ function startElement($parser, $name, $attrs)
 	global $divDataStyle;
 	// tjs 131121
 	global $plateName;
-	//global $currentPlateName;
 	//echo "startElement name $name";
 
 	if ($name == 'SLATE') {
@@ -254,7 +234,6 @@ function startElement($parser, $name, $attrs)
 		//echo "<date $date dow $dow>";
 		// tjs 131118
 		// format name that is string e.g.  11/15/2013
-		//$parse_date = date_parse($name);
 		//echo "name $date";
 		$time = strtotime($date);
 		//echo "<time $time matchTime $matchTime>";
@@ -281,13 +260,12 @@ function startElement($parser, $name, $attrs)
 		$htmlString .= '<div class="'.$type.'">';
 		$htmlString .= "<h2> $type ($description) <i>$plateName</i></h2>";
 		$htmlString .= '</div>';
-		// tjs 131120
-		//$htmlString .= '<table><thead style="color: hsl(100, 100%, 50%);"><th>Type</th><th>Portion</th><th>Notes</th></thead><tbody>';
-		$htmlString .= '<table><thead style="color: hsl(100, 100%, 50%);"><th>Portion</th><th>Description</th><th>Notes</th></thead><tbody>';
+		// tjs 131124
+		//$htmlString .= '<table><thead style="color: hsl(100, 100%, 50%);"><th>Portion</th><th>Description</th><th>Notes</th></thead><tbody>';
+		$htmlString .= '<table><thead style="color: hsl(100, 100%, 50%);"><th>What Portions(description)</th><th>How Used</th></thead><tbody>';
 		$plateName = str_ireplace(" ","_",$plateName);
 		$currentPlateName = $plateName;
 	} else if ($name == 'PORTION' &&  $time == $matchTime) {
-	//} else if ($name == 'PORTION' && $currentPlateName == $plateName &&  $time == $matchTime) {
 		//<portion type="Grain">Bran Flakes</portion>
 		foreach($attrs as $a => $b) {
 			if ($a == 'TYPE') {
@@ -299,11 +277,6 @@ function startElement($parser, $name, $attrs)
 		$htmlString .= '<tr class="';
 		$htmlString .= $type;
 		$htmlString .= '">';
-		/*
-		 $htmlString .= '<tr style="color:hsl(30, 100%, 50%);"><td>';
-		 $htmlString .= $type;
-		 $htmlString .= '</td>';
-		 */
 		// e.g. startElement SLATENAME="11/6/2013" DOW="Wednesday" ID="2"
 	}
 }
@@ -312,36 +285,21 @@ function endElement($parser, $name)
 {
 	global $htmlString;
 	global $fh;
-	//global $skipRest;
 	global $time;
 	global $matchTime;
-	//global $descriptions;
-	//global $notes;
 	global $platePortionDescriptions;
 	global $platePortionNotes;
 	global $portionName;
 	// tjs 131121
 	global $plateName;
-	//global $currentPlateName;
 	//echo "refreshSlateMenu endElement $name";
 	if ($name == 'PLATE' &&  $time == $matchTime) {
 		$htmlString .= "</tbody></table><br/>";
-		//$currentPlateName = '';
 		//echo "endElement PLATE htmlString $htmlString";
 	} else if ($name == 'PORTION' &&  $time == $matchTime) {
-	//} else if ($name == 'PORTION' && $currentPlateName == $plateName &&  $time == $matchTime) {
 		//echo "endElement plateName $plateName portionName $portionName";
 		// tjs 131120
-		//$htmlString .= "<td></td></tr>";
-		/*
-		$portionName = null;
-		foreach($attrs as $a => $b) {
-		if ($a == 'TYPE') {
-		$type = $b;
-		}
-		}*/
 		$description = '';
-		//foreach($descriptions as $x=>$x_value) {
 		foreach($platePortionDescriptions[$plateName] as $x=>$x_value) {
 			//echo "Key=" . $x . ", Value=" . $x_value;
 			//echo "<br>";
@@ -352,22 +310,13 @@ function endElement($parser, $name)
 				break;
 			}
 		}
-		//echo "endElement portionName $portionName and description: $descriptsions[$portionName]";
-		//echo "endElement portionName $portionName and description: $description";
-		//if ($descriptsions[$portionName] != null) {
-		//	$htmlString .= "<td>$descriptsions[$portionName]</td>";
-		//} else {
-		//$htmlString .= "<td></td>";
-		//}
-		$htmlString .= "<td>$description</td>";
-		/*
-		 if ($notes[$portionName] != null) {
-			$htmlString .= "<td>$notes[$portionName]</td></tr>";
-			} else {
-			$htmlString .= "<td></td></tr>";
-			}*/
+		//$htmlString .= "<td>$description</td>";
+		if (strlen($description) > 0) {
+			$htmlString .= "($description)</td>";
+		} else {
+			$htmlString .= "</td>";
+		}
 		$note = '';
-		//foreach($notes as $x=>$x_value) {
 		foreach($platePortionNotes[$plateName] as $x=>$x_value) {
 			//echo "Key=" . $x . ", Value=" . $x_value;
 			//echo "<br>";
@@ -386,11 +335,6 @@ function endElement($parser, $name)
 		//echo "refreshSlateMenu DONE!";
 		$htmlString .= "  </body></html>";
 		//echo "refreshSlateMenu htmlString is $htmlString";
-		/*
-		foreach($descriptions as $x=>$x_value) {
-		echo "Key=" . $x . ", Value=" . $x_value;
-		echo "<br>";
-		}*/
 		fwrite($fh, $htmlString  );
 		fclose($fh);
 		global $xmlFileNamePath;
@@ -408,10 +352,10 @@ function characterData($parser, $data)
 	if ($time == $matchTime) {
 		//echo $data;
 		$portionName = $data;
-		//str_ireplace(find,replace,string,count)
-		//$htmlString .= "<td>$data</td>";
 		//echo "characterData portionName $portionName";
-		$htmlString .= "<td>$portionName</td>";
+		// tjs 131124
+		//$htmlString .= "<td>$portionName</td>";
+		$htmlString .= "<td>$portionName";
 		$portionName = str_ireplace(" ","_",$portionName);
 	}
 }
@@ -419,8 +363,6 @@ function characterData($parser, $data)
 function processXmlFile() {
 	//echo "open output...";
 	// tjs 131119
-	//$fh = fopen($xmlFileNamePath, 'w');
-	//$result = '0';
 	global $result;
 	global $xmlFileNamePath;
 	global $todayOffset;
@@ -430,18 +372,10 @@ function processXmlFile() {
 	global $htmlString;
 	global $time;
 	global $matchTime;
-	//global $descriptions;
-	//global $notes;
 	global $platePortionDescriptions;
 	global $platePortionNotes;
 	global $fh;
 	global $plateName;
-	//global $currentPlateName;
-/*
-	 foreach($descriptions as $x=>$x_value) {
-	 echo "Key=" . $x . ", Value=" . $x_value;
-	 echo "<br>";
-	 }*/
 	if (!($fh = fopen($xmlFileNamePath, 'w'))) {
 		//    die("could not open XML input");
 	} else {
@@ -468,20 +402,8 @@ function processXmlFile() {
 		xml_set_element_handler($xml_parser, "startElement", "endElement");
 		xml_set_character_data_handler($xml_parser, "characterData");
 		$result = xml_parse($xml_parser, $xmlString);
-
-		//while ($data = fread($fp, 4096)) {
-		/*
-		if (!xml_parse($xml_parser, $data, feof($fp))) {
-		die(sprintf("XML error: %s at line %d",
-		xml_error_string(xml_get_error_code($xml_parser)),
-		xml_get_current_line_number($xml_parser)));
-		}*/
-		//}
 		xml_parser_free($xml_parser);
-		//$htmlString .= '  </body></html>';
 		//echo "refreshSlateMenu htmlString is $htmlString";
-		//fwrite($fh, $htmlString  );
-		//fclose($fh);
 	}
 	echo($result);
 }

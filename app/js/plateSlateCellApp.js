@@ -1783,7 +1783,7 @@ function getSlateView(offset, mealName) {
        	breakfastPlate = getRandomPlate("Breakfast", thresholdOffset);
 		lunchPlate = getRandomPlate("Lunch", thresholdOffset);
 		dinnerPlate = getRandomPlate("Dinner", thresholdOffset);
-		alert("plateslate getSlateView breakfastPlate.id " + breakfastPlate.id + " lunchPlate.id " + lunchPlate.id + " dinnerPlate.id " + dinnerPlate.id);
+		//alert("plateslate getSlateView breakfastPlate.id " + breakfastPlate.id + " lunchPlate.id " + lunchPlate.id + " dinnerPlate.id " + dinnerPlate.id);
 		// tjs 120119
 		breakfastPortions = getPlatePortions(breakfastPlate);
 		lunchPortions = getPlatePortions(lunchPlate);

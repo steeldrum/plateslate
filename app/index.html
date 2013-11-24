@@ -122,14 +122,23 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 				//setLoginButton();
 				// tjs 111228
 				//derivePortionSelectionLists();
-				
+				//alert("done readPrtions setting change handlers...");
 				// tjs 111224
 				//$('.Breakfast').live('change', function() {
-					$( document ).on( 'change', '.Breakfast', function() {
+					//$( document ).on( 'change', '.Breakfast', function() {
+					//$('.Breakfast').on( 'change', function() {
+					//$('.Breakfast').delegate( 'change', function() {
+					//$( 'body' ).on( 'change', '.Breakfast', function() {
+					$( 'body' ).on( 'change', '.Breakfast', function(event) {
+						//alert("Breakfast change handler...");					
 			  		// Live handler called.
 						var offset = color/20;
 						var thresholdOffset = offset + slateOffsetThreshold;
+						// tjs 131124
+				    	//alert( "index liveSelectionsHandlers thresholdOffset " + thresholdOffset);
+						// e.g. index liveSelectionsHandlers thresholdOffset 100
 				    	var el = event.target;
+				    	//var el = $(this);
 				    	var optionValue = el.options[el.selectedIndex].value;
 				    	//e.g 82|Breakfast|Flakes-n-Bakes|Cereal, Fruit, etc.|1|2|41|47|5||||||0
 				    	//alert( "index liveSelectionsHandlers breakfast value " + optionValue + " thresholdOffset " + thresholdOffset);
@@ -150,7 +159,8 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 				//alert("done breakfast...");
 
 				//$('.Lunch').live('change', function() {
-					$( document ).on( 'change', '.Lunch', function() {
+					//$( document ).on( 'change', '.Lunch', function() {
+					$( 'body' ).on( 'change', '.Lunch', function(event) {
 			  		// Live handler called.
 						var offset = color/20;
 						var thresholdOffset = offset + slateOffsetThreshold;
@@ -173,7 +183,8 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 					});
 					
 				//$('.Dinner').live('change', function() {
-					$( document ).on( 'change', '.Dinner', function() {
+					//$( document ).on( 'change', '.Dinner', function() {
+					$( 'body' ).on( 'change', '.Dinner', function(event) {
 			  		// Live handler called.
 						var offset = color/20;
 						var thresholdOffset = offset + slateOffsetThreshold;
