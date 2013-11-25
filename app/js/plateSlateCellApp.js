@@ -4165,6 +4165,11 @@ function hijaxSlateOfPlatesPage() {
 	</div>
 </div>
 
+cf 131124
+<div class="ui-grid-a">
+    <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px">Block A</div></div>
+    <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px">Block B</div></div>
+</div><!-- /grid-a -->
 	 */
 	var thresholdOffset = slateOffsetThreshold;
 	var chalkColors = getScreenReportHues(3);
@@ -4204,165 +4209,167 @@ function hijaxSlateOfPlatesPage() {
 	newPageHtml += '<h1>Slate of Plates</h1>';
 	newPageHtml += '</div>';
 	newPageHtml += '<div data-role="content">';
+	newPageHtml += '<div class="chalk">';
 	newPageHtml += '<div class="' + gridClass + '" style="text-align: center;">';
 	//newPageHtml += '<div class="chalk" style="' + divStyle + ';">';
-	newPageHtml += '<div class="chalk">';
-	newPageHtml += '<div style="' + divHeaderStyle + ';">';
+	//newPageHtml += '<div class="chalk">';
+	//newPageHtml += '<div style="' + divHeaderStyle + ';">';
 	// grid headers (dow)
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divLabelStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divLabelStyle + ';">';
 	// breakfast headers
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divDataStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
 	// breakfast plates
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
 			//newPageHtml += '<div class="' + columnClass + 'a">'+ breakfastPlates[i] + '</div>';
-			newPageHtml += '<div class="' + columnClass + 'a">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divLabelStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divLabelStyle + ';">';
 	// lunch headers
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divDataStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
 	// lunch plates
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divLabelStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divLabelStyle + ';">';
 	// dinner headers
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divDataStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
 	// dinner plates
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;			
 		}			
 	}
+	//newPageHtml += '</div>';
 	newPageHtml += '</div>';
-	newPageHtml += '</div>';
+	// end content and page:
 	newPageHtml += '</div></div><script type="text/javascript"></script></div>';
 	var newPage = $(newPageHtml);
 	//add new dialog to page container
@@ -4423,57 +4430,58 @@ function hijaxDinnerSlatePage() {
 	newPageHtml += '<h1>Dinner Slate</h1>';
 	newPageHtml += '</div>';
 	newPageHtml += '<div data-role="content">';
+	newPageHtml += '<div class="chalk">';
 	newPageHtml += '<div class="' + gridClass + '" style="text-align: center;">';
 	//newPageHtml += '<div class="chalk" style="' + divStyle + ';">';
-	newPageHtml += '<div class="chalk">';
+	//newPageHtml += '<div class="chalk">';
 	//newPageHtml += '<div style="' + divHeaderStyle + ';">';
 	// grid headers (dow)
 	for (var i = 0; i < len; i += 3) {
 		//columnCase = (i + 1)%3;
 		//columnCase = (i + 3)%3;
 		//alert("plateSlateCellApp hijaxDinnerSlatePage i " + i + " columnCase " + columnCase);
-		newPageHtml += '<div style="' + divHeaderStyle + ';">';
+		//newPageHtml += '<div style="' + divHeaderStyle + ';">';
 		//switch (columnCase) {
 			//case 0:
-				newPageHtml += '<div class="' + columnClass + 'a"><strong>'+ dows[i] + '</strong></div>';
+				newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 				//break;
 			//case 1:
 				if (typeof(dows[i + 1]) !== 'undefined') {
-					newPageHtml += '<div class="' + columnClass + 'b"><strong>'+ dows[i + 1] + '</strong></div>';
+					newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i + 1] + '</strong></div></div>';
 				} else {
-					newPageHtml += '<div class="' + columnClass + 'b">&nbsp;</div>';
+					newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '">&nbsp;</div></div>';
 				}
 				//break;
 			//case 2:
 				if (typeof(dows[i + 2]) !== 'undefined') {
-					newPageHtml += '<div class="' + columnClass + 'c"><strong>'+ dows[i + 2] + '</strong></div>';
+					newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i + 2] + '</strong></div></div>';
 				}else {
-					newPageHtml += '<div class="' + columnClass + 'c">&nbsp;</div>';
+					newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '">&nbsp;</div></div>';
 				}
 				//break;		
 		//}		//	
-		newPageHtml += '</div>';
-		newPageHtml += '<div style="' + divDataStyle + ';">';
+		//newPageHtml += '</div>';
+		//newPageHtml += '<div style="' + divDataStyle + ';">';
 		//switch (columnCase) {
 			//case 0:
-				newPageHtml += '<div class="' + columnClass + 'a">'+ dinnerPlates[i].name + '</div>';
+				newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 				//break;
 			//case 1:
 				if (typeof(dinnerPlates[i + 1]) !== 'undefined') {
-				newPageHtml += '<div class="' + columnClass + 'b">'+ dinnerPlates[i + 1].name + '</div>';
+				newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i + 1].name + '</div></div>';
 				} else {
-					newPageHtml += '<div class="' + columnClass + 'b">&nbsp;</div>';
+					newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">&nbsp;</div></div>';
 				}
 				//break;
 			//case 2:
 				if (typeof(dinnerPlates[i + 2]) !== 'undefined') {
-				newPageHtml += '<div class="' + columnClass + 'c">'+ dinnerPlates[i + 2].name + '</div>';
+				newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i + 2].name + '</div></div>';
 				} else {
-					newPageHtml += '<div class="' + columnClass + 'c">&nbsp;</div>';
+					newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">&nbsp;</div></div>';
 				}
 				//break;
 		//}			
-		newPageHtml += '</div>';
+		//newPageHtml += '</div>';
 		//switch (columnCase) {
 			//case 0:
 				newPageHtml += '<div class="' + columnClass + 'a">&nbsp;</div>';
@@ -4561,53 +4569,54 @@ Dairy			4c98d0		8cc7eb
 	newPageHtml += '<h1>Dinner Portions Slate</h1>';
 	newPageHtml += '</div>';
 	newPageHtml += '<div data-role="content">';
+	newPageHtml += '<div class="chalk">';
 	newPageHtml += '<div class="' + gridClass + '" style="text-align: center;">';
 	//newPageHtml += '<div class="chalk" style="' + divStyle + ';">';
-	newPageHtml += '<div class="chalk">';
-	newPageHtml += '<div style="' + divHeaderStyle + ';">';
-	newPageHtml += '<div class="' + columnClass + 'a">&nbsp;</div>';
+	//newPageHtml += '<div class="chalk">';
+	//newPageHtml += '<div style="' + divHeaderStyle + ';">';
+	newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '">&nbsp;</div></div>';
 	// grid headers (dow)
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'b"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'c"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'd"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'e"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;		
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 	
-	newPageHtml += '<div style="' + divLabelStyle + ';">';
-	newPageHtml += '<div class="' + columnClass + 'a">Dinner</div>';
+	//newPageHtml += '<div style="' + divLabelStyle + ';">';
+	newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '">Dinner</div></div>';
 	// grid headers (dow)
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'b"><strong>'+ dinnerPlates[i].name + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><strong>'+ dinnerPlates[i].name + '</strong></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'c"><strong>'+ dinnerPlates[i].name + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><strong>'+ dinnerPlates[i].name + '</strong></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'd"><strong>'+ dinnerPlates[i].name + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><strong>'+ dinnerPlates[i].name + '</strong></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'e"><strong>'+ dinnerPlates[i].name + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><strong>'+ dinnerPlates[i].name + '</strong></div></div>';
 			break;		
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 
-	newPageHtml += '<div style="' + divDataStyle + ';">';
-	newPageHtml += '<div class="' + columnClass + 'a"><span style="color: #dd7d22;">Grain</span></div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
+	newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="color: #dd7d22;">Grain</div></div>';
 	// grain portions
 	for (var i = 0; i < len; i++) {
 		var typePortions = dinnerPortions[i];
@@ -4619,25 +4628,25 @@ Dairy			4c98d0		8cc7eb
 		}
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 4:
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 
-	newPageHtml += '<div style="' + divDataStyle + ';">';
-	newPageHtml += '<div class="' + columnClass + 'a"><span style="color: #705b9b;">Protein</span></div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
+	newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="color: #705b9b;">Protein</div></div>';
 	// protein portions
 	for (var i = 0; i < len; i++) {
 		var typePortions = dinnerPortions[i];
@@ -4649,25 +4658,25 @@ Dairy			4c98d0		8cc7eb
 		}
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 4:
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 	
-	newPageHtml += '<div style="' + divDataStyle + ';">';
-	newPageHtml += '<div class="' + columnClass + 'a"><span style="color: #00b65b;">Vegetable</span></div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
+	newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="color: #00b65b;">Vegetable</div></div>';
 	// vegetable portions
 	for (var i = 0; i < len; i++) {
 		var typePortions = dinnerPortions[i];
@@ -4679,25 +4688,25 @@ Dairy			4c98d0		8cc7eb
 		}
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 4:
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 	
-	newPageHtml += '<div style="' + divDataStyle + ';">';
-	newPageHtml += '<div class="' + columnClass + 'a"><span style="color: #dc332e;">Fruit</span></div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
+	newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="color: #dc332e;">Fruit</div></div>';
 	// fruit portions
 	for (var i = 0; i < len; i++) {
 		var typePortions = dinnerPortions[i];
@@ -4709,25 +4718,25 @@ Dairy			4c98d0		8cc7eb
 		}
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 4:
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 	
-	newPageHtml += '<div style="' + divDataStyle + ';">';
-	newPageHtml += '<div class="' + columnClass + 'a"><span style="color: #4c98d0;">Dairy</span></div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
+	newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="color: #4c98d0;">Dairy</div></div>';
 	// dairy portions
 	for (var i = 0; i < len; i++) {
 		var typePortions = dinnerPortions[i];
@@ -4739,22 +4748,22 @@ Dairy			4c98d0		8cc7eb
 		}
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ typePortion + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ typePortion + '</div></div>';
 			break;
 		case 4:
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 
 	newPageHtml += '</div>';
 	newPageHtml += '</div></div><script type="text/javascript"></script></div>';
@@ -4835,75 +4844,76 @@ Dairy			4c98d0		8cc7eb
 	newPageHtml += '<h1>Kitchen Portions Whiteboard</h1>';
 	newPageHtml += '</div>';
 	newPageHtml += '<div data-role="content">';
-	newPageHtml += '<div class="' + gridClass + '" style="text-align: center;">';
 	newPageHtml += '<div class="felt">';
-	newPageHtml += '<div style="' + divHeaderStyle + ';">';
+	newPageHtml += '<div class="' + gridClass + '" style="text-align: center;">';
+	//newPageHtml += '<div class="felt">';
+	//newPageHtml += '<div style="' + divHeaderStyle + ';">';
 	// grid headers (dow)
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e"><strong>'+ dows[i] + '</strong></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divHeaderStyle + '"><strong>'+ dows[i] + '</strong></div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divLabelStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divLabelStyle + ';">';
 	// breakfast headers
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e"><i>Breakfast</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Breakfast</i></div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divDataStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
 	// breakfast plates
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
 			//newPageHtml += '<div class="' + columnClass + 'a">'+ breakfastPlates[i] + '</div>';
-			newPageHtml += '<div class="' + columnClass + 'a">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ breakfastPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ breakfastPlates[i].name + '</div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 	
 	// add breakfast portions
 	for (var i = 0; i < len; i++) {
@@ -4912,15 +4922,15 @@ Dairy			4c98d0		8cc7eb
 		for (j = 0; j < typePortions.length; j++) {
 			var portion = portions[typePortions[j]];
 			if (portion.type == "Grain") {
-				typePortion += '<span style="color: #dd7d22;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #dd7d22;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Protein") {
-				typePortion += '<span style="color: #705b9b;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #705b9b;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Vegetables") {
-				typePortion += '<span style="color: #00b65b;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #00b65b;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Fruits") {
-				typePortion += '<span style="color: #dc332e;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #dc332e;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Dairy") {
-				typePortion += '<span style="color: #4c98d0;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #4c98d0;">' + portion.name + '</div>&nbsp;';
 			}
 		}
 
@@ -4944,50 +4954,50 @@ Dairy			4c98d0		8cc7eb
 		}			
 	}
 	
-	newPageHtml += '<div style="' + divLabelStyle + ';">';
+	//newPageHtml += '<div style="' + divLabelStyle + ';">';
 	// lunch headers
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e"><i>Lunch</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Lunch</i></div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divDataStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
 	// lunch plates
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ lunchPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ lunchPlates[i].name + '</div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 	
 	// add lunch portions
 	for (var i = 0; i < len; i++) {
@@ -4996,15 +5006,15 @@ Dairy			4c98d0		8cc7eb
 		for (j = 0; j < typePortions.length; j++) {
 			var portion = portions[typePortions[j]];
 			if (portion.type == "Grain") {
-				typePortion += '<span style="color: #dd7d22;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #dd7d22;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Protein") {
-				typePortion += '<span style="color: #705b9b;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #705b9b;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Vegetables") {
-				typePortion += '<span style="color: #00b65b;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #00b65b;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Fruits") {
-				typePortion += '<span style="color: #dc332e;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #dc332e;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Dairy") {
-				typePortion += '<span style="color: #4c98d0;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #4c98d0;">' + portion.name + '</div>&nbsp;';
 			}
 		}
 
@@ -5028,50 +5038,50 @@ Dairy			4c98d0		8cc7eb
 		}			
 	}
 	
-	newPageHtml += '<div style="' + divLabelStyle + ';">';
+	//newPageHtml += '<div style="' + divLabelStyle + ';">';
 	// dinner headers
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e"><i>Dinner</i></div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divLabelStyle + '"><i>Dinner</i></div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
-	newPageHtml += '<div style="' + divDataStyle + ';">';
+	//newPageHtml += '</div>';
+	//newPageHtml += '<div style="' + divDataStyle + ';">';
 	// dinner plates
 	for (var i = 0; i < len; i++) {
 		switch (i) {
 		case 0:
-			newPageHtml += '<div class="' + columnClass + 'a">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'a"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;
 		case 1:
-			newPageHtml += '<div class="' + columnClass + 'b">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'b"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;
 		case 2:
-			newPageHtml += '<div class="' + columnClass + 'c">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'c"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;
 		case 3:
-			newPageHtml += '<div class="' + columnClass + 'd">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'd"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;
 		case 4:
-			newPageHtml += '<div class="' + columnClass + 'e">'+ dinnerPlates[i].name + '</div>';
+			newPageHtml += '<div class="' + columnClass + 'e"><div class="ui-bar ui-bar-a" style="' + divDataStyle + '">'+ dinnerPlates[i].name + '</div></div>';
 			break;			
 		}			
 	}
-	newPageHtml += '</div>';
+	//newPageHtml += '</div>';
 	
 	// add dinner portions
 	for (var i = 0; i < len; i++) {
@@ -5080,15 +5090,15 @@ Dairy			4c98d0		8cc7eb
 		for (j = 0; j < typePortions.length; j++) {
 			var portion = portions[typePortions[j]];
 			if (portion.type == "Grain") {
-				typePortion += '<span style="color: #dd7d22;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #dd7d22;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Protein") {
-				typePortion += '<span style="color: #705b9b;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #705b9b;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Vegetables") {
-				typePortion += '<span style="color: #00b65b;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #00b65b;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Fruits") {
-				typePortion += '<span style="color: #dc332e;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #dc332e;">' + portion.name + '</div>&nbsp;';
 			} else	if (portion.type == "Dairy") {
-				typePortion += '<span style="color: #4c98d0;">' + portion.name + '</span>&nbsp;';
+				typePortion += '<div class="ui-bar ui-bar-a" style="color: #4c98d0;">' + portion.name + '</div>&nbsp;';
 			}
 		}
 
