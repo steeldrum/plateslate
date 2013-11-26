@@ -5193,6 +5193,7 @@ Dairy			4c98d0		8cc7eb
 	//var results = getReportGridArrays(thresholdOffset, 7, false);
 	var results = getReportGridArrays(thresholdOffset, 10, false);
 	//alert("plateSlateCellApp hijaxSlateOfPlatesPages results.length " + results.length);
+	// e.g. plateSlateCellApp hijaxSlateOfPlatesPages results.length 8
 	// tjs 120328
 	var dows = results[0];
 	//viewSlatesDows = results[0];
@@ -5207,6 +5208,7 @@ Dairy			4c98d0		8cc7eb
 	var len = dows.length;
 	//var len = viewSlatesDows.length;
 	//alert("plateSlateCellApp hijaxSlateOfPlatesPages dows length " + len + " viewSlatesNames length " + viewSlatesNames.length);
+	// e.g. plateSlateCellApp hijaxSlateOfPlatesPages dows length 2 viewSlatesNames length 2
 	// tjs 120327
 	if (len < 2) {
 		//var paragraphs = new Array();
@@ -5247,17 +5249,30 @@ function addSlatePages(dows, breakfastPlates, lunchPlates, dinnerPlates, breakfa
     var colorOffset = 0;
     var synchronizedColor = 0;
     
+    // tjs 131126
+	var viewSlatesNameDate;
+	var viewSlatesName;
+
    	//alert("plateSlateCellApp addSlatePages dows length " + dows.length + " viewSlatesNames length " + viewSlatesNames.length);
    	// e.g. 7
+   	// e.g. plateSlateCellApp addSlatePages dows length 2 viewSlatesNames length 2
     
     // Create each page's markup
     for ( var i=0; i<dows.length; i++ ) {
-    	results = addSlatePage(prevPageDateName, divHeaderStyle, divLabelStyle, divDataStyle, dows[i], viewSlatesNames[i], breakfastPlates[i].name, lunchPlates[i].name, dinnerPlates[i].name, breakfastPortions[i], lunchPortions[i], dinnerPortions[i] );
+    	viewSlatesNameDate = new Date(viewSlatesNames[i]);
+    	viewSlatesName = viewSlatesNameDate.toDateString();
+    	viewSlatesName = viewSlatesName.replace(/\s/g,'_');
+    	viewSlatesName = viewSlatesName.replace(/,/g,'');
+
+    	//results = addSlatePage(prevPageDateName, divHeaderStyle, divLabelStyle, divDataStyle, dows[i], viewSlatesNames[i], breakfastPlates[i].name, lunchPlates[i].name, dinnerPlates[i].name, breakfastPortions[i], lunchPortions[i], dinnerPortions[i] );
+    	results = addSlatePage(prevPageDateName, divHeaderStyle, divLabelStyle, divDataStyle, dows[i], viewSlatesName, breakfastPlates[i].name, lunchPlates[i].name, dinnerPlates[i].name, breakfastPortions[i], lunchPortions[i], dinnerPortions[i] );
     	prevPage = results[0];
         prevPageDateName = results[1];
      	//alert("plateSlateCellApp addSlatePages prevPage " + prevPage);
     	//alert("plateSlateCellApp addSlatePages prevPage " + prevPage + " prevPageDateName " + prevPageDateName + " i " + i);
         // e.g. Today March 28, 2012 and thru i=0 i=9 April...
+    	// e.g. 131126 - 	plateSlateCellApp addSlatePages prevPage Yesterday prevPageDateName 11/25/2013 i 0
+
     	if (prevPage == "Today") {
     		//currentDow = prevPage;
     		currentDow = prevPageDateName;
@@ -5267,28 +5282,49 @@ function addSlatePages(dows, breakfastPlates, lunchPlates, dinnerPlates, breakfa
     		//colorOffset++;
     		synchronizedColor += 20;
     	}
-    	
+    	// tjs 131126
+    	//var viewSlatesName = viewSlatesNames[i];
+    	//viewSlatesNameDate = new Date(viewSlatesNames[i]);
+    	//viewSlatesName = viewSlatesNameDate.toDateString();
+    	//alert("setup event for viewSlatesName " + viewSlatesName);
+    	// e.g. setup event for viewSlatesName Mon Nov 25 2013
+    	// e.g. setup event for viewSlatesName 11/25/2013
     	// tjs 120328
 	    //$('#'+viewSlatesDows[i]).bind( 'pageshow', function() {
-	    $('#'+viewSlatesNames[i]).bind( 'pagebeforecreate', function() {
+    	// tjs 131126
+	    //$('#'+viewSlatesNames[i]).bind( 'pagebeforecreate', function() {
+    	//$( '#'+viewSlatesNames[i] ).on( "pagebeforecreate", function( event ) {
+   	 	$( '#'+ viewSlatesName ).on( "pagebeforecreate", function( event ) {
 
 		      // Update the dots at the bottom of the screen to
 		      // highlight the new current page		      
-	    	$('#'+viewSlatesNames[i]+'-dots').empty();
+	    	//$('#'+viewSlatesNames[i]+'-dots').empty();
+	    	$('#'+viewSlatesName +'-dots').empty();
+	    	var dotViewSlatesName = viewSlatesName;
 	    	//alert("plateSlateCellApp addSlatePages this.id " + this.id);
 	    	for ( var j=0; j<viewSlatesNames.length; j++ ) {
-		        if ( viewSlatesNames[j] == this.id) {
+	        	viewSlatesNameDate = new Date(viewSlatesNames[j]);
+	        	viewSlatesName = viewSlatesNameDate.toDateString();
+	        	viewSlatesName = viewSlatesName.replace(/\s/g,'_');
+	        	viewSlatesName = viewSlatesName.replace(/,/g,'');
+	    		
+		        //if ( viewSlatesNames[j] == this.id) {
+		        if ( viewSlatesName == this.id) {
 			    	//alert("plateSlateCellApp addSlatePages this.id " + this.id + " j " + j + " viewSlatesNames[j] " + viewSlatesNames[j]);
-		          $('#'+viewSlatesNames[i]+'-dots').append( '<span class="highlight">.</span>' );
+			          //$('#'+viewSlatesNames[i]+'-dots').append( '<span class="highlight">.</span>' );
+		          $('#'+dotViewSlatesName+'-dots').append( '<span class="highlight">.</span>' );
 		        } else {
-		          $('#'+viewSlatesNames[i]+'-dots').append( '.' );
+			          //$('#'+viewSlatesNames[i]+'-dots').append( '.' );
+		          $('#'+dotViewSlatesName+'-dots').append( '.' );
 		        }
 	    	}
 
 		      // Store the page's associated screen name in currentFriend
 		      //currentFriend = localStorage['currentFriend'] = $.mobile.activePage.attr('id');
 		} );
-	    
+	    // tjs 131126
+   	 	//alert("setup event for viewSlatesName " + viewSlatesName + " done");
+   	 	// e.g. setup event for viewSlatesName Mon Nov 25 2013 done	
 	    //);
     }
     
@@ -5330,7 +5366,15 @@ function addSlatePages(dows, breakfastPlates, lunchPlates, dinnerPlates, breakfa
     //alert("plateSlateCellApp addSlatePages len " + len);
     //alert("plateSlateCellApp addSlatePages viewSlatesNames len " + len);
     for ( var i=0; i<len; i++ ) {
-    	$('#'+viewSlatesNames[i]).page();
+    	// tjs 131126
+    	//$('#'+viewSlatesNames[i]).page();
+    	viewSlatesNameDate = new Date(viewSlatesNames[i]);
+    	viewSlatesName = viewSlatesNameDate.toDateString();
+    	viewSlatesName = viewSlatesName.replace(/\s/g,'_');
+    	viewSlatesName = viewSlatesName.replace(/,/g,'');
+
+    	//$('#'+viewSlatesNames[i]).page();
+    	$('#'+viewSlatesName).page();
     }
     if ( prevPage ) {
     	$('#'+pageId).page();
@@ -5752,6 +5796,8 @@ function getReportGridArrays(thresholdOffset, plateCount, plateHistory) {
 	    	dateName = slate.name;
 	    	dateName = dateName.replace(/\s/g,'_');
 	    	dateName = dateName.replace(/,/g,'');
+	    	//alert("getReportGridArrays dateName (before) " + dateName);
+	    	// e.g. getReportGridArrays dateName (before) 11/26/2013
 	    	dateNames.push(dateName);
 	    	plateId = slate.breakfastId;
 	    	plate = plates[plateId];
@@ -5795,6 +5841,9 @@ function getReportGridArrays(thresholdOffset, plateCount, plateHistory) {
 		    	dateName = slate.name;
 		    	dateName = dateName.replace(/\s/g,'_');
 		    	dateName = dateName.replace(/,/g,'');
+		    	// tjs 131126
+		    	//alert("getReportGridArrays dateName (more) " + dateName);
+		    	// e.g. getReportGridArrays dateName (more) 11/25/2013
 		    	//dateNames.push(dateName);
 		    	dateNames.unshift(dateName);
 		    	plateId = slate.breakfastId;
