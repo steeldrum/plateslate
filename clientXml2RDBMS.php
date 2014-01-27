@@ -256,14 +256,14 @@ class Slate extends DataObject {
 
 	protected $data = array(
     "id" => "",
-    "memberId" => "",
+    "memberid" => "",
     "date" => "",
     "name" => "",
     "description" => "",
-    "breakfastId" => "",
-    "lunchId" => "",
-    "dinnerId" => "",
-    "isInactive" => ""
+    "breakfastid" => "",
+    "lunchid" => "",
+    "dinnerid" => "",
+    "isinactive" => ""
   );
 
   // tjs 120208
@@ -273,14 +273,14 @@ class Slate extends DataObject {
   public function insert() {
     $conn = parent::connect();
     $sql = "INSERT INTO " . TBL_SLATE . " (
-    		memberId,
+    		memberid,
     		date,
     		name,
     		description,
-    		breakfastId,
-    		lunchId,
-    		dinnerId,
-    		isInactive
+    		breakfastid,
+    		lunchid,
+    		dinnerid,
+    		isinactive
             ) VALUES (
               :memberId,
               :date,
@@ -294,14 +294,14 @@ class Slate extends DataObject {
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":date", $this->data["date"], PDO::PARAM_STR );
       $st->bindValue( ":name", $this->data["name"], PDO::PARAM_STR );
       $st->bindValue( ":description", $this->data["description"], PDO::PARAM_STR );
-      $st->bindValue( ":breakfastId", $this->data["breakfastId"], PDO::PARAM_STR );
-      $st->bindValue( ":lunchId", $this->data["lunchId"], PDO::PARAM_STR );
-      $st->bindValue( ":dinnerId", $this->data["dinnerId"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":breakfastId", $this->data["breakfastid"], PDO::PARAM_STR );
+      $st->bindValue( ":lunchId", $this->data["lunchid"], PDO::PARAM_STR );
+      $st->bindValue( ":dinnerId", $this->data["dinnerid"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       //$data['id'] = $conn->lastInsertId();
       //$this->$data['id'] = $conn->lastInsertId();
@@ -325,27 +325,27 @@ class Slate extends DataObject {
     $conn = parent::connect();
     //$passwordSql = $this->data["password"] ? "password = password(:password)," : "";
     $sql = "UPDATE " . TBL_SLATE . " SET
-              memberId = :memberId,
+              memberid = :memberId,
               date = :date,
               name = :name,
               description = :description,
-              breakfastId = :breakfastId,
-    		lunchId = :lunchId,
-    		dinnerId = :dinnerId,
-               isInactive = :isInactive
+              breakfastid = :breakfastId,
+    		lunchid = :lunchId,
+    		dinnerid = :dinnerId,
+               isinactive = :isInactive
               WHERE id = :id";
 
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":date", $this->data["date"], PDO::PARAM_STR );
       $st->bindValue( ":name", $this->data["name"], PDO::PARAM_STR );
       $st->bindValue( ":description", $this->data["description"], PDO::PARAM_STR );
-      $st->bindValue( ":breakfastId", $this->data["breakfastId"], PDO::PARAM_STR );
-      $st->bindValue( ":lunchId", $this->data["lunchId"], PDO::PARAM_STR );
-      $st->bindValue( ":dinnerId", $this->data["dinnerId"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":breakfastId", $this->data["breakfastid"], PDO::PARAM_STR );
+      $st->bindValue( ":lunchId", $this->data["lunchid"], PDO::PARAM_STR );
+      $st->bindValue( ":dinnerId", $this->data["dinnerid"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -371,11 +371,11 @@ class Slate extends DataObject {
 
     public function deleteByMember() {
     $conn = parent::connect();
-    $sql = "DELETE FROM " . TBL_SLATE . " WHERE memberId = :memberId";
+    $sql = "DELETE FROM " . TBL_SLATE . " WHERE memberid = :memberId";
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_INT );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_INT );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -393,12 +393,12 @@ class Food extends DataObject {
 
 	protected $data = array(
     "id" => "",
-    "memberId" => "",
-    "slateId" => "",
+    "memberid" => "",
+    "slateid" => "",
 	"type" => "",
-    "portionId" => "",
-    "isMaster" => "",
-    "isInactive" => ""
+    "portionid" => "",
+    "ismaster" => "",
+    "isinactive" => ""
   );
 
   private $_types = array(
@@ -412,12 +412,12 @@ class Food extends DataObject {
   public function insert() {
     $conn = parent::connect();
     $sql = "INSERT INTO " . TBL_FOOD . " (
-    		memberId,
-    		slateId,
+    		memberid,
+    		slateid,
     		type,
-    		portionId,
-    		isMaster,
-    		isInactive
+    		portionid,
+    		ismaster,
+    		isinactive
             ) VALUES (
               :memberId,
               :slateId,
@@ -429,12 +429,12 @@ class Food extends DataObject {
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
-      $st->bindValue( ":slateId", $this->data["slateId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
+      $st->bindValue( ":slateId", $this->data["slateid"], PDO::PARAM_STR );
       $st->bindValue( ":type", $this->data["type"], PDO::PARAM_STR );
-      $st->bindValue( ":portionId", $this->data["portionId"], PDO::PARAM_STR );
-      $st->bindValue( ":isMaster", $this->data["isMaster"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":portionId", $this->data["portionid"], PDO::PARAM_STR );
+      $st->bindValue( ":isMaster", $this->data["ismaster"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -447,23 +447,23 @@ class Food extends DataObject {
     $conn = parent::connect();
     //$passwordSql = $this->data["password"] ? "password = password(:password)," : "";
     $sql = "UPDATE " . TBL_FOOD . " SET
-              memberId = :memberId,
-              slateId = :slateId,
+              memberid = :memberId,
+              slateid = :slateId,
               type = :type,
-              portionId = :portionId,
-              isMaster = :isMaster,
-              isInactive = :isInactive
+              portionid = :portionId,
+              ismaster = :isMaster,
+              isinactive = :isInactive
               WHERE id = :id";
 
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
-      $st->bindValue( ":slateId", $this->data["slateId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
+      $st->bindValue( ":slateId", $this->data["slateid"], PDO::PARAM_STR );
       $st->bindValue( ":type", $this->data["type"], PDO::PARAM_STR );
-      $st->bindValue( ":portionId", $this->data["portionId"], PDO::PARAM_STR );
-      $st->bindValue( ":isMaster", $this->data["isMaster"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":portionId", $this->data["portionid"], PDO::PARAM_STR );
+      $st->bindValue( ":isMaster", $this->data["ismaster"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -489,11 +489,11 @@ class Food extends DataObject {
 
     public function deleteByMember() {
     $conn = parent::connect();
-    $sql = "DELETE FROM " . TBL_FOOD . " WHERE memberId = :memberId";
+    $sql = "DELETE FROM " . TBL_FOOD . " WHERE memberid = :memberId";
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_INT );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_INT );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -508,11 +508,11 @@ class Plate extends DataObject {
 
 	protected $data = array(
     "id" => "",
-    "memberId" => "",
+    "memberid" => "",
     "type" => "",
     "name" => "",
     "description" => "",
-    "isMaster" => "",
+    "ismaster" => "",
     "portion1" => "",
     "portion2" => "",
 	"portion3" => "",
@@ -522,7 +522,7 @@ class Plate extends DataObject {
 	"portion7" => "",
     "portion8" => "",
 	"portion9" => "",
-    "isInactive" => ""
+    "isinactive" => ""
   );
 
   private $_types = array(
@@ -534,11 +534,11 @@ class Plate extends DataObject {
   public function insert() {
     $conn = parent::connect();
     $sql = "INSERT INTO " . TBL_PLATE . " (
-    		memberId,
+    		memberid,
     		type,
     		name,
     		description,
-    		isMaster,
+    		ismaster,
     		portion1,
     		portion2,
     		portion3,
@@ -548,7 +548,7 @@ class Plate extends DataObject {
     		portion7,
     		portion8,
     		portion9,
-    		isInactive
+    		isinactive
             ) VALUES (
               :memberId,
               :type,
@@ -569,11 +569,11 @@ class Plate extends DataObject {
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":type", $this->data["type"], PDO::PARAM_STR );
       $st->bindValue( ":name", $this->data["name"], PDO::PARAM_STR );
       $st->bindValue( ":description", $this->data["description"], PDO::PARAM_STR );
-      $st->bindValue( ":isMaster", $this->data["isMaster"], PDO::PARAM_STR );
+      $st->bindValue( ":isMaster", $this->data["ismaster"], PDO::PARAM_STR );
       $st->bindValue( ":portion1", $this->data["portion1"], PDO::PARAM_STR );
       $st->bindValue( ":portion2", $this->data["portion2"], PDO::PARAM_STR );
       $st->bindValue( ":portion3", $this->data["portion3"], PDO::PARAM_STR );
@@ -583,7 +583,7 @@ class Plate extends DataObject {
       $st->bindValue( ":portion7", $this->data["portion7"], PDO::PARAM_STR );
       $st->bindValue( ":portion8", $this->data["portion8"], PDO::PARAM_STR );
       $st->bindValue( ":portion9", $this->data["portion9"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -596,11 +596,11 @@ class Plate extends DataObject {
     $conn = parent::connect();
     //$passwordSql = $this->data["password"] ? "password = password(:password)," : "";
     $sql = "UPDATE " . TBL_PLATE . " SET
-              memberId = :memberId,
+              memberid = :memberId,
               type = :type,
               name = :name,
               description = :description,
-              isMaster = :isMaster,
+              ismaster = :isMaster,
     		portion1 = :portion1,
     		portion2 = :portion2,
     		portion3 = :portion3,
@@ -610,17 +610,17 @@ class Plate extends DataObject {
     		portion7 = :portion7,
     		portion8 = :portion8,
     		portion9 = :portion9,
-              isInactive = :isInactive
+              isinactive = :isInactive
               WHERE id = :id";
 
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":type", $this->data["type"], PDO::PARAM_STR );
       $st->bindValue( ":name", $this->data["name"], PDO::PARAM_STR );
       $st->bindValue( ":description", $this->data["description"], PDO::PARAM_STR );
-      $st->bindValue( ":isMaster", $this->data["isMaster"], PDO::PARAM_STR );
+      $st->bindValue( ":isMaster", $this->data["ismaster"], PDO::PARAM_STR );
       $st->bindValue( ":portion1", $this->data["portion1"], PDO::PARAM_STR );
       $st->bindValue( ":portion2", $this->data["portion2"], PDO::PARAM_STR );
       $st->bindValue( ":portion3", $this->data["portion3"], PDO::PARAM_STR );
@@ -630,7 +630,7 @@ class Plate extends DataObject {
       $st->bindValue( ":portion7", $this->data["portion7"], PDO::PARAM_STR );
       $st->bindValue( ":portion8", $this->data["portion8"], PDO::PARAM_STR );
       $st->bindValue( ":portion9", $this->data["portion9"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -656,11 +656,11 @@ class Plate extends DataObject {
 
     public function deleteByMember() {
     $conn = parent::connect();
-    $sql = "DELETE FROM " . TBL_PLATE . " WHERE memberId = :memberId";
+    $sql = "DELETE FROM " . TBL_PLATE . " WHERE memberid = :memberId";
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_INT );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_INT );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -672,13 +672,13 @@ class Plate extends DataObject {
     public function getPlateMapByMember() {
   	$plateMap = array();
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_PLATE . " WHERE memberId = :memberId";
+    $sql = "SELECT * FROM " . TBL_PLATE . " WHERE memberid = :memberId";
       	//echo "getPlateMapByMember sql ".$sql;
     
       $plates = array();
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_INT );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_INT );
       $st->execute();
       foreach ( $st->fetchAll() as $row ) {
       	//echo "getPlateMapByMember row...";
@@ -750,11 +750,11 @@ class Plate extends DataObject {
 class Preference extends DataObject {
   protected $data = array(
     "id" => "",
-    "memberId" => "",
+    "memberid" => "",
     "type" => "",
     "name" => "",
     "value" => "",
-    "isInactive" => ""
+    "isinactive" => ""
   );
 
   private $_types = array(
@@ -766,7 +766,7 @@ class Preference extends DataObject {
   public function insert() {
     $conn = parent::connect();
     $sql = "INSERT INTO " . TBL_PREFERENCE . " (
-    		memberId,
+    		memberid,
     		type,
     		name,
     		value
@@ -779,7 +779,7 @@ class Preference extends DataObject {
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":type", $this->data["type"], PDO::PARAM_STR );
       $st->bindValue( ":name", $this->data["name"], PDO::PARAM_STR );
       $st->bindValue( ":value", $this->data["value"], PDO::PARAM_STR );
@@ -795,7 +795,7 @@ class Preference extends DataObject {
     $conn = parent::connect();
     //$passwordSql = $this->data["password"] ? "password = password(:password)," : "";
     $sql = "UPDATE " . TBL_PREFERENCE . " SET
-              memberId = :memberId,
+              memberid = :memberId,
               type = :type,
               name = :name,
               value = :value
@@ -804,7 +804,7 @@ class Preference extends DataObject {
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":type", $this->data["type"], PDO::PARAM_STR );
       $st->bindValue( ":name", $this->data["name"], PDO::PARAM_STR );
       $st->bindValue( ":value", $this->data["value"], PDO::PARAM_STR );
@@ -833,11 +833,11 @@ class Preference extends DataObject {
 
     public function deleteByMember() {
     $conn = parent::connect();
-    $sql = "DELETE FROM " . TBL_PREFERENCE . " WHERE memberId = :memberId";
+    $sql = "DELETE FROM " . TBL_PREFERENCE . " WHERE memberid = :memberId";
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_INT );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_INT );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -852,12 +852,12 @@ class Portion extends DataObject {
 
 	protected $data = array(
     "id" => "",
-    "memberId" => "",
+    "memberid" => "",
     "type" => "",
     "name" => "",
     "description" => "",
-    "isMaster" => "",
-	"isInactive" => ""
+    "ismaster" => "",
+	"isinactive" => ""
   );
 
   private $_types = array(
@@ -871,12 +871,12 @@ class Portion extends DataObject {
   public function insert() {
     $conn = parent::connect();
     $sql = "INSERT INTO " . TBL_PORTION . " (
-    		memberId,
+    		memberid,
     		type,
     		name,
     		description,
-    		isMaster,
-    		isInactive
+    		ismaster,
+    		isinactive
             ) VALUES (
               :memberId,
               :type,
@@ -888,12 +888,12 @@ class Portion extends DataObject {
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       $st->bindValue( ":type", $this->data["type"], PDO::PARAM_STR );
       $st->bindValue( ":name", $this->data["name"], PDO::PARAM_STR );
       $st->bindValue( ":description", $this->data["description"], PDO::PARAM_STR );
-      $st->bindValue( ":isMaster", $this->data["isMaster"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":isMaster", $this->data["ismaster"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -906,24 +906,24 @@ class Portion extends DataObject {
     $conn = parent::connect();
     //$passwordSql = $this->data["password"] ? "password = password(:password)," : "";
     $sql = "UPDATE " . TBL_PORTION . " SET
-              memberId = :memberId,
+              memberid = :memberId,
               type = :type,
               name = :name,
               description = :description,
-              isMaster = :isMaster,
-              isInactive = :isInactive
+              ismaster = :isMaster,
+              isinactive = :isInactive
               WHERE id = :id";
 
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
       //$st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_INT );
       $st->bindValue( ":type", $this->data["type"], PDO::PARAM_STR );
       $st->bindValue( ":name", $this->data["name"], PDO::PARAM_STR );
       $st->bindValue( ":description", $this->data["description"], PDO::PARAM_STR );
-      $st->bindValue( ":isMaster", $this->data["isMaster"], PDO::PARAM_STR );
-      $st->bindValue( ":isInactive", $this->data["isInactive"], PDO::PARAM_STR );
+      $st->bindValue( ":isMaster", $this->data["ismaster"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -949,11 +949,11 @@ class Portion extends DataObject {
 
     public function deleteByMember() {
     $conn = parent::connect();
-    $sql = "DELETE FROM " . TBL_PORTION . " WHERE memberId = :memberId";
+    $sql = "DELETE FROM " . TBL_PORTION . " WHERE memberid = :memberId";
 
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_INT );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_INT );
       $st->execute();
       parent::disconnect( $conn );
     } catch ( PDOException $e ) {
@@ -965,13 +965,13 @@ class Portion extends DataObject {
   public function getPortionMapByMember() {
   	$portionMap = array();
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_PORTION . " WHERE memberId = :memberId";
+    $sql = "SELECT * FROM " . TBL_PORTION . " WHERE memberid = :memberId";
       	//echo "getPortionMapByMember sql ".$sql;
     
       $portions = array();
     try {
       $st = $conn->prepare( $sql );
-      $st->bindValue( ":memberId", $this->data["memberId"], PDO::PARAM_INT );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_INT );
       $st->execute();
       //$portions = array();
       foreach ( $st->fetchAll() as $row ) {
@@ -1030,24 +1030,24 @@ class Portion extends DataObject {
 function deleteRows($a) {
 	//echo " deleteRows account ".$a;
 	$pref = new Preference( array( 
-    "memberId" => $a
+    "memberid" => $a
   	) );
   	$pref->deleteByMember();
   	// tjs 120208
   	$food = new Food( array( 
-    "memberId" => $a
+    "memberid" => $a
   	) );
   	$food->deleteByMember();
   	$slate = new Slate( array( 
-    "memberId" => $a
+    "memberid" => $a
   	) );
   	$slate->deleteByMember();
   	$plate = new Plate( array( 
-    "memberId" => $a
+    "memberid" => $a
   	) );
   	$plate->deleteByMember();
   	$portion = new Portion( array( 
-    "memberId" => $a
+    "memberid" => $a
   	) );
   	$portion->deleteByMember();
   	//echo " deleteRows done... ";
@@ -1067,7 +1067,7 @@ function populatePreferences($thexml, $a) {
 		$preferenceVlaue = $preference;
 		//echo " preference type ".$preferenceType." name ".$preferenceName;
 		  $pref = new Preference( array( 
-    "memberId" => $a,
+    "memberid" => $a,
     "type" => $preferenceType,
     "name" => $preferenceName,
     "value" => $preferenceVlaue
@@ -1095,11 +1095,11 @@ function populatePortions($thexml, $a) {
 		$morselName = $morsel;
 		//echo "morsel name ".$morselName." type ".$morselType;
 		  $portion = new Portion( array( 
-    "memberId" => $a,
+    "memberid" => $a,
     "type" => $morselType,
     "name" => $morselName,
     "description" => $morselDescription,
-    "isMaster" => $morselIsMaster,
+    "ismaster" => $morselIsMaster,
 		      "isInactive" => $morselIsInactive
 		  ) );
 		$portion->insert();		
@@ -1111,7 +1111,7 @@ function populatePlates($thexml, $a) {
 	//echo " populatePlates ";
 	
 	$portion = new Portion( array( 
-    "memberId" => $a
+    "memberid" => $a
   	) );
   	$portionMap = $portion->getPortionMapByMember();
 	//echo " populatePlates map built ";
@@ -1175,11 +1175,11 @@ function populatePlates($thexml, $a) {
 			}
 		}		
 		$plate = new Plate( array( 
-    "memberId" => $a,
+    "memberid" => $a,
     "type" => $dishType,
     "name" => $dishName,
     "description" => $dishDescription,
-    "isMaster" => $dishIsMaster,
+    "ismaster" => $dishIsMaster,
     "portion1" => $portion1,
     "portion2" => $portion2,
 	"portion3" => $portion3,
@@ -1189,7 +1189,7 @@ function populatePlates($thexml, $a) {
 	"portion7" => $portion7,
     "portion8" => $portion8,
 	"portion9" => $portion9,
-    "isInactive" => $dishIsInactive
+    "isinactive" => $dishIsInactive
 		  ) );
 		$plate->insert();			
 	}
@@ -1269,11 +1269,11 @@ usort($slates, array("Slates", "cmp_obj"));
 // populate slate and food tables backing up the respective client data
 //echo " populateSlates ";
 	$portion = new Portion( array( 
-    "memberId" => $account
+    "memberid" => $account
   	) );
   	$portionMap = $portion->getPortionMapByMember();
 	$plate = new Plate( array( 
-    "memberId" => $account
+    "memberid" => $account
   	) );
   	$plateMap = $plate->getPlateMapByMember();
 //foreach($slates as $s) {
@@ -1285,14 +1285,14 @@ foreach($slates as $s) {
 	$date = $s->getName();
 	$dateName = $s->getDow();
 	$slate = new Slate( array( 
-    "memberId" => $account,
+    "memberid" => $account,
     "date" => $date,
     "name" => $dateName,
     "description" => "",
-    "breakfastId" => 0,
-    "lunchId" => 0,
-    "dinnerId" => 0,
-    "isInactive" => 0
+    "breakfastid" => 0,
+    "lunchid" => 0,
+    "dinnerid" => 0,
+    "isinactive" => 0
 		  ) );
 	$slate->insert();
 	// tjs 120208
@@ -1344,12 +1344,12 @@ foreach($slates as $s) {
 			//echo " portionId ".$portionId;	
 			// tjs 120209
 			$food = new Food( array( 
-    "memberId" => $account,
-    "slateId" => $slateId,
+    "memberid" => $account,
+    "slateid" => $slateId,
 	"type" => $plateType,
-    "portionId" => $portionId,
-    "isMaster" => 0,
-    "isInactive" => 0
+    "portionid" => $portionId,
+    "ismaster" => 0,
+    "isinactive" => 0
 		  ) );
 	$food->insert();
 			/*
@@ -1368,13 +1368,13 @@ foreach($slates as $s) {
 	//$slate->update();
 		$slate = new Slate( array( 
     "id" => $slateId,
-    "memberId" => $account,
+    "memberid" => $account,
     "date" => $date,
     "name" => $dateName,
     "description" => "",
-	"breakfastId" => $breakfastId,
-    "lunchId" => $lunchId,
-    "dinnerId" => $dinnerId
+	"breakfastid" => $breakfastId,
+    "lunchid" => $lunchId,
+    "dinnerid" => $dinnerId
 		  ) );
 	$slate->update();
 		

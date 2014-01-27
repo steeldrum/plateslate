@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!--------------------------------------
 $Revision:: 175                        $: Revision of last commit
 $LastChangedBy::                       $: Author of last commit
@@ -9,13 +10,18 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
 	<!-- tjs 131122 link rel="stylesheet" href="css/jquery.mobile-1.0.min.css" / --> 
-	<link rel="stylesheet" href="css/jquery.mobile-1.4.0-rc.1.min.css" /> 
-	<link rel="stylesheet" href="css/jquery.mobile.pagination.css">
-    <link rel="stylesheet" href="css/plateSlateCellApp.css">
-    <script src="js/plateSlateCellApp.js"></script>
-    <!--  script src="js/plateSlateCellAppMin.js"></script -->
-	<!--  tjs 131122 script src="js/jquery-1.6.4.min.js"></script -->
-	<script src="js/jquery-1.9.1.js"></script>
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.0.css" /> 
+	<link rel="stylesheet" href="css/jquery.mobile.pagination.css" />
+    <link rel="stylesheet" href="css/plateSlateCellApp.css" />
+    <script type="text/javascript" src="js/plateSlateCellApp.js"></script>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+<!--  tjs 131204 script type="text/javascript" src="js/jquery-1.9.1.js" -->
+	<!--  tjs 131204 -->
+<script type="text/javascript" src="js/IndexedDBShim.min.js"></script>
+<script type="text/javascript" src="js/jquery.indexeddb.js"></script>
+<script type="text/javascript" src="js/indexDBmodel.js"></script>
+<script type="text/javascript" src="js/indexDBview.js"></script>
+<link href="css/style.css" rel="stylesheet" />
 	<script>
 			//globals used for account management
 		var loginAccountNumber = 0;
@@ -26,6 +32,11 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 		// tjs 111222
 		var color = 0;
 		
+		// tjs 131205
+		var init = null;
+		var isProduction = true;
+		var relativeAccountFileDirectory = '../slateView/';
+		
 		// tjs 111228
 		// globals for adding new portions
 		var grainPortionSelectListHtml = null;
@@ -34,6 +45,9 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 		var fruitsPortionSelectListHtml;
 		var dairyPortionSelectListHtml;
 
+		// tjs 140124
+		//$( ":mobile-pagecontainer" );
+		
 		$(document).bind('mobileinit',function(){ 
 		 	// Globally configure search filter placeholder text
 			//$.mobile.listview.prototype.options.filterPlaceholder = "Search me..."; 
@@ -56,6 +70,7 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 	 		//alert ("index pagebeforechange toPage " + toPage);
 	 		//var url = $.mobile.path.parseUrl(toPage).hash;
 	 		var url = $.mobile.path.parseUrl(data.toPage).hash;
+		 	//console.log("index pagebeforechange url " + url);
 	 		if (url != undefined) {
 	 			//alert ("index pagebeforechange toPage url " + url);
 	 			//alert ("index pagebeforechange toPage url length " + url.length);
@@ -78,6 +93,7 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 	 		} else {
 	 		 	   var toPageId = data.toPage.attr("id");
 		 		 	  //alert ("index pagebeforechange toPageId " + toPageId);
+		 		 	  //console.log("index pagebeforechange toPageId " + toPageId);
 		 		 	  //if (toPageId == "home-page") {
 		 		 	  if (toPageId != undefined && toPageId == "home-page") {
 		 		 		 color = 0;
@@ -113,22 +129,16 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 		$( document ).on( "pageinit", "#home-page", function(event){
 			//alert("on page init");
 
-			//function to execute when doc ready
-			//$(function() {
-				readPortions();
+				// tjs 131204
+				//readPortions();
+						// tjs 131204
+		window.shimIndexedDB.__useShim();		
+		//console.log ("init " + init);
+		//initIndexDBmodel(true);
+		loadIndexDB();
+		
 				//alert("done readPrtions");
 
-				// tjs 120119
-				//setLoginButton();
-				// tjs 111228
-				//derivePortionSelectionLists();
-				//alert("done readPrtions setting change handlers...");
-				// tjs 111224
-				//$('.Breakfast').live('change', function() {
-					//$( document ).on( 'change', '.Breakfast', function() {
-					//$('.Breakfast').on( 'change', function() {
-					//$('.Breakfast').delegate( 'change', function() {
-					//$( 'body' ).on( 'change', '.Breakfast', function() {
 					$( 'body' ).on( 'change', '.Breakfast', function(event) {
 						//alert("Breakfast change handler...");					
 			  		// Live handler called.
@@ -143,6 +153,7 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 				    	//e.g 82|Breakfast|Flakes-n-Bakes|Cereal, Fruit, etc.|1|2|41|47|5||||||0
 				    	//alert( "index liveSelectionsHandlers breakfast value " + optionValue + " thresholdOffset " + thresholdOffset);
 				    	//alert( "plateslate bindSelectionsHandlers value " + optionValue + " thisOffset " + thisOffset);
+				    	console.log( "index on pageinit breakfastSelectionId value " + optionValue);
 				    	var slate = slates[thresholdOffset];
 				    	slate.breakfastId = optionValue;
 				    	refreshPortionCache(slate, "Breakfast");
@@ -152,7 +163,7 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 				    	//$.mobile.pageContainer.trigger("create");
 				    	hijaxBreakfastPage();
 				    	updateSlate(offset);
-				    	//alert( "plateslate bindSelectionsHandlers breakfastSelectionId " + breakfastSelectionId + " value " + optionValue);
+				    	//alert( "plateslate bindSelectionsHandlers breakfastSelectionId value " + optionValue);
 				    	// tjs 110819
 				    	return false;
 					});
@@ -206,15 +217,6 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 				    	return false;
 					}); 
 
-				// tjs 120403
-				/*
-				$('#loginButton').live('vclick', function() {
-			  		// Live handler called.
-			        //alert("index loginButton button clicked...");
-			  		processLoginForm();
-				    	return false;
-					}); */
-
 				// tjs 120119
 				// tjs 131123
 				//alert("before anchor button bind");
@@ -237,11 +239,16 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
    						 //innerTextSpan.text(label);
    						 label = innerTextSpan.text();
 					}
+					
+					// tjs 140120
+					//loadLoginInfo();
+					
 			        //var label =  $(this).siblings('.ui-btn-inner').children('.ui-btn-text').text();
 			        //var label =  $(this).children('.ui-btn-inner').children('.ui-btn-text').text();
 			        //var label =  $('#loginLogout ui-btn-text').text();
 			        //alert("index Login/Logout button text " + label);
 			        if (label == "Login") {
+			        //if (loginInfo.id == 0) {
 			        	//alert("index Login/Logout button text " + label);
 			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
 			            //alert("index Login/Logout login being called...");
@@ -255,6 +262,11 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 	   						 //innerTextSpan.text(label);
 	   						 label = innerTextSpan.text("Logout");
 						}
+						console.log("doing login...");
+						// hacked tests...
+						//var portion = getPortionByIdDB(11001);
+						//var portion = _(getPortionByIdDB(11001).then(function() {console.log ("test fopund portion named " + portion.name);}));
+						//console.log ("test fopund portion named " + portion.name);
 			            login();
 			        } else {
 			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
@@ -272,64 +284,7 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 			        }
 			    });
 			    
-				// tjs 131123
-				//function handleLoginLogoutClick() {
-			    //	alert("index Login/Logout button clicked...");
-			    	/*
-			        //var label =  $(this).siblings('.ui-btn-inner').children('.ui-btn-text').text();
-			        var label =  $(this).children('.ui-btn-inner').children('.ui-btn-text').text();
-			        //alert("index Login/Logout button text " + label);
-			        if (label == "Login") {
-			        	//alert("index Login/Logout button text " + label);
-			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
-			            //alert("index Login/Logout login being called...");
-			            login();
-			        } else {
-			            $(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
-			            logout();
-			        }
-					*/
-					/*
-			        var label =  $(#loginLogout).button("option", "label");
-			        alert("index Login/Logout button label " + label);
-			        // e.g. index Login/Logout button text
-			        if (label == "Login") {
-			        	//alert("index Login/Logout button text " + label);
-			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
-			            $('#loginLogout').button("option", "label", "Logout");
-			            //alert("index Login/Logout login being called...");
-			            login();
-			        } else {
-			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
-			            $('#loginLogout').button("option", "label", "Login");
-			            logout();
-			        }
-*/
-				//}
-				
-			//});
 			});
-
-					/*
-			// tjs 131123
-			function handleLoginLogoutClick() {
-		    	alert("index Login/Logout button clicked...");
-		        var label =  $(#loginLogout).button("option", "label");
-		        alert("index Login/Logout button label " + label);
-		        // e.g. index Login/Logout button text
-		        if (label == "Login") {
-		        	//alert("index Login/Logout button text " + label);
-		            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
-		            $('#loginLogout').button("option", "label", "Logout");
-		            //alert("index Login/Logout login being called...");
-		            login();
-		        } else {
-		            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
-		            $('#loginLogout').button("option", "label", "Login");
-		            logout();
-		        }
-
-			}*/
 					
 		function login() {
 			// tjs 120209
@@ -349,8 +304,7 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 		}
 
 	</script>
-	<!--  tjs 131122 >script src="js/jquery.mobile-1.0.min.js"></script -->
-	<script src="js/jquery.mobile-1.4.0-rc.1.min.js"></script>
+	<script src="js/jquery.mobile-1.4.0.js"></script>
 	<script src="js/jquery.mobile.pagination.js"></script>
  </head>
 
@@ -528,7 +482,7 @@ served over time.</p>
 	    <p><div id="add-plate-dial-error"></div></p>
 			</form>
 		<br><br>
-		<a href="#home-page" data-role="button" data-inline="true" data-rel="back" data-theme="a">Cancel</a>		
+		<a href="#home-page" data-role="button" data-inline="true" data-rel="back" data-theme="a">Done</a>		
 		<a href="javascript:processAddPlateForm();" data-role="button" data-inline="true">Add New Plate</a>
 		<div id ="resultLog"></div>
 	</div>
@@ -580,11 +534,139 @@ served over time.</p>
 
     <script type="text/javascript">
     // ??? tjs 131122
-
+function initIndexDBmodel() {
+    // tjs 131228	
+	//console.log("initIndexDBmodel schema start init " + init + " isProduction " + isProduction);
+	console.log("initIndexDBmodel schema start init " + init + " isProduction " + isProduction + " loginAccountNumber " + loginAccountNumber);
+// tjs 131210
+	//$.indexedDB("PlateSlateDB").deleteDatabase();
+// tjs 140102
+	$.indexedDB("PlateSlateDB").deleteDatabase().done(function() {
+		$.indexedDB("PlateSlateDB", {
+			"schema" : {
+				"1" : function(versionTransaction) {
+					// function(versionTransaction){
+					var portions = versionTransaction.createObjectStore(
+							"portions", {
+								"keyPath" : "itemId"
+							});
+					portions.createIndex("itemId");
+					portions.createIndex("type");
+					portions.createIndex("name");
+					console.info("Created new portions object store");
+					var plates = versionTransaction.createObjectStore(
+							"plates", {
+//tjs 131214										"autoIncrement" : true
+								"autoIncrement" : true,
+								"keyPath" : "key"
+							});
+					plates.createIndex("itemId");
+					plates.createIndex("type");
+					plates.createIndex("name");
+					console.info("Created new plates object store");
+					var slates = versionTransaction.createObjectStore(
+							"slates", {
+								// tjs 131202
+								// "autoIncrement": false,
+								// "keyPath": "itemId"
+								//"autoIncrement" : true
+								"autoIncrement" : true,
+								"keyPath" : "key"
+							});
+					slates.createIndex("name");
+					// tjs 140102
+					slates.createIndex("time");
+					console.info("Created new slates object store");
+				}
+			}
+		}).done(function() {
+	// Once the DB is opened with the object stores set up, show data from
+	// all tables
+	// console.log("schema done...");
+	window.setTimeout(function() {
+		// loadFromDB("plates");
+		if (!isProduction) {
+			loadFromDBAfterLoadSelectOptions("slates");				
+		}
+		if (init) {
+			if (!isProduction) {
+			downloadportions();
+			downloadplates();
+			} else {
+				// tjs 131210 for test just plates...
+				//downloadplates();
+				// tjs 131228
+				//downloadPortionsPlates();
+				// tjs 140102
+				//downloadPortionsPlates(loginAccountNumber);
+				downloadPortionsPlates(0);
+			}
+		} else {
+			if (!isProduction) {
+				loadFromDBAfterLoadSelectOptions("portions");
+				loadFromDBAfterLoadSelectOptions("plates");
+			} else {
+				loadIndexDB();
+			}
+			// assignPlateSelections();
+			// assignSlateSelections();
+		}
+	}, 200);
+});
+		}); // done delete DB
+	
+}
 	//function to execute when doc ready
 	$(function() {
-		readPortions();
-		setLoginButton();		
+		// tjs 131205	
+		//readPortions();
+		//setLoginButton();	
+		// tjs 140120
+		loadLoginInfo();
+    	var label;
+    	var button = $("#loginLogout");
+		var innerTextSpan = button.find(".ui-btn-text");
+
+		// not initialized - just change label
+		if (innerTextSpan.size() == 0) {
+			//button.text(label);
+				label = button.text();
+
+		// already initialized - find innerTextSpan and change its label    
+		} else {
+				 //innerTextSpan.text(label);
+				 label = innerTextSpan.text();
+		}
+			if (loginInfo.id == 0) {
+	        	//alert("index Login/Logout button text " + label);
+	            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
+	            //alert("index Login/Logout login being called...");
+	            //$('#loginLogout ui-btn-text').text("Logout");
+				if (innerTextSpan.size() == 0) {
+					//button.text(label);
+   					label = button.text("Login");
+
+				// already initialized - find innerTextSpan and change its label    
+				} else {
+						 //innerTextSpan.text(label);
+						 label = innerTextSpan.text("Login");
+				}
+	        } else {
+	            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
+	            //$('#loginLogout ui-btn-text').text("Login");
+				if (innerTextSpan.size() == 0) {
+					//button.text(label);
+   					label = button.text("Logout");
+
+				// already initialized - find innerTextSpan and change its label    
+				} else {
+						 //innerTextSpan.text(label);
+						 label = innerTextSpan.text("Logout");
+				}
+	    		  authenticated = true;
+	    		  loginAccountNumber = loginInfo.id;
+
+	        }
 	  });
 	
 		</script>	
