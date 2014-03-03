@@ -1531,11 +1531,13 @@ function deriveSlateFoodFromPlate(plate) {
 	return foods;
 }
 
-function modifySlateFoodPortions(slate, type, portionId, master, isInactive) {
+// tjs 140302
+//function modifySlateFoodPortions(slate, type, portionId, master, isInactive) {
+function modifySlateFoodPortions(slate, type, portionId, master, isInactive, callback) {
 	var name = slate.name;
 	var foundRow = false;
 	// var foods; // an array
-	console.log("Find item named " + name + " in slates");
+	console.log("modifySlateFoodPortions find item named " + name + " portion id " + portionId + " in slates (type " + type + ")");
 	$.indexedDB("PlateSlateDB").objectStore("slates").each(
 			function(elem) {
 				if (elem.value && elem.value.name == name) {
@@ -1543,28 +1545,37 @@ function modifySlateFoodPortions(slate, type, portionId, master, isInactive) {
 					var breakfastPortions;
 					var lunchPortions;
 					var dinnerPortions;
-					console.info("Updating", elem.value);
+					console.info("modifySlateFoodPortions updating", elem.value);
 					elem.value["modifiedCursor-" + Math.random()] = true;
 					// var updateRow = false;
-					if (type = "breakfast") {
+					//if (type = "breakfast") {
+					if (type == "Breakfast") {
 						breakfastPortions = elem.value["breakfastPortions"];
 						breakfastPortions = updateOrAppendFoodPortion(
 								breakfastPortions, type, portionId, master,
 								isInactive);
 						elem.value["breakfastPortions"] = breakfastPortions
 								.slice(0);
-					} else if (type = "lunch") {
+						// tjs 140228
+						slate.breakfastPortions = breakfastPortions.slice(0);
+					//} else if (type = "lunch") {
+					} else if (type == "Lunch") {
 						lunchPortions = elem.value["lunchPortions"];
 						lunchPortions = updateOrAppendFoodPortion(
 								lunchPortions, type, portionId, master,
 								isInactive);
 						elem.value["lunchPortions"] = lunchPortions.slice(0);
-					} else if (type = "dinner") {
+						// tjs 140228
+						slate.lunchPortions = lunchPortions.slice(0);
+					//} else if (type = "dinner") {
+					} else if (type == "Dinner") {
 						dinnerPortions = elem.value["dinnerPortions"];
 						dinnerPortions = updateOrAppendFoodPortion(
 								dinnerPortions, type, portionId, master,
 								isInactive);
 						elem.value["dinnerPortions"] = dinnerPortions.slice(0);
+						// tjs 140228
+						slate.dinnerPortions = dinnerPortions.slice(0);
 					}
 					// if (updateRow) {
 					elem.update(elem.value);
@@ -1572,6 +1583,10 @@ function modifySlateFoodPortions(slate, type, portionId, master, isInactive) {
 					// tjs 140123
 					if (slate.id == 0) {
 						slate.id = elem.value.itemId;
+					}
+					// tjs 140302
+					if (callback != null) {
+						callback(slate, type, portionId);
 					}
 				}
 			});
@@ -1581,18 +1596,29 @@ function updateOrAppendFoodPortion(foodPortions, type, portionId, isMaster,
 		isInactive) {
 	var typePortions = new Array();
 	var foundPortionId = false;
+	console.log("updateOrAppendFoodPortion foodPortions.length " + foodPortions.length);
 	for ( var i = 0; i < foodPortions.length; i++) {
 		//if (foodPortions[i].portionId == portionId) {
 		if (foodPortions[i] == portionId) {
 			//foodPortions[i].isMaster = isMaster;
 			//foodPortions[i].isInactive = isInactive;
 			foundPortionId = true;
+			console.log("updateOrAppendFoodPortion found portion. isInactive? " + isInactive);
+
+			// tjs 140226 skip if portion dubbed as inactive
+			if (isInactive == 0) {
+				typePortions.push(foodPortions[i]);
+			}
+			// tjs 140227
+		} else {
 			typePortions.push(foodPortions[i]);
 		}
 	}
-	if (!foundPortionId) {
+	if (!foundPortionId && isInactive == 0) {
 		//typePortions.push(new FoodInDB(type, portionId, isMaster, isInactive));
-		typePortions.push(portionId);
+		//typePortions.push(portionId);
+		typePortions.push(Number(portionId));
+		console.log("updateOrAppendFoodPortion adding portion portionId " + portionId);
 	}
 	return typePortions;
 }
