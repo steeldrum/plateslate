@@ -5,9 +5,9 @@ $LastChangedBy::                       $: Author of last commit
 $LastChangedDate:: 2011-11-15 09:35:07#$: Date of last commit
 ***************************************/
 /*
-plateslate/
+charityhound/
 view_tokens.php
-tjs 120202
+tjs 111114
 
 file version 1.00 
 
@@ -47,7 +47,7 @@ foreach ( $tokens as $token ) {
   $rowCount++;
 ?>
       <tr<?php if ( $rowCount % 2 == 0 ) echo ' class="alt"' ?>>
-        <td><a href="view_token.php?tokenId=<?php echo $token->getValueEncoded( "id" ) ?>&amp;start=<?php echo $start ?>&amp;order=<?php echo $order ?>"><?php echo $token->getValueEncoded( "emailAddress" ) ?></a></td>
+        <td><a href="view_token.php?tokenId=<?php echo $token->getValueEncoded( "id" ) ?>&amp;start=<?php echo $start ?>&amp;order=<?php echo $order ?>"><?php echo $token->getValueEncoded( "emailaddress" ) ?></a></td>
       </tr>
 <?php
 }

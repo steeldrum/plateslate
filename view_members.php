@@ -1,15 +1,17 @@
 <?php
 /***************************************
-$Revision::                            $: Revision of last commit
+$Revision:: 53                         $: Revision of last commit
 $LastChangedBy::                       $: Author of last commit
-$LastChangedDate::                     $: Date of last commit
+$LastChangedDate:: 2011-03-01 15:28:41#$: Date of last commit
 ***************************************/
 /*
-plateslate/
+Collaborators/
 view_members.php
-tjs 110823
+tjs 101012
 
 file version 1.00 
+
+release version 1.06
 */
 
 require_once( "common.inc.php" );
@@ -18,7 +20,9 @@ require_once( "Member.class.php" );
 
 $start = isset( $_GET["start"] ) ? (int)$_GET["start"] : 0;
 $order = isset( $_GET["order"] ) ? preg_replace( "/[^ a-zA-Z]/", "", $_GET["order"] ) : "username";
+//echo "getting members...";
 list( $members, $totalRows ) = Member::getMembers( $start, PAGE_SIZE, $order );
+//echo "totalRows $totalRows";
 displayPageHeader( "View Collogistics members" );
 
 ?>
@@ -38,8 +42,8 @@ foreach ( $members as $member ) {
 ?>
       <tr<?php if ( $rowCount % 2 == 0 ) echo ' class="alt"' ?>>
         <td><a href="view_member.php?memberId=<?php echo $member->getValueEncoded( "id" ) ?>&amp;start=<?php echo $start ?>&amp;order=<?php echo $order ?>"><?php echo $member->getValueEncoded( "username" ) ?></a></td>
-        <td><?php echo $member->getValueEncoded( "firstName" ) ?></td>
-        <td><?php echo $member->getValueEncoded( "lastName" ) ?></td>
+        <td><?php echo $member->getValueEncoded( "firstname" ) ?></td>
+        <td><?php echo $member->getValueEncoded( "lastname" ) ?></td>
       </tr>
 <?php
 }

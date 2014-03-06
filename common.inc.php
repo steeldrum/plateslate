@@ -98,8 +98,8 @@ function checkLogin() {
     exit;
   } else {
     $logEntry = new LogEntry( array (
-      "memberId" => $_SESSION["member"]->getValue( "id" ),
-      "pageUrl" => basename( $_SERVER["PHP_SELF"] )
+      "memberid" => $_SESSION["member"]->getValue( "id" ),
+      "pageurl" => basename( $_SERVER["PHP_SELF"] )
     ) );
     $logEntry->record();
   }

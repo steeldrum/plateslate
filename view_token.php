@@ -1,13 +1,13 @@
 <?php
 /***************************************
-$Revision::                            $: Revision of last commit
+$Revision:: 156                        $: Revision of last commit
 $LastChangedBy::                       $: Author of last commit
-$LastChangedDate::                     $: Date of last commit
+$LastChangedDate:: 2011-11-18 13:51:23#$: Date of last commit
 ***************************************/
 /*
-plateslate/
+charityhound/
 view_token.php
-tjs 120202
+tjs 111114
 
 file version 1.00 
 
@@ -39,7 +39,7 @@ if ( isset( $_POST["action"] ) and $_POST["action"] == "Save Changes" ) {
 
 function displayForm( $errorMessages, $missingFields, $token ) {
   //$logEntries = LogEntry::getLogEntries( $member->getValue( "id" ) );
-  displayPageHeader( "View token: " . $token->getValueEncoded( "emailAddress" ));
+  displayPageHeader( "View token: " . $token->getValueEncoded( "emailaddress" ));
 
   if ( $errorMessages ) {
     foreach ( $errorMessages as $errorMessage ) {
@@ -56,8 +56,8 @@ function displayForm( $errorMessages, $missingFields, $token ) {
         <input type="hidden" name="start" id="start" value="<?php echo $start ?>" />
         <input type="hidden" name="order" id="order" value="<?php echo $order ?>" />
 
-        <label for="emailAddress"<?php validateField( "emailAddress", $missingFields ) ?>>Email address *</label>
-        <input type="text" name="emailAddress" id="emailAddress" value="<?php echo $token->getValueEncoded( "emailAddress" ) ?>" />
+        <label for="emailAddress"<?php validateField( "emailaddress", $missingFields ) ?>>Email address *</label>
+        <input type="text" name="emailAddress" id="emailAddress" value="<?php echo $token->getValueEncoded( "emailaddress" ) ?>" />
 
         <label for="token"<?php validateField( "token", $missingFields ) ?>>Token *</label>
         <input type="text" name="token" id="token" value="<?php echo $token->getValueEncoded( "token" ) ?>" />
@@ -66,19 +66,19 @@ function displayForm( $errorMessages, $missingFields, $token ) {
         <input type="text" name="payment" id="payment" value="<?php echo $token->getValueEncoded( "payment" ) ?>" />
 
         <label for="isCollaborator">Collaborator?</label>
-        <input type="checkbox" name="isCollaborator" id="isCollaborator" value="1" <?php setChecked( $token, "isCollaborator", "1" )?>"/>
+        <input type="checkbox" name="isCollaborator" id="isCollaborator" value="1" <?php setChecked( $token, "iscollaborator", "1" )?>"/>
 
         <label for="isAggregateAnalyst">Aggregate Analyst?</label>
-        <input type="checkbox" name="isAggregateAnalyst" id="isAggregateAnalyst" value="1" <?php setChecked( $token, "isAggregateAnalyst", "1" )?>"/>
+        <input type="checkbox" name="isAggregateAnalyst" id="isAggregateAnalyst" value="1" <?php setChecked( $token, "isaggregateanalyst", "1" )?>"/>
 
         <label for="isDemo">Demo?</label>
-        <input type="checkbox" name="isDemo" id="isDemo" value="1" <?php setChecked( $token, "isDemo", "1" )?>"/>
+        <input type="checkbox" name="isDemo" id="isDemo" value="1" <?php setChecked( $token, "isdemo", "1" )?>"/>
 
         <label for="isTest">Test?</label>
-        <input type="checkbox" name="isTest" id="isTest" value="1" <?php setChecked( $token, "isTest", "1" )?>"/>
+        <input type="checkbox" name="isTest" id="isTest" value="1" <?php setChecked( $token, "istest", "1" )?>"/>
 
         <label for="isInactive">Inactive?</label>
-        <input type="checkbox" name="isInactive" id="isInactive" value="1" <?php setChecked( $token, "isInactive", "1" )?>"/>
+        <input type="checkbox" name="isInactive" id="isInactive" value="1" <?php setChecked( $token, "isinactive", "1" )?>"/>
 
         <div style="clear: both;">
           <input type="submit" name="action" id="saveButton" value="Save Changes" />
@@ -97,20 +97,20 @@ function displayForm( $errorMessages, $missingFields, $token ) {
 
 function saveToken() {
     //echo "saveToken...";
-	$requiredFields = array( "emailAddress", "token" );
+	$requiredFields = array( "emailaddress", "token" );
   $missingFields = array();
   $errorMessages = array();
 
   $token = new Token( array(
     "id" => isset( $_POST["tokenId"] ) ? (int) $_POST["tokenId"] : "",
-    "emailAddress" => isset( $_POST["emailAddress"] ) ? preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] ) : "",
+    "emailaddress" => isset( $_POST["emailAddress"] ) ? preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] ) : "",
     "token" => isset( $_POST["token"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["token"] ) : "",
     "payment" => isset( $_POST["payment"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["payment"] ) : "",
-    "isCollaborator" => isset( $_POST["isCollaborator"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isCollaborator"] ) : "",
-    "isAggregateAnalyst" => isset( $_POST["isAggregateAnalyst"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isAggregateAnalyst"] ) : "",
-    "isDemo" => isset( $_POST["isDemo"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isDemo"] ) : "",
-    "isTest" => isset( $_POST["isTest"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isTest"] ) : "",
-    "isInactive" => isset( $_POST["isInactive"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isInactive"] ) : ""
+    "iscollaborator" => isset( $_POST["isCollaborator"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isCollaborator"] ) : "",
+    "isaggregateanalyst" => isset( $_POST["isAggregateAnalyst"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isAggregateAnalyst"] ) : "",
+    "isdemo" => isset( $_POST["isDemo"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isDemo"] ) : "",
+    "istest" => isset( $_POST["isTest"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isTest"] ) : "",
+    "isinactive" => isset( $_POST["isInactive"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["isInactive"] ) : ""
   
   ) );
 
@@ -124,7 +124,7 @@ function saveToken() {
     $errorMessages[] = '<p class="error">There were some missing fields in the form you submitted. Please complete the fields highlighted below and click Save Changes to resend the form.</p>';
   }
 //echo "check email...";
-  if ( $existingToken = Token::getByEmailAddress( $token->getValue( "emailAddress" ) ) and $existingToken->getValue( "id" ) != $token->getValue( "id" ) ) {
+  if ( $existingToken = Token::getByEmailAddress( $token->getValue( "emailaddress" ) ) and $existingToken->getValue( "id" ) != $token->getValue( "id" ) ) {
     $errorMessages[] = '<p class="error">A token with that email address already exists in the database. Please choose another email address.</p>';
   }
 
@@ -135,10 +135,10 @@ function saveToken() {
 //echo "updated...";
     //tjs 111118
   	//$emailAddress = $token->getValueEncoded( "emailAddress" );
-    $emailAddress = $token->getValue( "emailAddress" );
+    $emailAddress = $token->getValue( "emailaddress" );
     //echo "emailAddress ".$emailAddress;
   	$member = Member::getByEmailAddress( $emailAddress );
-    $isAggregateAnalyst = $token->getValue( "isAggregateAnalyst" );
+    $isAggregateAnalyst = $token->getValue( "isaggregateanalyst" );
     //echo "emailAddress ".$emailAddress." isAggregateAnalyst ".$isAggregateAnalyst;
   	//if ($isAggregateAnalyst == 1) {
     //if ($isAggregateAnalyst == "1") {

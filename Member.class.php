@@ -167,7 +167,9 @@ class Member extends DataObject {
 
   public static function getByEmailAddress( $emailAddress ) {
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE emailAddress = :emailAddress";
+    // tjs 140303
+   // $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE emailAddress = :emailAddress";
+    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE emailaddress = :emailAddress";
 
     try {
       $st = $conn->prepare( $sql );
@@ -188,7 +190,8 @@ class Member extends DataObject {
 
   //public function getFavoriteGenreString() {
   public function getPrimarySkillAreaString() {
-    return ( $this->_skills[$this->data["primarySkillArea"]] );
+    //return ( $this->_skills[$this->data["primarySkillArea"]] );
+  	return ( $this->_skills[$this->data["primaryskillarea"]] );
   }
 
   public function getSkills() {
@@ -198,20 +201,24 @@ class Member extends DataObject {
   // tjs 120221
   public static function getByPrimarySkillArea( $primarySkillArea ) {
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE primarySkillArea = :primarySkillArea";
+    //$sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE primarySkillArea = :primarySkillArea";
+    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE primaryskillarea = :primarySkillArea";
 
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":primarySkillArea", $primarySkillArea, PDO::PARAM_STR );
       $st->execute();
       $members = array();
+    $rowCount = 0;
       foreach ( $st->fetchAll() as $row ) {
         $members[] = new Member( $row );
+        $rowCount++;
       }
-      $st = $conn->query( "SELECT found_rows() as totalRows" );
-      $row = $st->fetch();
+     // $st = $conn->query( "SELECT found_rows() as totalRows" );
+      //$row = $st->fetch();
       parent::disconnect( $conn );
-      return array( $members, $row["totalRows"] );
+      //return array( $members, $row["totalRows"] );
+      return array( $members, $rowCount);
       } catch ( PDOException $e ) {
       parent::disconnect( $conn );
       die( "Query failed: " . $e->getMessage() );
@@ -220,6 +227,9 @@ class Member extends DataObject {
   
   public function insert() {
     $conn = parent::connect();
+                  // tjs 140305
+             // password(:password),
+    
     $sql = "INSERT INTO " . TBL_MEMBERS . " (
               username,
               password,
@@ -241,7 +251,7 @@ class Member extends DataObject {
 			isinactive
                           ) VALUES (
               :username,
-              password(:password),
+              :password,
               :firstName,
               :lastName,
               :joinDate,
@@ -405,7 +415,9 @@ class Member extends DataObject {
     // tjs 131112 kludge pg lacka password function
     //$sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE username = :username AND password = password(:password)";
    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE username = :username";
-    
+    // tjs 131112
+    $password = $this->data["password"];
+   //echo "Member authenticate sql $sql password $password";
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":username", $this->data["username"], PDO::PARAM_STR );

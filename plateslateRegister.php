@@ -35,31 +35,38 @@ $passwordError = 'ok';
 $duplicateUserNameError = 'ok';
 $duplicateEMailError = 'ok';
 $tokenMisMatchError = 'ok';
-	$requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "gender" );
+	$requiredFields = array( "username", "password", "emailaddress", "firstname", "lastname", "gender" );
   $missingFields = array();
   $errorMessages = array();
 
   //echo "plateslateRegister processForm started";
-  
+  /*    "lastdonationmadeon" => "",
+     "cumdonationsforsites" => "0",
+    "lastdonationmadeon" => date( "Y-m-d" ),
+    "lastdonationforsite" => "0",
+     "lastlogindate" => "",
+    "permissionforsite" => "15",
+    "isselectableforsite" => "0",
+  */
   $member = new Member( array( 
     "username" => isset( $_POST["username"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["username"] ) : "",
     "password" => ( isset( $_POST["password1"] ) and isset( $_POST["password2"] ) and $_POST["password1"] == $_POST["password2"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["password1"] ) : "",
-    "firstName" => isset( $_POST["firstName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["firstName"] ) : "",
-    "lastName" => isset( $_POST["lastName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["lastName"] ) : "",
+    "firstname" => isset( $_POST["firstName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["firstName"] ) : "",
+    "lastname" => isset( $_POST["lastName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["lastName"] ) : "",
     "gender" => isset( $_POST["gender"] ) ? preg_replace( "/[^mf]/", "", $_POST["gender"] ) : "",
-    "primarySkillArea" => isset( $_POST["primarySkillArea"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["primarySkillArea"] ) : "",
-    "emailAddress" => isset( $_POST["emailAddress"] ) ? preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] ) : "",
-    "otherSkills" => isset( $_POST["otherSkills"] ) ? preg_replace( "/[^ \'\,\.\-a-zA-Z0-9]/", "", $_POST["otherSkills"] ) : "",
-    "joinDate" => date( "Y-m-d" ),
-    "cumDonationsForSites" => "0",
-    "lastDonationMadeOn" => "",
-    "lastDonationForSite" => "0",
-    "lastLoginDate" => "",
-    "permissionForSite" => "15",
-    "isSelectableForSite" => "0",
-    "passwordMnemonicQuestion" => isset( $_POST["passwordMnemonicQuestion"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicQuestion"] ) : "",
-    "passwordMnemonicAnswer" => isset( $_POST["passwordMnemonicAnswer"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicAnswer"] ) : "",
-    "isInactive" => ""
+    "primaryskillarea" => isset( $_POST["primarySkillArea"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["primarySkillArea"] ) : "",
+    "emailaddress" => isset( $_POST["emailAddress"] ) ? preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] ) : "",
+    "otherskills" => isset( $_POST["otherSkills"] ) ? preg_replace( "/[^ \'\,\.\-a-zA-Z0-9]/", "", $_POST["otherSkills"] ) : "",
+    "joindate" => date( "Y-m-d" ),
+    "cumdonationsforsites" => 0,
+    "lastdonationmadeon" => date( "Y-m-d" ),
+    "lastdonationforsite" => 0,
+    "lastlogindate" => date( "Y-m-d" ),
+    "permissionforsite" => 15,
+    "isselectableforsite" => 0,
+    "passwordmnemonicquestion" => isset( $_POST["passwordMnemonicQuestion"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicQuestion"] ) : "",
+    "passwordmnemonicanswer" => isset( $_POST["passwordMnemonicAnswer"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicAnswer"] ) : "",
+    "isinactive" => 0
 
   ) );
 
@@ -84,7 +91,7 @@ $tokenMisMatchError = 'ok';
 	$duplicateUserNameError = 'nok';
   }
 
-  if ( Member::getByEmailAddress( $member->getValue( "emailAddress" ) ) ) {
+  if ( Member::getByEmailAddress( $member->getValue( "emailaddress" ) ) ) {
     //$errorMessages[] = '<p class="error">A member with that email address already exists in the database. Please choose another email address, or contact the webmaster to retrieve your password.</p>';
 	$duplicateEMailError = 'nok';
   }
@@ -95,7 +102,7 @@ $token = isset( $_POST["token"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_P
 //	$tokenMisMatchError = 'nok';
 	//$success = 'nok';
 //}
-$tokenRow = Token::getByEmailAddress( $member->getValue( "emailAddress" ) );
+$tokenRow = Token::getByEmailAddress( $member->getValue( "emailaddress" ) );
 if ($tokenRow) {
 	if ($token != $tokenRow->getValue( "token" )) {
 		$tokenMisMatchError = 'nok';

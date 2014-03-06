@@ -1,15 +1,17 @@
 <?php
 /***************************************
-$Revision::                            $: Revision of last commit
+$Revision:: 55                         $: Revision of last commit
 $LastChangedBy::                       $: Author of last commit
-$LastChangedDate::                     $: Date of last commit
+$LastChangedDate:: 2011-03-02 13:40:21#$: Date of last commit
 ***************************************/
 /*
-plateslate/
+Collaborators/
 view_member.php
-tjs 110823
+tjs 101012
 
 file version 1.00 
+
+release version 1.06
 */
 
 require_once( "common.inc.php" );
@@ -36,7 +38,7 @@ if ( isset( $_POST["action"] ) and $_POST["action"] == "Save Changes" ) {
 
 function displayForm( $errorMessages, $missingFields, $member ) {
   $logEntries = LogEntry::getLogEntries( $member->getValue( "id" ) );
-  displayPageHeader( "View member: " . $member->getValueEncoded( "firstName" ) . " " . $member->getValueEncoded( "lastName" ) );
+  displayPageHeader( "View member: " . $member->getValueEncoded( "firstname" ) . " " . $member->getValueEncoded( "lastname" ) );
 
   if ( $errorMessages ) {
     foreach ( $errorMessages as $errorMessage ) {
@@ -58,17 +60,17 @@ function displayForm( $errorMessages, $missingFields, $member ) {
         <label for="password">New password</label>
         <input type="password" name="password" id="password" value="" />
         <label for="passwordMnemonicQuestion">Password mnemonic question</label>
-        <input type="text" name="passwordMnemonicQuestion" id="passwordMnemonicQuestion" value="<?php echo $member->getValueEncoded( "passwordMnemonicQuestion" ) ?>" />
+        <input type="text" name="passwordMnemonicQuestion" id="passwordMnemonicQuestion" value="<?php echo $member->getValueEncoded( "passwordmnemonicquestion" ) ?>" />
         <label for="passwordMnemonicAnswer">Password mnemonic answer</label>
-        <input type="text" name="passwordMnemonicAnswer" id="passwordMnemonicAnswer" value="<?php echo $member->getValueEncoded( "passwordMnemonicAnswer" ) ?>" />
+        <input type="text" name="passwordMnemonicAnswer" id="passwordMnemonicAnswer" value="<?php echo $member->getValueEncoded( "passwordmnemonicanswer" ) ?>" />
         <label for="emailAddress"<?php validateField( "emailAddress", $missingFields ) ?>>Email address *</label>
-        <input type="text" name="emailAddress" id="emailAddress" value="<?php echo $member->getValueEncoded( "emailAddress" ) ?>" />
+        <input type="text" name="emailAddress" id="emailAddress" value="<?php echo $member->getValueEncoded( "emailaddress" ) ?>" />
         <label for="firstName"<?php validateField( "firstName", $missingFields ) ?>>First name *</label>
-        <input type="text" name="firstName" id="firstName" value="<?php echo $member->getValueEncoded( "firstName" ) ?>" />
+        <input type="text" name="firstName" id="firstName" value="<?php echo $member->getValueEncoded( "firstname" ) ?>" />
         <label for="lastName"<?php validateField( "lastName", $missingFields ) ?>>Last name *</label>
-        <input type="text" name="lastName" id="lastName" value="<?php echo $member->getValueEncoded( "lastName" ) ?>" />
+        <input type="text" name="lastName" id="lastName" value="<?php echo $member->getValueEncoded( "lastname" ) ?>" />
         <label for="joinDate"<?php validateField( "joinDate", $missingFields ) ?>>Joined on *</label>
-        <input type="text" name="joinDate" id="joinDate" value="<?php echo $member->getValueEncoded( "joinDate" ) ?>" />
+        <input type="text" name="joinDate" id="joinDate" value="<?php echo $member->getValueEncoded( "joindate" ) ?>" />
         <label<?php validateField( "gender", $missingFields ) ?>>Gender *</label>
         <label for="genderMale">Male</label>
         <input type="radio" name="gender" id="genderMale" value="m"<?php setChecked( $member, "gender", "m" )?>/>
@@ -77,11 +79,11 @@ function displayForm( $errorMessages, $missingFields, $member ) {
         <label for="primarySkillArea">Primary skill</label>
         <select name="primarySkillArea" id="primarySkillArea" size="1">
         <?php foreach ( $member->getSkills() as $value => $label ) { ?>
-          <option value="<?php echo $value ?>"<?php setSelected( $member, "primarySkillArea", $value ) ?>><?php echo $label ?></option>
+          <option value="<?php echo $value ?>"<?php setSelected( $member, "primaryskillarea", $value ) ?>><?php echo $label ?></option>
         <?php } ?>
         </select>
         <label for="otherSkills">Other skills</label>
-        <textarea name="otherSkills" id="otherSkills" rows="4" cols="50"><?php echo $member->getValueEncoded( "otherSkills" ) ?></textarea>
+        <textarea name="otherSkills" id="otherSkills" rows="4" cols="50"><?php echo $member->getValueEncoded( "otherskills" ) ?></textarea>
         <div style="clear: both;">
           <input type="submit" name="action" id="saveButton" value="Save Changes" />
           <input type="submit" name="action" id="deleteButton" value="Delete Member" style="margin-right: 20px;" />
@@ -104,9 +106,9 @@ foreach ( $logEntries as $logEntry ) {
   $rowCount++;
 ?>
       <tr<?php if ( $rowCount % 2 == 0 ) echo ' class="alt"' ?>>
-        <td><?php echo $logEntry->getValueEncoded( "pageUrl" ) ?></td>
-        <td><?php echo $logEntry->getValueEncoded( "numVisits" ) ?></td>
-        <td><?php echo $logEntry->getValueEncoded( "lastAccess" ) ?></td>
+        <td><?php echo $logEntry->getValueEncoded( "pageurl" ) ?></td>
+        <td><?php echo $logEntry->getValueEncoded( "numvisits" ) ?></td>
+        <td><?php echo $logEntry->getValueEncoded( "lastaccess" ) ?></td>
       </tr>
 <?php
 }
@@ -122,7 +124,7 @@ foreach ( $logEntries as $logEntry ) {
 }
 
 function saveMember() {
-  $requiredFields = array( "username", "emailAddress", "firstName", "lastName", "joinDate", "gender" );
+  $requiredFields = array( "username", "emailaddress", "firstname", "lastname", "joindate", "gender" );
   $missingFields = array();
   $errorMessages = array();
 
@@ -130,22 +132,22 @@ function saveMember() {
     "id" => isset( $_POST["memberId"] ) ? (int) $_POST["memberId"] : "",
     "username" => isset( $_POST["username"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["username"] ) : "",
     "password" => isset( $_POST["password"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["password"] ) : "",
-    "emailAddress" => isset( $_POST["emailAddress"] ) ? preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] ) : "",
-    "firstName" => isset( $_POST["firstName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["firstName"] ) : "",
-    "lastName" => isset( $_POST["lastName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["lastName"] ) : "",
-    "joinDate" => isset( $_POST["joinDate"] ) ? preg_replace( "/[^\-0-9]/", "", $_POST["joinDate"] ) : "",
+    "emailaddress" => isset( $_POST["emailAddress"] ) ? preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] ) : "",
+    "firstname" => isset( $_POST["firstName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["firstName"] ) : "",
+    "lastname" => isset( $_POST["lastName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["lastName"] ) : "",
+    "joindate" => isset( $_POST["joinDate"] ) ? preg_replace( "/[^\-0-9]/", "", $_POST["joinDate"] ) : "",
     "gender" => isset( $_POST["gender"] ) ? preg_replace( "/[^mf]/", "", $_POST["gender"] ) : "",
-    "primarySkillArea" => isset( $_POST["primarySkillArea"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["favoriteGenre"] ) : "",
-    "otherSkills" => isset( $_POST["otherSkills"] ) ? preg_replace( "/[^ \'\,\.\-a-zA-Z0-9]/", "", $_POST["otherSkills"] ) : "",
-        "cumDonationsForSites" => "0",
-    "lastDonationMadeOn" => "",
-    "lastDonationForSite" => "0",
-    "lastLoginDate" => "",
-    "permissionForSite" => "15",
-    "isSelectableForSite" => "0",
-    "passwordMnemonicQuestion" => isset( $_POST["passwordMnemonicQuestion"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicQuestion"] ) : "",
-    "passwordMnemonicAnswer" => isset( $_POST["passwordMnemonicAnswer"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicAnswer"] ) : "",
-    "isInactive" => ""
+    "primaryskillarea" => isset( $_POST["primarySkillArea"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["favoriteGenre"] ) : "",
+    "otherskills" => isset( $_POST["otherSkills"] ) ? preg_replace( "/[^ \'\,\.\-a-zA-Z0-9]/", "", $_POST["otherSkills"] ) : "",
+        "cumdonationsforsites" => "0",
+    "lastdonationmadeon" => "",
+    "lastdonationforsite" => "0",
+    "lastlogindate" => "",
+    "permissionforsite" => "15",
+    "isselectableforsite" => "0",
+    "passwordmnemonicquestion" => isset( $_POST["passwordMnemonicQuestion"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicQuestion"] ) : "",
+    "passwordmnemonicanswer" => isset( $_POST["passwordMnemonicAnswer"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["passwordMnemonicAnswer"] ) : "",
+    "isinactive" => ""
 
   ) );
 
@@ -163,7 +165,7 @@ function saveMember() {
     $errorMessages[] = '<p class="error">A member with that username already exists in the database. Please choose another username.</p>';
   }
 
-  if ( $existingMember = Member::getByEmailAddress( $member->getValue( "emailAddress" ) ) and $existingMember->getValue( "id" ) != $member->getValue( "id" ) ) {
+  if ( $existingMember = Member::getByEmailAddress( $member->getValue( "emailaddress" ) ) and $existingMember->getValue( "id" ) != $member->getValue( "id" ) ) {
     $errorMessages[] = '<p class="error">A member with that email address already exists in the database. Please choose another email address.</p>';
   }
 

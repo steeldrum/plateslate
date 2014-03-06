@@ -1,13 +1,13 @@
 <?php
 /***************************************
-$Revision::                            $: Revision of last commit
+$Revision:: 152                        $: Revision of last commit
 $LastChangedBy::                       $: Author of last commit
-$LastChangedDate::                     $: Date of last commit
+$LastChangedDate:: 2011-11-15 09:35:07#$: Date of last commit
 ***************************************/
 /*
-plateslate/
+charityhound/
 Token.class.php
-tjs 120202
+tjs 111111
 
 file version 1.00 
 
@@ -35,7 +35,24 @@ require_once "DataObject.class.php";
 date_default_timezone_set ( "America/New_York" );
 
 class Token extends DataObject {
-
+  protected $data = array(
+    "id" => "",
+    "emailaddress" => "",
+    "token" => "",
+    "memberid" => "",
+    "expirationdate" => "",
+    "payment" => "",
+    "paymentdate" => "",
+    "totalpayments" => "",
+    "numlogins" => "",
+    "lastaccess" => "",
+    "iscollaborator" => "",
+    "isaggregateanalyst" => "",
+    "isdemo" => "",
+    "istest" => "",
+    "isinactive" => ""
+  );
+/*
   protected $data = array(
     "id" => "",
     "emailAddress" => "",
@@ -53,11 +70,14 @@ class Token extends DataObject {
     "isTest" => "",
     "isInactive" => ""
   );
-
+*/
   public static function getTokens( $startRow, $numRows, $order ) {
     $conn = parent::connect();
-    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM " . TBL_TOKENS . " ORDER BY $order LIMIT :startRow, :numRows";
-
+    // tjs 140218
+    //$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM " . TBL_TOKENS . " ORDER BY $order LIMIT :startRow, :numRows";
+    $sql = "SELECT * FROM " . TBL_TOKENS . " ORDER BY $order OFFSET :startRow LIMIT :numRows";
+		$rowCount = 0;
+    
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":startRow", $startRow, PDO::PARAM_INT );
@@ -66,11 +86,12 @@ class Token extends DataObject {
       $tokens = array();
       foreach ( $st->fetchAll() as $row ) {
         $tokens[] = new Token( $row );
+				$rowCount++;
       }
-      $st = $conn->query( "SELECT found_rows() as totalRows" );
-      $row = $st->fetch();
+      //$st = $conn->query( "SELECT found_rows() as totalRows" );
+      //$row = $st->fetch();
       parent::disconnect( $conn );
-      return array( $tokens, $row["totalRows"] );
+      return array( $tokens, $rowCount );
     } catch ( PDOException $e ) {
       parent::disconnect( $conn );
       die( "Query failed: " . $e->getMessage() );
@@ -96,7 +117,8 @@ class Token extends DataObject {
 
   public static function getByEmailAddress( $emailAddress ) {
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_TOKENS . " WHERE emailAddress = :emailAddress";
+    //$sql = "SELECT * FROM " . TBL_TOKENS . " WHERE emailAddress = :emailAddress";
+    $sql = "SELECT * FROM " . TBL_TOKENS . " WHERE emailaddress = :emailAddress";
 
     try {
       $st = $conn->prepare( $sql );
@@ -110,7 +132,66 @@ class Token extends DataObject {
       die( "Query failed: " . $e->getMessage() );
     }
   }
+  
+  public function insert() {
+    $conn = parent::connect();
+    $sql = "INSERT INTO " . TBL_TOKENS . " (
+              emailaddress,
+              token,
+			memberid,
+			expirationdate,
+			payment,
+			paymentdate,
+			totalpayments,
+			numlogins,
+			lastaccess,
+			iscollaborator,
+			isaggregateanalyst,
+			isdemo,
+			istest,
+			isinactive
+            ) VALUES (
+              :emailAddress,
+              :token,
+			:memberId,
+			:expirationDate,
+			:payment,
+			:paymentDate,
+			:totalPayments,
+			:numLogins,
+			:lastAccess,
+			:isCollaborator,
+			:isAggregateAnalyst,
+			:isDemo,
+			:isTest,
+			:isInactive
+             )";
 
+    try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":emailAddress", $this->data["emailaddress"], PDO::PARAM_STR );
+      $st->bindValue( ":token", $this->data["token"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
+      $st->bindValue( ":expirationDate", $this->data["expirationdate"], PDO::PARAM_STR );
+      $st->bindValue( ":payment", $this->data["payment"], PDO::PARAM_STR );
+      $st->bindValue( ":paymentDate", $this->data["paymentdate"], PDO::PARAM_STR );
+      $st->bindValue( ":totalPayments", $this->data["totalpayments"], PDO::PARAM_STR );
+      $st->bindValue( ":numLogins", $this->data["numlogins"], PDO::PARAM_STR );
+      $st->bindValue( ":lastAccess", $this->data["lastaccess"], PDO::PARAM_STR );
+      $st->bindValue( ":isCollaborator", $this->data["iscollaborator"], PDO::PARAM_STR );
+      $st->bindValue( ":isAggregateAnalyst", $this->data["isaggregateanalyst"], PDO::PARAM_STR );
+      $st->bindValue( ":isDemo", $this->data["isdemo"], PDO::PARAM_STR );
+      $st->bindValue( ":isTest", $this->data["istest"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
+      $st->execute();
+      parent::disconnect( $conn );
+    } catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    }
+  }
+  
+/*
   public function insert() {
     $conn = parent::connect();
     $sql = "INSERT INTO " . TBL_TOKENS . " (
@@ -168,7 +249,52 @@ class Token extends DataObject {
       die( "Query failed: " . $e->getMessage() );
     }
   }
+*/
+  public function update() {
+    $conn = parent::connect();
+    $sql = "UPDATE " . TBL_TOKENS . " SET
+              emailaddress = :emailAddress,
+              token = :token,
+              memberid = :memberId,
+              expirationdate = :expirationDate,
+              payment = :payment,
+              paymentdate = :paymentDate,
+              totalpayments = :totalPayments,
+              numlogins = :numLogins,
+              lastaccess = :lastAccess,
+              iscollaborator = :isCollaborator,
+              isaggregateanalyst = :isAggregateAnalyst,
+              isdemo = :isDemo,
+              istest = :isTest,
+              isinactive = :isInactive
+            WHERE id = :id";
 
+    try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":id", $this->data["id"], PDO::PARAM_INT );
+      $st->bindValue( ":emailAddress", $this->data["emailaddress"], PDO::PARAM_STR );
+      $st->bindValue( ":token", $this->data["token"], PDO::PARAM_STR );
+      $st->bindValue( ":memberId", $this->data["memberid"], PDO::PARAM_STR );
+      $st->bindValue( ":expirationDate", $this->data["expirationdate"], PDO::PARAM_STR );
+      $st->bindValue( ":payment", $this->data["payment"], PDO::PARAM_STR );
+      $st->bindValue( ":paymentDate", $this->data["paymentdate"], PDO::PARAM_STR );
+      $st->bindValue( ":totalPayments", $this->data["totalpayments"], PDO::PARAM_STR );
+      $st->bindValue( ":numLogins", $this->data["numlogins"], PDO::PARAM_STR );
+      $st->bindValue( ":lastAccess", $this->data["lastaccess"], PDO::PARAM_STR );
+      $st->bindValue( ":isCollaborator", $this->data["iscollaborator"], PDO::PARAM_STR );
+      $st->bindValue( ":isAggregateAnalyst", $this->data["isaggregateanalyst"], PDO::PARAM_STR );
+      $st->bindValue( ":isDemo", $this->data["isdemo"], PDO::PARAM_STR );
+      $st->bindValue( ":isTest", $this->data["istest"], PDO::PARAM_STR );
+      $st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
+      $st->execute();
+      parent::disconnect( $conn );
+    } catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    }
+  }
+  
+/*  
   public function update() {
     $conn = parent::connect();
     $sql = "UPDATE " . TBL_TOKENS . " SET
@@ -212,7 +338,7 @@ class Token extends DataObject {
       die( "Query failed: " . $e->getMessage() );
     }
   }
-
+*/
 /*
    public function updatePassword( $newPassword ) {
     $conn = parent::connect();

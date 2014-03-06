@@ -167,7 +167,9 @@ class Member extends DataObject {
 
   public static function getByEmailAddress( $emailAddress ) {
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE emailAddress = :emailAddress";
+    // tjs 140303
+   // $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE emailAddress = :emailAddress";
+    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE emailaddress = :emailAddress";
 
     try {
       $st = $conn->prepare( $sql );
@@ -188,7 +190,8 @@ class Member extends DataObject {
 
   //public function getFavoriteGenreString() {
   public function getPrimarySkillAreaString() {
-    return ( $this->_skills[$this->data["primarySkillArea"]] );
+    //return ( $this->_skills[$this->data["primarySkillArea"]] );
+  	return ( $this->_skills[$this->data["primaryskillarea"]] );
   }
 
   public function getSkills() {
@@ -198,20 +201,24 @@ class Member extends DataObject {
   // tjs 120221
   public static function getByPrimarySkillArea( $primarySkillArea ) {
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE primarySkillArea = :primarySkillArea";
+    //$sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE primarySkillArea = :primarySkillArea";
+    $sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE primaryskillarea = :primarySkillArea";
 
     try {
       $st = $conn->prepare( $sql );
       $st->bindValue( ":primarySkillArea", $primarySkillArea, PDO::PARAM_STR );
       $st->execute();
       $members = array();
+    $rowCount = 0;
       foreach ( $st->fetchAll() as $row ) {
         $members[] = new Member( $row );
+        $rowCount++;
       }
-      $st = $conn->query( "SELECT found_rows() as totalRows" );
-      $row = $st->fetch();
+     // $st = $conn->query( "SELECT found_rows() as totalRows" );
+      //$row = $st->fetch();
       parent::disconnect( $conn );
-      return array( $members, $row["totalRows"] );
+      //return array( $members, $row["totalRows"] );
+      return array( $members, $rowCount);
       } catch ( PDOException $e ) {
       parent::disconnect( $conn );
       die( "Query failed: " . $e->getMessage() );
