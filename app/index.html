@@ -1,22 +1,14 @@
 <!DOCTYPE html>
-<!--------------------------------------
-$Revision:: 175                        $: Revision of last commit
-$LastChangedBy::                       $: Author of last commit
-$LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
---------------------------------------->
 <html>
 <head>
     <title>PlateSlate</title>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
-	<!-- tjs 131122 link rel="stylesheet" href="css/jquery.mobile-1.0.min.css" / --> 
 	<link rel="stylesheet" href="css/jquery.mobile-1.4.0.css" /> 
 	<link rel="stylesheet" href="css/jquery.mobile.pagination.css" />
     <link rel="stylesheet" href="css/plateSlateCellApp.css" />
     <script type="text/javascript" src="js/plateSlateCellApp.js"></script>
 	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
-<!--  tjs 131204 script type="text/javascript" src="js/jquery-1.9.1.js" -->
-	<!--  tjs 131204  -->
 <script type="text/javascript" src="js/IndexedDBShim.min.js"></script>
 <script type="text/javascript" src="js/jquery.indexeddb.js"></script>
 <script type="text/javascript" src="js/indexDBmodel.js"></script>
@@ -25,36 +17,20 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 		var loginAccountNumber = 0;
 		var db;
 		var currentChoice;
-		//tjs101230
 		var authenticated = false;
-		// tjs 111222
 		var color = 0;
-		
-		// tjs 131205
 		var init = null;
 		var isProduction = true;
 		var relativeAccountFileDirectory = '../slateView/';
-		
-		// tjs 111228
 		// globals for adding new portions
 		var grainPortionSelectListHtml = null;
 		var proteinPortionSelectListHtml;
 		var vegetablesPortionSelectListHtml;
 		var fruitsPortionSelectListHtml;
 		var dairyPortionSelectListHtml;
-
-		// tjs 140124
-		//$( ":mobile-pagecontainer" );
 		
 		$(document).bind('mobileinit',function(){ 
-		 	// Globally configure search filter placeholder text
-			//$.mobile.listview.prototype.options.filterPlaceholder = "Search me..."; 
-			
-			// Configure a "starts with" search instead of the default
-			//$.mobile.listview.prototype.options.filterCallback = function( text, searchValue ){
-				// New "Starts With" search, return false when there's a match
-				//return !(text.toLowerCase().indexOf( searchValue ) === 0);
-			//};	
+			// noop
 		});
 		
 		$(document).bind('pageloadfailed',function(e, data){ 
@@ -66,7 +42,6 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 		 	//alert("page load failed!");
 		 	//var toPage = data.toPage;
 	 		//alert ("index pagebeforechange toPage " + toPage);
-	 		//var url = $.mobile.path.parseUrl(toPage).hash;
 	 		var url = $.mobile.path.parseUrl(data.toPage).hash;
 		 	//console.log("index pagebeforechange url " + url);
 	 		if (url != undefined) {
@@ -75,7 +50,6 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 	 			if (url.length == 0) {
 	 		 	   var toPageId = data.toPage.attr("id");
 	 		 	  //alert ("index pagebeforechange toPageId " + toPageId);
-	 		 	  //if (toPageId == "home-page") {
 	 		 	  if (toPageId != undefined && toPageId == "home-page") {
 	 		 		 color = 0;
 	 		 		//alert("pagebeforechange with url color " + color);
@@ -86,57 +60,26 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 	 					color = 0;
 	 				}
 	 			}
-		 		//color = 0;
-	 			
 	 		} else {
 	 		 	   var toPageId = data.toPage.attr("id");
 		 		 	  //alert ("index pagebeforechange toPageId " + toPageId);
 		 		 	  //console.log("index pagebeforechange toPageId " + toPageId);
-		 		 	  //if (toPageId == "home-page") {
 		 		 	  if (toPageId != undefined && toPageId == "home-page") {
 		 		 		 color = 0;
 		 		 		//alert("pagebeforechange no url color " + color);
 		 		 	  }
 	 		}
-		 	//if (toPage == "home-page") {
-		 		//color = 0;
-		 	//}
-		 	//alert("pagebeforechange...");
-	 	  // var toPageId = data.toPage.attr("id");
-	 	  //alert ("index pagebeforechange toPageId " + toPageId);
-	 	  //if (toPageId == "home-page") {
-	 	  //if (toPageId != undefined && toPageId == "home-page") {
-	 		// color = 0;
-	 	  //}
 	 	 //alert("done pagebeforechange color " + color);
 		});
 
-		// When the page loads configure a custom search
-		/*
-		$('#calendar-page').live("pagebeforeshow", function(){
-		  $("#calendar-list").listview('option', 'filterCallback', 
-				function( text, searchValue ){
-					// New "Starts With" search, return false when there's a match
-					return !(text.toLowerCase().indexOf( searchValue ) === 0);
-				}
-			);
-		});*/
-
 		// tjs 131123
-		//$('#home-page').live("pageinit", function(){
 		$( document ).on( "pageinit", "#home-page", function(event){
 			//alert("on page init");
-
-				// tjs 131204
-				//readPortions();
 						// tjs 131204
 		window.shimIndexedDB.__useShim();		
 		//console.log ("init " + init);
-		//initIndexDBmodel(true);
-		loadIndexDB();
-		
+		loadIndexDB();		
 				//alert("done readPrtions");
-
 					$( 'body' ).on( 'change', '.Breakfast', function(event) {
 						//alert("Breakfast change handler...");					
 			  		// Live handler called.
@@ -215,13 +158,8 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 				    	return false;
 					}); 
 
-				// tjs 120119
-				// tjs 131123
 				//alert("before anchor button bind");
 			    $('#loginLogout').click(function () {
-			    //$('.loginLogout a').bind('click', function () {
-			    //$( document ).on( 'click', '.loginLogout', function () {			    
-			    //$( document ).on( 'click', '#loginLogout', function () {			    
 			    	//alert("index Login/Logout button clicked...");
 			    	var label;
 			    	var button = $("#loginLogout");
@@ -231,30 +169,18 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 					if (innerTextSpan.size() == 0) {
     					//button.text(label);
        					label = button.text();
-
 					// already initialized - find innerTextSpan and change its label    
 					} else {
    						 //innerTextSpan.text(label);
    						 label = innerTextSpan.text();
 					}
 					
-					// tjs 140120
-					//loadLoginInfo();
-					
-			        //var label =  $(this).siblings('.ui-btn-inner').children('.ui-btn-text').text();
-			        //var label =  $(this).children('.ui-btn-inner').children('.ui-btn-text').text();
-			        //var label =  $('#loginLogout ui-btn-text').text();
 			        //alert("index Login/Logout button text " + label);
 			        if (label == "Login") {
-			        //if (loginInfo.id == 0) {
 			        	//alert("index Login/Logout button text " + label);
-			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
 			            //alert("index Login/Logout login being called...");
-			            //$('#loginLogout ui-btn-text').text("Logout");
 						if (innerTextSpan.size() == 0) {
-	    					//button.text(label);
-	       					label = button.text("Logout");
-	
+	       					label = button.text("Logout");	
 						// already initialized - find innerTextSpan and change its label    
 						} else {
 	   						 //innerTextSpan.text(label);
@@ -267,12 +193,9 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 						//console.log ("test fopund portion named " + portion.name);
 			            login();
 			        } else {
-			            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
-			            //$('#loginLogout ui-btn-text').text("Login");
 						if (innerTextSpan.size() == 0) {
 	    					//button.text(label);
-	       					label = button.text("Login");
-	
+	       					label = button.text("Login");	
 						// already initialized - find innerTextSpan and change its label    
 						} else {
 	   						 //innerTextSpan.text(label);
@@ -280,13 +203,10 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 						}
 			            logout();
 			        }
-			    });
-			    
+			    });			    
 			});
 					
 		function login() {
-			// tjs 120209
-			//$.mobile.changePage("#login-dial");
 			hyjaxLoginDial();
 		}
 
@@ -309,16 +229,10 @@ $LastChangedDate:: 2012-01-03 14:44:48#$: Date of last commit
 <body>
 
 <!-- Home Page -->
-<div data-role="page" id="home-page" data-title="Home" data-dom-cache="false">
+<div data-role="page" id="home-page" data-title="PlateSlate" data-dom-cache="false">
 	<div data-role="header">
 		<h1>Plate Slate</h1>
-			<!-- tjs 131122 -->
-		<!--  button id="loginLogout" data-inline="true" class="ui-btn-right">Login</button -->
-		<!-- a href="#" data-role="button" data-inline="true" class="loginLogout ui-btn-right">Login</a -->
-		<!-- a data-role="button" data-inline="true" class="loginLogout ui-btn-right" onclick="handleLoginLogoutClick(); return false">Login</a -->
-		<!--  button id="loginLogout" data-inline="true" class="ui-btn-right" onclick="handleLoginLogoutClick(); return false">Login</button -->
-		<a href="#" data-role="button" data-inline="true" data-rel="external" id="loginLogout" class="loginLogout ui-btn-right">Login</a>
-		
+		<a href="#" data-role="button" data-inline="true" data-rel="external" id="loginLogout" class="loginLogout ui-btn-right">Login</a>		
 	</div>
 
 	<div data-role="content">
@@ -533,12 +447,7 @@ served over time.</p>
     <script type="text/javascript">
     // ??? tjs 131122
 function initIndexDBmodel() {
-    // tjs 131228	
-	//console.log("initIndexDBmodel schema start init " + init + " isProduction " + isProduction);
 	console.log("initIndexDBmodel schema start init " + init + " isProduction " + isProduction + " loginAccountNumber " + loginAccountNumber);
-// tjs 131210
-	//$.indexedDB("PlateSlateDB").deleteDatabase();
-// tjs 140102
 	$.indexedDB("PlateSlateDB").deleteDatabase().done(function() {
 		$.indexedDB("PlateSlateDB", {
 			"schema" : {
@@ -554,7 +463,6 @@ function initIndexDBmodel() {
 					console.info("Created new portions object store");
 					var plates = versionTransaction.createObjectStore(
 							"plates", {
-//tjs 131214										"autoIncrement" : true
 								"autoIncrement" : true,
 								"keyPath" : "key"
 							});
@@ -564,15 +472,10 @@ function initIndexDBmodel() {
 					console.info("Created new plates object store");
 					var slates = versionTransaction.createObjectStore(
 							"slates", {
-								// tjs 131202
-								// "autoIncrement": false,
-								// "keyPath": "itemId"
-								//"autoIncrement" : true
 								"autoIncrement" : true,
 								"keyPath" : "key"
 							});
 					slates.createIndex("name");
-					// tjs 140102
 					slates.createIndex("time");
 					console.info("Created new slates object store");
 				}
@@ -582,7 +485,6 @@ function initIndexDBmodel() {
 	// all tables
 	// console.log("schema done...");
 	window.setTimeout(function() {
-		// loadFromDB("plates");
 		if (!isProduction) {
 			loadFromDBAfterLoadSelectOptions("slates");				
 		}
@@ -593,10 +495,6 @@ function initIndexDBmodel() {
 			} else {
 				// tjs 131210 for test just plates...
 				//downloadplates();
-				// tjs 131228
-				//downloadPortionsPlates();
-				// tjs 140102
-				//downloadPortionsPlates(loginAccountNumber);
 				downloadPortionsPlates(0);
 			}
 		} else {
@@ -606,8 +504,6 @@ function initIndexDBmodel() {
 			} else {
 				loadIndexDB();
 			}
-			// assignPlateSelections();
-			// assignSlateSelections();
 		}
 	}, 200);
 });
@@ -616,10 +512,6 @@ function initIndexDBmodel() {
 }
 	//function to execute when doc ready
 	$(function() {
-		// tjs 131205	
-		//readPortions();
-		//setLoginButton();	
-		// tjs 140120
 		loadLoginInfo();
     	var label;
     	var button = $("#loginLogout");
@@ -627,19 +519,15 @@ function initIndexDBmodel() {
 
 		// not initialized - just change label
 		if (innerTextSpan.size() == 0) {
-			//button.text(label);
 				label = button.text();
 
 		// already initialized - find innerTextSpan and change its label    
 		} else {
-				 //innerTextSpan.text(label);
 				 label = innerTextSpan.text();
 		}
 			if (loginInfo.id == 0) {
 	        	//alert("index Login/Logout button text " + label);
-	            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Logout");
 	            //alert("index Login/Logout login being called...");
-	            //$('#loginLogout ui-btn-text').text("Logout");
 				if (innerTextSpan.size() == 0) {
 					//button.text(label);
    					label = button.text("Login");
@@ -650,10 +538,7 @@ function initIndexDBmodel() {
 						 label = innerTextSpan.text("Login");
 				}
 	        } else {
-	            //$(this).children('.ui-btn-inner').children('.ui-btn-text').text("Login");
-	            //$('#loginLogout ui-btn-text').text("Login");
 				if (innerTextSpan.size() == 0) {
-					//button.text(label);
    					label = button.text("Logout");
 
 				// already initialized - find innerTextSpan and change its label    
